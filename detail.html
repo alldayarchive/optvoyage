@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>여행지 상세 정보 - optvoyage</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+
+  <!-- Sticky Header -->
+  <header class="site-header">
+    <div class="header-left">
+      <button class="back-btn" id="backBtn" aria-label="뒤로가기"><i class="fa-solid fa-arrow-left"></i></button>
+      <a href="index.html" class="logo-wrap">
+        <div class="logo-title" style="font-size: 19px;" id="headerDetailTitle">상세 정보</div>
+      </a>
+    </div>
+    <div class="header-right">
+      <button class="header-icon-btn" id="detailShareTopBtn" title="공유하기"><i class="fa-solid fa-share-nodes"></i></button>
+      <button class="header-icon-btn" id="menuBtn" aria-label="메뉴"><i class="fa-solid fa-ellipsis-vertical"></i></button>
+      <div class="chrome-dropdown" id="dropdownMenu">
+        <div class="dropdown-header">optvoyage 메뉴</div>
+        <a href="index.html" class="dropdown-item"><i class="fa-solid fa-house"></i> <span>홈으로 이동</span></a>
+        <a href="search.html" class="dropdown-item"><i class="fa-solid fa-sliders"></i> <span>세부 픽 검색</span></a>
+        <a href="community.html" class="dropdown-item"><i class="fa-solid fa-users"></i> <span>여행자 추천 픽</span></a>
+        <a href="random.html" class="dropdown-item"><i class="fa-solid fa-dice"></i> <span>운명의 랜덤 픽</span></a>
+        <a href="privacy.html" class="dropdown-item"><i class="fa-solid fa-shield-halved"></i> <span>프라이버시</span></a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Large Image Hero Banner -->
+  <div class="detail-hero-banner">
+    <img id="detailImg" class="detail-hero-img" src="" alt="여행지 대표 사진">
+  </div>
+
+  <!-- Detail Content Container -->
+  <main class="detail-body-container" id="detailContainer">
+
+    <div class="detail-main-header">
+      <span class="card-tag-pill" id="detailCategoryBadge" style="margin-bottom: 8px; display: inline-block;">관광지</span>
+      <h1 class="detail-title" id="detailTitle">여행지명 로딩 중...</h1>
+      <div class="detail-meta-row">
+        <span style="color: #d97706; font-weight: 700; display: flex; align-items: center; gap: 4px;">
+          <i class="fa-solid fa-star"></i> <span id="detailRating">4.9</span> (<span id="detailReviewCount">0</span>)
+        </span>
+        <span><i class="fa-solid fa-location-dot"></i> <span id="detailRegion">지역</span></span>
+      </div>
+    </div>
+
+    <!-- Description Block -->
+    <div class="detail-section-block">
+      <h3 class="detail-block-title"><i class="fa-solid fa-align-left" style="color: var(--primary-600);"></i> 소개</h3>
+      <p id="detailDesc" style="font-size: 15px; line-height: 1.7; color: var(--text-main);"></p>
+    </div>
+
+    <!-- Basic Info -->
+    <div class="detail-section-block">
+      <h3 class="detail-block-title"><i class="fa-solid fa-circle-info" style="color: var(--primary-600);"></i> 이용 안내</h3>
+      <div class="detail-info-row">
+        <strong>도로명 주소</strong>
+        <span id="detailAddress">-</span>
+      </div>
+      <div class="detail-info-row">
+        <strong>문의 전화</strong>
+        <span id="detailTel">-</span>
+      </div>
+    </div>
+
+    <!-- Gourmet Food Info -->
+    <div class="detail-section-block" id="foodSection">
+      <h3 class="detail-block-title"><i class="fa-solid fa-utensils" style="color: #ea580c;"></i> 주변 대표 찐맛집 & 미식 가이드</h3>
+      <div class="box-highlight box-food">
+        <div style="margin-bottom: 6px;"><strong>추천 맛집:</strong> <span id="foodName">-</span></div>
+        <div style="margin-bottom: 6px;"><strong>대표 메뉴:</strong> <span id="foodMenu">-</span></div>
+        <div><strong>예상 가격:</strong> <span id="foodPrice">-</span></div>
+      </div>
+    </div>
+
+    <!-- Stay Price Info -->
+    <div class="detail-section-block" id="staySection">
+      <h3 class="detail-block-title"><i class="fa-solid fa-bed" style="color: #16a34a;"></i> 숙소 가격 및 유형 안내</h3>
+      <div class="detail-info-row">
+        <strong>예상 가격대</strong>
+        <span id="stayPriceRange">-</span>
+      </div>
+      <div class="detail-info-row">
+        <strong>숙소 유형</strong>
+        <span id="stayType">-</span>
+      </div>
+    </div>
+
+    <!-- Pet Rules Box (TourAPI detailPetTour) -->
+    <div class="detail-section-block">
+      <h3 class="detail-block-title"><i class="fa-solid fa-paw" style="color: #ca8a04;"></i> 반려동물 동반 안내 (TourAPI 4.0)</h3>
+      <div class="box-highlight box-pet" id="petBox"></div>
+    </div>
+
+    <!-- Barrier Free Box (TourAPI detailWithTour) -->
+    <div class="detail-section-block">
+      <h3 class="detail-block-title"><i class="fa-solid fa-wheelchair" style="color: #4f46e5;"></i> 열린관광 무장애 편의시설 (TourAPI 4.0)</h3>
+      <div class="box-highlight box-bf" id="bfBox"></div>
+    </div>
+
+    <!-- Tags Cloud -->
+    <div class="detail-section-block" style="border-bottom: none;">
+      <h3 class="detail-block-title"><i class="fa-solid fa-tags" style="color: var(--primary-600);"></i> 연관 세부 픽 태그</h3>
+      <div style="display: flex; flex-wrap: wrap; gap: 8px;" id="detailTagsGrid"></div>
+    </div>
+
+  </main>
+
+  <!-- Yanolja Style Bottom Fixed Action Bar -->
+  <div class="detail-bottom-bar">
+    <div class="detail-bottom-inner">
+      <button class="btn-icon-square" id="bottomBookmarkBtn" title="찜하기">
+        <i class="fa-regular fa-heart"></i>
+      </button>
+      <button class="btn-icon-square" id="bottomShareBtn" title="공유하기">
+        <i class="fa-solid fa-share-nodes"></i>
+      </button>
+      <a href="#" id="kakaoMapLink" target="_blank" rel="noopener noreferrer" class="btn-large-action">
+        <i class="fa-solid fa-route"></i> 카카오맵 길찾기
+      </a>
+    </div>
+  </div>
+
+  <script type="module" src="js/detail.js"></script>
+</body>
+</html>
