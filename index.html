@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>optvoyage - 세부 취향으로 고르는 나만의 맞춤 여행</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+
+  <!-- Yanolja Style Clean Sticky Header -->
+  <header class="site-header">
+    <div class="header-left">
+      <a href="index.html" class="logo-wrap">
+        <div class="logo-badge"><i class="fa-solid fa-compass"></i></div>
+        <div class="logo-title">optvoyage</div>
+      </a>
+    </div>
+    <div class="header-right">
+      <button class="header-icon-btn" id="menuBtn" aria-label="옵션 메뉴" title="메뉴">
+        <i class="fa-solid fa-ellipsis-vertical"></i>
+      </button>
+      <div class="chrome-dropdown" id="dropdownMenu">
+        <div class="dropdown-header">optvoyage 메뉴</div>
+        <a href="search.html" class="dropdown-item">
+          <i class="fa-solid fa-sliders"></i>
+          <span>세부 픽 맞춤 검색</span>
+          <span class="badge">150+</span>
+        </a>
+        <a href="community.html" class="dropdown-item">
+          <i class="fa-solid fa-users"></i>
+          <span>여행자 추천 픽 모음</span>
+          <span class="badge">HOT</span>
+        </a>
+        <a href="random.html" class="dropdown-item">
+          <i class="fa-solid fa-dice"></i>
+          <span>운명의 랜덤 픽</span>
+        </a>
+        <a href="search.html?view=bookmarks" class="dropdown-item">
+          <i class="fa-solid fa-heart"></i>
+          <span>내가 찜한 보관함</span>
+        </a>
+        <a href="privacy.html" class="dropdown-item">
+          <i class="fa-solid fa-shield-halved"></i>
+          <span>프라이버시 & 규정</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="main-hero">
+    <div class="hero-tagline">
+      <i class="fa-solid fa-sparkles"></i> 회원가입 없는 0원 무료 맞춤 여행 플랫폼
+    </div>
+    <h1 class="hero-title">
+      어디로 떠나고 싶으신가요?<br>
+      <span>수백 가지 세부 조건</span>으로 픽하세요
+    </h1>
+    <p class="hero-sub">계절, 바다·계곡, 찐맛집, 10만원 이하 가성비 숙소, 반려동물 동반까지!</p>
+
+    <form class="main-search-bar" id="heroSearchForm">
+      <input type="text" id="heroSearchInput" placeholder="지역, 계곡, 수영장, 맛집, 크리스마스 검색..." autocomplete="off">
+      <button type="submit">검색</button>
+    </form>
+  </section>
+
+  <!-- Main Content -->
+  <main class="container">
+    
+    <!-- Yanolja Style Quick Category Icons -->
+    <div class="category-icons-grid">
+      <a href="search.html" class="category-icon-item">
+        <div class="category-icon-circle" style="background: #e0f2fe; color: #0284c7;">
+          <i class="fa-solid fa-sliders"></i>
+        </div>
+        <span>세부 픽</span>
+      </a>
+      <a href="community.html" class="category-icon-item">
+        <div class="category-icon-circle" style="background: #fef3c7; color: #d97706;">
+          <i class="fa-solid fa-users"></i>
+        </div>
+        <span>여행자 픽</span>
+      </a>
+      <a href="random.html" class="category-icon-item">
+        <div class="category-icon-circle" style="background: #f3e8ff; color: #9333ea;">
+          <i class="fa-solid fa-dice"></i>
+        </div>
+        <span>랜덤 픽</span>
+      </a>
+      <a href="search.html?tag=크리스마스/연말분위기" class="category-icon-item">
+        <div class="category-icon-circle" style="background: #fee2e2; color: #dc2626;">
+          <i class="fa-solid fa-tree"></i>
+        </div>
+        <span>크리스마스</span>
+      </a>
+      <a href="search.html?tag=반려견동반가능" class="category-icon-item">
+        <div class="category-icon-circle" style="background: #fef9c3; color: #ca8a04;">
+          <i class="fa-solid fa-paw"></i>
+        </div>
+        <span>반려동물</span>
+      </a>
+    </div>
+
+    <!-- Section 1: Editor's Picks -->
+    <div class="section-header">
+      <h2 class="section-title">
+        <i class="fa-solid fa-star" style="color: #f59e0b;"></i>
+        <span>결정장애를 위한 에디터 추천 픽</span>
+      </h2>
+      <a href="search.html?view=editor" class="section-link">더보기 &gt;</a>
+    </div>
+    <div class="cards-grid" id="editorPicksGrid"></div>
+
+    <!-- Section 2: Popular Destinations -->
+    <div class="section-header" style="margin-top: 40px;">
+      <h2 class="section-title">
+        <i class="fa-solid fa-fire" style="color: #ef4444;"></i>
+        <span>지금 인기 있는 맞춤 여행지</span>
+      </h2>
+      <a href="search.html" class="section-link">전체보기 &gt;</a>
+    </div>
+    <div class="cards-grid" id="popularGrid"></div>
+
+  </main>
+
+  <!-- Yanolja Style Bottom Navigation -->
+  <nav class="bottom-nav">
+    <a href="index.html" class="bottom-nav-item active">
+      <i class="fa-solid fa-house"></i>
+      <span>홈</span>
+    </a>
+    <a href="search.html" class="bottom-nav-item">
+      <i class="fa-solid fa-magnifying-glass"></i>
+      <span>세부 픽</span>
+    </a>
+    <a href="community.html" class="bottom-nav-item">
+      <i class="fa-solid fa-users"></i>
+      <span>여행자 픽</span>
+    </a>
+    <a href="random.html" class="bottom-nav-item">
+      <i class="fa-solid fa-dice"></i>
+      <span>랜덤 픽</span>
+    </a>
+    <a href="search.html?view=bookmarks" class="bottom-nav-item">
+      <i class="fa-solid fa-heart"></i>
+      <span>보관함</span>
+    </a>
+  </nav>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <p style="font-weight: 700; color: var(--text-main); margin-bottom: 6px;">optvoyage (옵트보야지)</p>
+      <p>한국관광공사 TourAPI 4.0 공공데이터를 기반으로 제작된 맞춤형 관광정보 플랫폼</p>
+      <p style="margin-top: 8px;">회원가입 없이 누구나 무료로 이용 가능 · 개인정보 미수집 안심 서비스</p>
+      <p style="margin-top: 14px; font-size: 11.5px; color: var(--text-light);">© 2025 optvoyage. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>
