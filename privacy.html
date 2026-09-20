@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>개인정보처리방침 & 규정 - optvoyage</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+
+  <!-- Sticky Header -->
+  <header class="site-header">
+    <div class="header-left">
+      <button class="back-btn" id="backBtn" aria-label="뒤로가기"><i class="fa-solid fa-arrow-left"></i></button>
+      <a href="index.html" class="logo-wrap">
+        <div class="logo-title" style="font-size: 19px;">프라이버시 & 규정</div>
+      </a>
+    </div>
+    <div class="header-right">
+      <button class="header-icon-btn" id="menuBtn" aria-label="메뉴"><i class="fa-solid fa-ellipsis-vertical"></i></button>
+      <div class="chrome-dropdown" id="dropdownMenu">
+        <div class="dropdown-header">optvoyage 메뉴</div>
+        <a href="index.html" class="dropdown-item"><i class="fa-solid fa-house"></i> <span>홈으로 이동</span></a>
+        <a href="search.html" class="dropdown-item"><i class="fa-solid fa-sliders"></i> <span>세부 픽 검색</span></a>
+        <a href="community.html" class="dropdown-item"><i class="fa-solid fa-users"></i> <span>여행자 추천 픽</span></a>
+        <a href="random.html" class="dropdown-item"><i class="fa-solid fa-dice"></i> <span>운명의 랜덤 픽</span></a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container" style="max-width: 800px; padding-top: 30px;">
+    
+    <div style="background: #ffffff; border-radius: var(--radius-lg); border: 1px solid #e2e8f0; padding: 32px 24px; box-shadow: var(--shadow-sm); line-height: 1.8;">
+      
+      <div style="background: #e0f2fe; border: 1px solid #bae6fd; border-radius: var(--radius-md); padding: 16px; margin-bottom: 24px; color: #0369a1;">
+        <strong>🛡️ optvoyage 개인정보 안심 원칙 (Zero-Login Policy)</strong><br>
+        optvoyage는 <strong>회원가입과 로그인을 요구하지 않습니다.</strong> 이름, 이메일, 전화번호 등 어떠한 개인정보도 수집·저장하지 않으며, 찜한 목록과 나만의 픽은 이용자의 브라우저 로컬 저장소(LocalStorage)에만 안전하게 보관됩니다.
+      </div>
+
+      <h3 style="font-size: 18px; margin-bottom: 8px; color: var(--text-main);">1. 개인정보 처리 항목 및 목적</h3>
+      <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 20px;">
+        - 수집하는 개인정보 항목: <strong>없음 (Zero Collection)</strong><br>
+        - 본 서비스는 별도의 계정 체계를 운영하지 않으므로 회원정보를 서버에 저장하지 않습니다.<br>
+        - 사용자가 저장한 찜 목록 및 커스텀 픽은 브라우저 캐시 및 LocalStorage에만 존재하며, 브라우저 방문 기록 삭제 시 언제든 초기화할 수 있습니다.
+      </p>
+
+      <h3 style="font-size: 18px; margin-bottom: 8px; color: var(--text-main);">2. 공공데이터 TourAPI 4.0 출처 및 저작권 표기</h3>
+      <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 20px;">
+        - 본 사이트의 관광지, 축제, 행사 및 편의시설 정보는 <strong>한국관광공사(KTO) TourAPI 4.0</strong> 및 <strong>공공데이터포털(data.go.kr)</strong>의 공공누리 제1유형(출처표시, 상업적 이용 및 변형 가능) 데이터를 기반으로 가공·제공됩니다.<br>
+        - 반려동물 동반 여행 정보는 한국관광공사 <code>detailPetTour</code> 표준 스펙을 따르며, 무장애 편의 정보는 열린관광 <code>detailWithTour</code> 표준 스펙을 준수합니다.
+      </p>
+
+      <h3 style="font-size: 18px; margin-bottom: 8px; color: var(--text-main);">3. 0원 무료 호스팅 및 무서버 아키텍처</h3>
+      <p style="font-size: 14px; color: var(--text-muted);">
+        - optvoyage는 순수 정적 웹(Static Web) 기술로 빌드되어 <strong>Cloudflare Pages</strong> 또는 <strong>GitHub Pages</strong>를 통해 서버 비용 0원으로 영구 무료 운영이 가능합니다.
+      </p>
+
+    </div>
+
+  </main>
+
+  <script type="module">
+    import { initCommonUI } from './js/common.js';
+    initCommonUI();
+  </script>
+</body>
+</html>
