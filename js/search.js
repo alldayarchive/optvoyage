@@ -1,215 +1,132 @@
-import { CATEGORIES, DESTINATIONS } from './data.js';
-import { initCommonUI, toggleBookmark, isBookmarked } from './common.js';
+import { initCommonUI, showToast } from './common.js';
+import { PICK_CATEGORIES, ALL_TAGS, INITIAL_DESTINATIONS } from './data.js';
+import { searchTourAPI } from './api.js';
 
-initCommonUI();
-
-const urlParams = new URLSearchParams(window.location.search);
 let selectedTags = new Set();
-let selectedCategory = Object.keys(CATEGORIES)[0];
-let currentKeyword = urlParams.get('q') || '';
-const viewMode = urlParams.get('view');
-const initialTag = urlParams.get('tag');
+let activeCategory = "region";
 
-if (initialTag) {
-  selectedTags.add(initialTag);
-}
+document.addEventListener("DOMContentLoaded", () => {
+  initCommonUI();
+  parseUrlParams();
+  renderCategoryTabs();
+  renderTags();
+  updateSearch();
 
-const categoryTabsBar = document.getElementById('categoryTabsBar');
-const currentCatTags = document.getElementById('currentCatTags');
-const currentCatTitle = document.getElementById('currentCatTitle');
-const searchResultsGrid = document.getElementById('searchResultsGrid');
-const activeFilterSummary = document.getElementById('activeFilterSummary');
-const activeTagsContainer = document.getElementById('activeTagsContainer');
-const keywordInput = document.getElementById('keywordInput');
-const resultTotalCount = document.getElementById('resultTotalCount');
-const searchResultTitle = document.getElementById('searchResultTitle');
+  document.getElementById("clearAllTagsBtn")?.addEventListener("click", () => {
+    selectedTags.clear();
+    updateSearch();
+  });
 
-if (keywordInput && currentKeyword) {
-  keywordInput.value = currentKeyword;
+  document.getElementById("keywordSearchBtn")?.addEventListener("click", handleKeywordSearch);
+});
+
+function parseUrlParams() {
+  const urlParams = new URLSearchParams(window.location.search);
+  const tagParam = urlParams.get("tag");
+  const catParam = urlParams.get("cat");
+  if (tagParam) selectedTags.add(tagParam);
+  if (catParam === "edu") activeCategory = "edu";
 }
 
 function renderCategoryTabs() {
-  if (!categoryTabsBar) return;
-  categoryTabsBar.innerHTML = '';
-  Object.keys(CATEGORIES).forEach(catKey => {
-    const cat = CATEGORIES[catKey];
-    const btn = document.createElement('button');
-    btn.className = `tag-chip ${catKey === selectedCategory ? 'selected' : ''}`;
-    btn.innerHTML = `<i class="fa-solid ${cat.icon}"></i> ${cat.title}`;
-    btn.addEventListener('click', () => {
-      selectedCategory = catKey;
+  const bar = document.getElementById("categoryTabsBar");
+  if (!bar) return;
+  bar.innerHTML = PICK_CATEGORIES.map(cat => `
+    <button class="tab-btn ${cat.id === activeCategory ? 'active' : ''}" data-id="${cat.id}">
+      ${cat.name}
+    </button>
+  `).join('');
+
+  bar.querySelectorAll(".tab-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      activeCategory = btn.dataset.id;
       renderCategoryTabs();
-      renderTagsForCategory();
+      renderTags();
     });
-    categoryTabsBar.appendChild(btn);
   });
 }
 
-function renderTagsForCategory() {
-  if (!currentCatTags) return;
-  const cat = CATEGORIES[selectedCategory];
-  currentCatTitle.textContent = `${cat.title} 세부 조건`;
-  currentCatTags.innerHTML = '';
-  cat.tags.forEach(tag => {
-    const btn = document.createElement('button');
-    const isSelected = selectedTags.has(tag);
-    btn.className = `tag-chip ${isSelected ? 'selected' : ''}`;
-    btn.textContent = `#${tag}`;
-    btn.addEventListener('click', () => {
-      if (selectedTags.has(tag)) {
-        selectedTags.delete(tag);
-      } else {
-        selectedTags.add(tag);
-      }
-      renderTagsForCategory();
-      updateFilterSummary();
-      applyFilter();
+function renderTags() {
+  const container = document.getElementById("currentCatTags");
+  if (!container) return;
+  const tags = ALL_TAGS[activeCategory] || [];
+  container.innerHTML = tags.map(tag => `
+    <span class="tag-chip ${selectedTags.has(tag) ? 'selected' : ''}" data-tag="${tag}">
+      ${tag}
+    </span>
+  `).join('');
+
+  container.querySelectorAll(".tag-chip").forEach(chip => {
+    chip.addEventListener("click", () => {
+      const t = chip.dataset.tag;
+      if (selectedTags.has(t)) selectedTags.delete(t);
+      else selectedTags.add(t);
+      renderTags();
+      updateSearch();
     });
-    currentCatTags.appendChild(btn);
   });
 }
 
-function updateFilterSummary() {
-  if (!activeFilterSummary || !activeTagsContainer) return;
-  if (selectedTags.size === 0 && !currentKeyword) {
-    activeFilterSummary.style.display = 'none';
-    return;
-  }
-  activeFilterSummary.style.display = 'flex';
-  activeTagsContainer.innerHTML = '';
-
-  if (currentKeyword) {
-    const chip = document.createElement('span');
-    chip.className = 'tag-chip selected';
-    chip.innerHTML = `검색어: ${currentKeyword} <i class="fa-solid fa-xmark"></i>`;
-    chip.addEventListener('click', () => {
-      currentKeyword = '';
-      if (keywordInput) keywordInput.value = '';
-      updateFilterSummary();
-      applyFilter();
-    });
-    activeTagsContainer.appendChild(chip);
-  }
-
-  selectedTags.forEach(tag => {
-    const chip = document.createElement('span');
-    chip.className = 'tag-chip selected';
-    chip.innerHTML = `#${tag} <i class="fa-solid fa-xmark"></i>`;
-    chip.addEventListener('click', () => {
-      selectedTags.delete(tag);
-      renderTagsForCategory();
-      updateFilterSummary();
-      applyFilter();
-    });
-    activeTagsContainer.appendChild(chip);
-  });
+async function handleKeywordSearch() {
+  const kw = document.getElementById("keywordInput")?.value.trim();
+  if (!kw) return;
+  showToast(`'${kw}' 키워드로 실시간 조회 중...`);
+  const apiResults = await searchTourAPI(kw);
+  renderResultGrid([...apiResults, ...INITIAL_DESTINATIONS.filter(d => d.title.includes(kw) || d.desc.includes(kw))]);
 }
 
-function applyFilter() {
-  if (!searchResultsGrid) return;
-  searchResultsGrid.innerHTML = '';
-
-  let list = DESTINATIONS;
-
-  if (viewMode === 'bookmarks') {
-    const bookmarks = new Set(JSON.parse(localStorage.getItem('optvoyage_bookmarks') || '[]'));
-    list = list.filter(item => bookmarks.has(item.id));
-    if (searchResultTitle) searchResultTitle.textContent = '내가 찜한 보관함';
-  } else if (viewMode === 'editor') {
-    list = list.filter(item => item.isEditorPick);
-    if (searchResultTitle) searchResultTitle.textContent = '에디터 추천 픽';
-  }
-
-  if (currentKeyword) {
-    const kw = currentKeyword.toLowerCase();
-    list = list.filter(item => 
-      item.title.toLowerCase().includes(kw) ||
-      item.region.toLowerCase().includes(kw) ||
-      item.desc.toLowerCase().includes(kw)
-    );
-  }
+async function updateSearch() {
+  renderActiveSummary();
+  let results = [...INITIAL_DESTINATIONS];
 
   if (selectedTags.size > 0) {
-    list = list.filter(item => {
-      return Array.from(selectedTags).every(t => item.tags.includes(t));
-    });
+    const activeArray = Array.from(selectedTags);
+    results = results.filter(item => activeArray.every(tag => item.tags.includes(tag) || item.region === tag));
+
+    // 로컬 데이터에 부합하지 않는 경우 TourAPI 실시간 호출
+    if (results.length === 0) {
+      showToast("공공데이터 API 실시간 호출 중...");
+      const apiRes = await searchTourAPI(activeArray[0]);
+      results = apiRes;
+    }
   }
 
-  if (resultTotalCount) resultTotalCount.textContent = list.length;
+  renderResultGrid(results);
+}
+
+function renderActiveSummary() {
+  const container = document.getElementById("activeTagsContainer");
+  if (!container) return;
+  container.innerHTML = Array.from(selectedTags).map(tag => `
+    <span class="card-tag-pill">${tag}</span>
+  `).join('');
+}
+
+function renderResultGrid(list) {
+  const grid = document.getElementById("searchResultsGrid");
+  const countEl = document.getElementById("resultTotalCount");
+  if (countEl) countEl.innerText = list.length;
+  if (!grid) return;
 
   if (list.length === 0) {
-    searchResultsGrid.innerHTML = `
-      <div style="grid-column: 1/-1; text-align: center; padding: 60px 0; color: var(--text-muted);">
-        <i class="fa-solid fa-compass" style="font-size: 48px; color: #cbd5e1; margin-bottom: 12px;"></i>
-        <p style="font-size: 16px; font-weight: 700;">조건에 일치하는 여행지가 없습니다.</p>
-        <p style="font-size: 13px;">다른 태그나 검색어를 선택해보세요!</p>
-      </div>
-    `;
+    grid.innerHTML = `<div style="grid-column: 1/-1; text-align: center; padding: 40px; color: var(--text-muted);">선택하신 픽 조건에 부합하는 여행지가 없습니다. 다른 태그를 조합해보세요!</div>`;
     return;
   }
 
-  list.forEach(item => {
-    const card = document.createElement('div');
-    card.className = 'dest-card';
-    const bookmarked = isBookmarked(item.id);
-    card.innerHTML = `
+  grid.innerHTML = list.map(item => `
+    <div class="dest-card" onclick="location.href='detail.html?id=${item.id}'">
       <div class="card-thumb-wrap">
-        <img class="card-thumb" src="${item.image}" alt="${item.title}" loading="lazy">
-        <span class="card-badge">${item.region.split(' ')[0]}</span>
-        <button class="card-bookmark-btn ${bookmarked ? 'active' : ''}" data-id="${item.id}">
-          <i class="${bookmarked ? 'fa-solid' : 'fa-regular'} fa-heart"></i>
-        </button>
+        <img class="card-thumb" src="${item.img}" alt="${item.title}">
+        <span class="card-badge">${item.region}</span>
       </div>
       <div class="card-content">
-        <div class="card-loc"><i class="fa-solid fa-location-dot"></i> ${item.region}</div>
+        <div class="card-loc">${item.addr}</div>
         <h3 class="card-title">${item.title}</h3>
         <p class="card-desc">${item.desc}</p>
         <div class="card-tags">
-          ${item.tags.slice(0, 3).map(t => `<span class="card-tag-pill">#${t}</span>`).join('')}
+          ${item.tags.map(t => `<span class="card-tag-pill">${t}</span>`).join('')}
         </div>
       </div>
-    `;
-
-    const bookmarkBtn = card.querySelector('.card-bookmark-btn');
-    bookmarkBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      const added = toggleBookmark(item.id);
-      bookmarkBtn.classList.toggle('active', added);
-      bookmarkBtn.querySelector('i').className = added ? 'fa-solid fa-heart' : 'fa-regular fa-heart';
-    });
-
-    card.addEventListener('click', () => {
-      window.location.href = `detail.html?id=${item.id}`;
-    });
-
-    searchResultsGrid.appendChild(card);
-  });
+    </div>
+  `).join('');
 }
-
-document.getElementById('keywordSearchBtn')?.addEventListener('click', () => {
-  currentKeyword = keywordInput.value.trim();
-  updateFilterSummary();
-  applyFilter();
-});
-
-document.getElementById('clearAllTagsBtn')?.addEventListener('click', () => {
-  selectedTags.clear();
-  currentKeyword = '';
-  if (keywordInput) keywordInput.value = '';
-  renderTagsForCategory();
-  updateFilterSummary();
-  applyFilter();
-});
-
-document.getElementById('resetBtn')?.addEventListener('click', () => {
-  selectedTags.clear();
-  currentKeyword = '';
-  if (keywordInput) keywordInput.value = '';
-  updateFilterSummary();
-  applyFilter();
-});
-
-renderCategoryTabs();
-renderTagsForCategory();
-updateFilterSummary();
-applyFilter();
