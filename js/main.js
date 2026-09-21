@@ -1,81 +1,42 @@
-import { DESTINATIONS } from './data.js';
-import { initCommonUI, toggleBookmark, isBookmarked } from './common.js';
+import { initCommonUI } from './common.js';
+import { INITIAL_DESTINATIONS } from './data.js';
 
-initCommonUI();
+document.addEventListener("DOMContentLoaded", () => {
+  initCommonUI();
 
-const searchForm = document.getElementById('heroSearchForm');
-const searchInput = document.getElementById('heroSearchInput');
-if (searchForm && searchInput) {
-  searchForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const query = searchInput.value.trim();
-    if (query) {
-      window.location.href = `search.html?q=${encodeURIComponent(query)}`;
-    } else {
-      window.location.href = 'search.html';
-    }
-  });
-}
+  const heroForm = document.getElementById("heroSearchForm");
+  const heroInput = document.getElementById("heroSearchInput");
 
-function createCardElement(item) {
-  const card = document.createElement('div');
-  card.className = 'dest-card';
+  if (heroForm && heroInput) {
+    heroForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const val = heroInput.value.trim();
+      if (val) window.location.href = `search.html?keyword=${encodeURIComponent(val)}`;
+    });
+  }
 
-  const bookmarked = isBookmarked(item.id);
-  const priceText = item.stayInfo ? item.stayInfo.priceRange : '입장료 무료';
+  renderCards("eduPicksGrid", INITIAL_DESTINATIONS.filter(d => d.tags.includes("공룡발자국/화석지") || d.tags.includes("위인생가/유적지")));
+  renderCards("popularGrid", INITIAL_DESTINATIONS);
+});
 
-  card.innerHTML = `
-    <div class="card-thumb-wrap">
-      <img class="card-thumb" src="${item.image}" alt="${item.title}" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=800&q=80'">
-      <span class="card-badge">${item.region.split(' ')[0]}</span>
-      <button class="card-bookmark-btn ${bookmarked ? 'active' : ''}" data-id="${item.id}" title="찜하기">
-        <i class="${bookmarked ? 'fa-solid' : 'fa-regular'} fa-heart"></i>
-      </button>
-    </div>
-    <div class="card-content">
-      <div class="card-loc"><i class="fa-solid fa-location-dot"></i> ${item.region}</div>
-      <h3 class="card-title">${item.title}</h3>
-      <p class="card-desc">${item.desc}</p>
-      <div class="card-tags">
-        ${item.petInfo && item.petInfo.allowed ? '<span class="card-tag-pill pet"><i class="fa-solid fa-paw"></i> 펫프렌들리</span>' : ''}
-        ${item.tags.slice(0, 2).map(t => `<span class="card-tag-pill">#${t}</span>`).join('')}
+function renderCards(targetId, list) {
+  const container = document.getElementById(targetId);
+  if (!container) return;
+
+  container.innerHTML = list.map(item => `
+    <div class="dest-card" onclick="location.href='detail.html?id=${item.id}'">
+      <div class="card-thumb-wrap">
+        <img class="card-thumb" src="${item.img}" alt="${item.title}">
+        <span class="card-badge">${item.region}</span>
       </div>
-      <div class="card-footer">
-        <div class="card-score">
-          <i class="fa-solid fa-star"></i>
-          <span>${item.rating}</span>
+      <div class="card-content">
+        <div class="card-loc">${item.addr}</div>
+        <h3 class="card-title">${item.title}</h3>
+        <p class="card-desc">${item.desc}</p>
+        <div class="card-tags">
+          ${item.tags.map(t => `<span class="card-tag-pill">${t}</span>`).join('')}
         </div>
-        <div class="card-price-est">${priceText}</div>
       </div>
     </div>
-  `;
-
-  const bookmarkBtn = card.querySelector('.card-bookmark-btn');
-  bookmarkBtn.addEventListener('click', (e) => {
-    e.stopPropagation();
-    const added = toggleBookmark(item.id);
-    bookmarkBtn.classList.toggle('active', added);
-    const icon = bookmarkBtn.querySelector('i');
-    icon.className = added ? 'fa-solid fa-heart' : 'fa-regular fa-heart';
-  });
-
-  card.addEventListener('click', () => {
-    window.location.href = `detail.html?id=${item.id}`;
-  });
-
-  return card;
-}
-
-const editorGrid = document.getElementById('editorPicksGrid');
-const popularGrid = document.getElementById('popularGrid');
-
-if (editorGrid && popularGrid) {
-  const editorPicks = DESTINATIONS.filter(item => item.isEditorPick);
-  editorPicks.forEach(item => {
-    editorGrid.appendChild(createCardElement(item));
-  });
-
-  DESTINATIONS.forEach(item => {
-    popularGrid.appendChild(createCardElement(item));
-  });
+  `).join('');
 }
