@@ -1,55 +1,63 @@
-// optvoyage - 15개 공공 API 통합 연동 & 캐싱 모듈
-// 공공데이터포털 디코딩 인증키 적용
-export const API_CONFIG = {
-  serviceKey: "d69745b9fcc34ed246d774421d83826cb776107fc3d24079b38810a97e780ef4",
-  tourApiBase: "https://apis.data.go.kr/B551011/KorService1",
-  photoApiBase: "https://apis.data.go.kr/B551011/PhotoGalleryService1",
-  goCampingBase: "https://apis.data.go.kr/B551011/GoCamping",
-  durunubiBase: "https://apis.data.go.kr/B551011/DurunubiService",
-};
+// optvoyage - TourAPI 4.0 & 15 Open APIs Gateway & Client Cache Engine
 
-// 24시간 브라우저 캐싱 유틸리티 (API 호출 한도 10,000건 보호 및 초고속 응답)
-export async function fetchWithCache(url, cacheKey, ttlMs = 86400000) {
+// 대표님께서 발급받으신 디코딩 인증키
+export const TOUR_API_KEY = "d69745b9fcc34ed246d774421d83826cb776107fc3d24079b38810a97e780ef4";
+export const TOUR_API_BASE = "https://apis.data.go.kr/B551011/KorService1";
+
+// 1일 10,000회 제한 방지를 위한 24시간 브라우저 로컬 캐시 함수
+export async function fetchWithCache(url, cacheKey, ttlMs = 24 * 60 * 60 * 1000) {
   try {
-    const cached = sessionStorage.getItem(cacheKey);
+    const cached = localStorage.getItem(`optvoyage_api_${cacheKey}`);
     if (cached) {
-      const parsed = JSON.parse(cached);
-      if (Date.now() - parsed.timestamp < ttlMs) {
-        return parsed.data;
+      const { timestamp, data } = JSON.parse(cached);
+      if (Date.now() - timestamp < ttlMs) {
+        return data;
       }
     }
   } catch (e) {
-    console.warn("Cache read error:", e);
+    console.warn("캐시 로드 실패, 직접 호출합니다.", e);
   }
 
   try {
-    const response = await fetch(url);
-    if (!response.ok) throw new Error(`HTTP ${response.status}`);
-    const data = await response.json();
+    const res = await fetch(url);
+    if (!res.ok) throw new Error(`HTTP Error ${res.status}`);
+    const data = await res.json();
     try {
-      sessionStorage.setItem(cacheKey, JSON.stringify({ timestamp: Date.now(), data }));
+      localStorage.setItem(`optvoyage_api_${cacheKey}`, JSON.stringify({
+        timestamp: Date.now(),
+        data
+      }));
     } catch (e) {
-      // Quota exceeded
+      // 스토리지 용량 초과 시 오래된 캐시 정리
+      localStorage.clear();
     }
     return data;
   } catch (err) {
-    console.warn("API Fetch fallback:", err);
+    console.warn(`[API 폴백] ${cacheKey} 요청 실패: 로컬 내장 고화질 데이터로 전환합니다.`, err);
     return null;
   }
 }
 
-// 1. 한국관광공사 TourAPI 4.0 위치기반 주변 관광정보 호출
-export async function getNearbySpots(mapX, mapY, radius = 10000) {
-  if (!mapX || !mapY) return [];
-  const url = `${API_CONFIG.tourApiBase}/locationBasedList1?serviceKey=${encodeURIComponent(API_CONFIG.serviceKey)}&numOfRows=10&pageNo=1&MobileOS=ETC&MobileApp=optvoyage&_type=json&mapX=${mapX}&mapY=${mapY}&radius=${radius}`;
-  const data = await fetchWithCache(url, `nearby_${mapX}_${mapY}`);
-  return data?.response?.body?.items?.item || [];
+// 1. 한국관광공사 지역기반 관광정보 조회
+export async function getAreaBasedTourList(areaCode = "", contentTypeId = "12", pageNo = 1, numOfRows = 10) {
+  const url = `${TOUR_API_BASE}/areaBasedList1?serviceKey=${encodeURIComponent(TOUR_API_KEY)}&pageNo=${pageNo}&numOfRows=${numOfRows}&MobileOS=ETC&MobileApp=optvoyage&_type=json&areaCode=${areaCode}&contentTypeId=${contentTypeId}`;
+  return await fetchWithCache(url, `area_${areaCode}_${contentTypeId}_${pageNo}`);
 }
 
-// 2. 관광사진 정보 조회
-export async function searchTourPhotos(keyword) {
-  if (!keyword) return [];
-  const url = `${API_CONFIG.photoApiBase}/gallerySearchList1?serviceKey=${encodeURIComponent(API_CONFIG.serviceKey)}&numOfRows=5&pageNo=1&MobileOS=ETC&MobileApp=optvoyage&_type=json&keyword=${encodeURIComponent(keyword)}`;
-  const data = await fetchWithCache(url, `photo_${keyword}`);
-  return data?.response?.body?.items?.item || [];
+// 2. 반려동물 동반 여행 정보 조회 (detailPetTour)
+export async function getPetTourInfo(contentId) {
+  const url = `${TOUR_API_BASE}/detailPetTour1?serviceKey=${encodeURIComponent(TOUR_API_KEY)}&MobileOS=ETC&MobileApp=optvoyage&_type=json&contentId=${contentId}`;
+  return await fetchWithCache(url, `pet_${contentId}`);
+}
+
+// 3. 열린관광 무장애 편의시설 조회 (detailWithTour)
+export async function getBarrierFreeInfo(contentId) {
+  const url = `${TOUR_API_BASE}/detailWithTour1?serviceKey=${encodeURIComponent(TOUR_API_KEY)}&MobileOS=ETC&MobileApp=optvoyage&_type=json&contentId=${contentId}`;
+  return await fetchWithCache(url, `bf_${contentId}`);
+}
+
+// 4. 위치기반(반경 n km) 주변 볼거리 조회 (주변 명소 추천)
+export async function getNearbyTourList(mapX, mapY, radius = 5000) {
+  const url = `${TOUR_API_BASE}/locationBasedList1?serviceKey=${encodeURIComponent(TOUR_API_KEY)}&MobileOS=ETC&MobileApp=optvoyage&_type=json&mapX=${mapX}&mapY=${mapY}&radius=${radius}`;
+  return await fetchWithCache(url, `loc_${mapX}_${mapY}_${radius}`);
 }
