@@ -2,107 +2,90 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>세부 픽 검색 - optvoyage</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>150+ 세부 픽 조합 검색 - optvoyage</title>
   <link rel="stylesheet" href="css/style.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
 </head>
 <body>
 
-  <!-- Search Header -->
   <header class="site-header">
     <div class="header-left">
-      <button class="back-btn" id="backBtn" aria-label="뒤로가기"><i class="fa-solid fa-arrow-left"></i></button>
+      <button class="back-btn" id="backBtn"><i class="fa-solid fa-arrow-left"></i></button>
+    </div>
+    <div class="header-center">
       <a href="index.html" class="logo-wrap">
-        <div class="logo-title" style="font-size: 19px;">세부 픽 검색</div>
+        <span class="logo-title">optvoyage</span>
+        <span class="header-page-title">세부 픽</span>
       </a>
     </div>
     <div class="header-right">
-      <button class="header-icon-btn" id="resetBtn" title="필터 초기화">
-        <i class="fa-solid fa-rotate-left"></i>
-      </button>
-      <button class="header-icon-btn" id="menuBtn" aria-label="메뉴">
-        <i class="fa-solid fa-ellipsis-vertical"></i>
-      </button>
+      <button class="header-icon-btn" id="resetBtn" title="초기화"><i class="fa-solid fa-rotate-left"></i></button>
+      <button class="header-icon-btn" id="menuBtn"><i class="fa-solid fa-bars"></i></button>
+
       <div class="chrome-dropdown" id="dropdownMenu">
         <div class="dropdown-header">optvoyage 메뉴</div>
-        <a href="index.html" class="dropdown-item"><i class="fa-solid fa-house"></i> <span>홈으로 이동</span></a>
-        <a href="community.html" class="dropdown-item"><i class="fa-solid fa-users"></i> <span>여행자 추천 픽</span></a>
-        <a href="random.html" class="dropdown-item"><i class="fa-solid fa-dice"></i> <span>운명의 랜덤 픽</span></a>
-        <a href="search.html?view=bookmarks" class="dropdown-item"><i class="fa-solid fa-heart"></i> <span>보관함</span></a>
-        <a href="https://buymeacoffee.com/djawjdaks8g" target="_blank" rel="noopener noreferrer" class="dropdown-item">
-          <i class="fa-solid fa-mug-hot" style="color: #ffdd00;"></i> <span>개발자 응원하기</span>
-        </a>
-        <a href="privacy.html" class="dropdown-item"><i class="fa-solid fa-shield-halved"></i> <span>프라이버시</span></a>
+        <a href="index.html" class="dropdown-item"><i class="fa-solid fa-house"></i> 홈으로 이동</a>
+        <a href="community.html" class="dropdown-item"><i class="fa-solid fa-users"></i> 여행자 추천 픽</a>
+        <a href="random.html" class="dropdown-item"><i class="fa-solid fa-dice"></i> 운명의 랜덤 픽</a>
+        <a href="search.html?view=bookmarks" class="dropdown-item"><i class="fa-solid fa-heart"></i> 내가 찜한 보관함</a>
       </div>
     </div>
   </header>
 
-  <main class="container" style="padding-top: 20px;">
+  <main class="container" style="padding-top: 16px;">
 
-    <!-- Keyword Search Input -->
-    <div class="main-search-bar" style="margin-bottom: 20px; max-width: 100%;">
-      <input type="text" id="keywordInput" placeholder="지역명, 계곡, 수영장, 가성비 맛집 등 검색...">
-      <button id="keywordSearchBtn">검색</button>
+    <div class="main-search-bar" style="margin-bottom: 16px; display: flex; gap: 8px;">
+      <input type="text" id="keywordInput" placeholder="지역, 계곡, 유적지, 공룡발자국 키워드 입력..." style="flex: 1; padding: 12px; border: 1px solid #cbd5e1; border-radius: 10px;">
+      <button id="keywordSearchBtn" class="btn-large-action" style="width: 80px;">검색</button>
     </div>
 
-    <!-- Category Filter Tabs -->
-    <div style="display: flex; gap: 8px; overflow-x: auto; padding-bottom: 10px; margin-bottom: 16px;" id="categoryTabsBar"></div>
-
-    <!-- Tag Chips for Active Category -->
-    <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: var(--radius-lg); padding: 16px; margin-bottom: 24px;" id="tagChipsBox">
-      <div style="font-size: 13px; font-weight: 700; color: var(--text-muted); margin-bottom: 12px;" id="currentCatTitle">
-        태그를 선택하세요
+    <!-- 픽 조합기 카드 -->
+    <div class="pick-selector-card">
+      <div class="pick-selector-header">
+        <div class="pick-header-title">
+          <i class="fa-solid fa-sliders" style="color: var(--primary-600);"></i>
+          <span>150+ 세부 취향 픽 선택기</span>
+        </div>
+        <span class="pick-helper-text">태그를 조합하면 실시간으로 해당 여행지가 고파집니다</span>
       </div>
-      <div style="display: flex; flex-wrap: wrap; gap: 8px;" id="currentCatTags"></div>
+
+      <div class="category-tabs-bar" id="categoryTabsBar"></div>
+
+      <div class="tag-chips-wrap" id="tagChipsBox">
+        <div class="tag-chips-header" id="currentCatTitle">태그 목록</div>
+        <div class="tag-chips-flex" id="currentCatTags"></div>
+      </div>
     </div>
 
-    <!-- Active Filters Summary -->
-    <div id="activeFilterSummary" style="display: none; background: #e0f2fe; border: 1px solid #bae6fd; border-radius: var(--radius-md); padding: 12px 16px; margin-bottom: 24px; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px;">
-      <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;" id="activeTagsContainer"></div>
-      <button id="clearAllTagsBtn" style="background: none; border: none; font-size: 12px; font-weight: 700; color: #0369a1; cursor: pointer;">
-        전체 해제
-      </button>
+    <!-- 선택된 픽 요약 -->
+    <div id="activeFilterSummary" class="active-filter-summary">
+      <div class="summary-left">
+        <span class="summary-label"><i class="fa-solid fa-check"></i> 내가 고른 픽:</span>
+        <div class="active-tags-container" id="activeTagsContainer"></div>
+      </div>
+      <button id="clearAllTagsBtn" class="clear-all-btn"><i class="fa-solid fa-xmark"></i> 전체 해제</button>
     </div>
 
-    <!-- Result Counter -->
-    <div class="section-header" style="margin-top: 10px;">
-      <h2 class="section-title">
-        <i class="fa-solid fa-map-location-dot" style="color: var(--primary-600);"></i>
-        <span id="searchResultTitle">여행지 검색 결과</span>
-      </h2>
-      <span style="font-size: 13px; color: var(--text-muted);">
-        총 <strong id="resultTotalCount" style="color: var(--primary-600);">0</strong>개
-      </span>
+    <div class="search-result-meta-bar">
+      <div class="result-title-group">
+        <h2 class="search-result-heading" id="searchResultTitle">내가 선택한 픽의 검색 결과</h2>
+        <span class="result-count-badge">총 <strong id="resultTotalCount">0</strong>곳</span>
+      </div>
+      <a href="https://3ha.in/r/725499" target="_blank" class="aff-badge-link"><i class="fa-solid fa-bed"></i> 선택 지역 숙소 특가</a>
     </div>
 
-    <!-- Destination Cards Grid -->
     <div class="cards-grid" id="searchResultsGrid"></div>
 
+    <div style="height: 40px;"></div>
   </main>
 
-  <!-- Bottom Navigation -->
   <nav class="bottom-nav">
-    <a href="index.html" class="bottom-nav-item">
-      <i class="fa-solid fa-house"></i>
-      <span>홈</span>
-    </a>
-    <a href="search.html" class="bottom-nav-item active">
-      <i class="fa-solid fa-magnifying-glass"></i>
-      <span>세부 픽</span>
-    </a>
-    <a href="community.html" class="bottom-nav-item">
-      <i class="fa-solid fa-users"></i>
-      <span>여행자 픽</span>
-    </a>
-    <a href="random.html" class="bottom-nav-item">
-      <i class="fa-solid fa-dice"></i>
-      <span>랜덤 픽</span>
-    </a>
-    <a href="search.html?view=bookmarks" class="bottom-nav-item">
-      <i class="fa-solid fa-heart"></i>
-      <span>보관함</span>
-    </a>
+    <a href="index.html" class="bottom-nav-item"><i class="fa-solid fa-house"></i><span>홈</span></a>
+    <a href="search.html" class="bottom-nav-item active"><i class="fa-solid fa-sliders"></i><span>세부 픽</span></a>
+    <a href="community.html" class="bottom-nav-item"><i class="fa-solid fa-users"></i><span>여행자 픽</span></a>
+    <a href="random.html" class="bottom-nav-item"><i class="fa-solid fa-dice"></i><span>랜덤 픽</span></a>
+    <a href="search.html?view=bookmarks" class="bottom-nav-item"><i class="fa-solid fa-heart"></i><span>보관함</span></a>
   </nav>
 
   <script type="module" src="js/search.js"></script>
