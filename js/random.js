@@ -1,34 +1,35 @@
-import { DESTINATIONS } from './data.js';
 import { initCommonUI } from './common.js';
+import { INITIAL_DESTINATIONS } from './data.js';
 
-initCommonUI();
+document.addEventListener("DOMContentLoaded", () => {
+  initCommonUI();
 
-const diceBtn = document.getElementById('diceBtn');
-const diceStatus = document.getElementById('diceStatus');
-const resultCard = document.getElementById('randomResultCard');
-const rerollBtn = document.getElementById('rerollBtn');
+  const diceBtn = document.getElementById("diceBtn");
+  const diceStatus = document.getElementById("diceStatus");
+  const resultCard = document.getElementById("randomResultCard");
+  const rerollBtn = document.getElementById("rerollBtn");
 
-function rollDice() {
-  if (!diceBtn) return;
-  diceBtn.classList.add('rolling');
-  diceStatus.textContent = '운명의 여행지를 뽑는 중...';
-  if (resultCard) resultCard.style.display = 'none';
+  function rollDice() {
+    diceBtn.classList.add("rolling");
+    diceStatus.innerText = "운명의 여행지를 고르는 중...";
+    resultCard.style.display = "none";
 
-  setTimeout(() => {
-    diceBtn.classList.remove('rolling');
-    const randomIndex = Math.floor(Math.random() * DESTINATIONS.length);
-    const item = DESTINATIONS[randomIndex];
+    setTimeout(() => {
+      diceBtn.classList.remove("rolling");
+      const randomItem = INITIAL_DESTINATIONS[Math.floor(Math.random() * INITIAL_DESTINATIONS.length)];
 
-    document.getElementById('resultImg').src = item.image;
-    document.getElementById('resultRegion').textContent = item.region;
-    document.getElementById('resultTitle').textContent = item.title;
-    document.getElementById('resultDesc').textContent = item.desc;
-    document.getElementById('resultDetailLink').href = `detail.html?id=${item.id}`;
+      document.getElementById("resultImg").src = randomItem.img;
+      document.getElementById("resultTitle").innerText = randomItem.title;
+      document.getElementById("resultRegion").innerText = randomItem.region;
+      document.getElementById("resultDesc").innerText = randomItem.desc;
+      document.getElementById("resultDetailLink").href = `detail.html?id=${randomItem.id}`;
 
-    if (resultCard) resultCard.style.display = 'block';
-    diceStatus.textContent = '🎉 당신을 위한 운명의 여행지 확정!';
-  }, 1000);
-}
+      diceStatus.innerText = "당신만을 위한 추천 명소!";
+      resultCard.style.display = "block";
+      rerollBtn.style.display = "block";
+    }, 800);
+  }
 
-diceBtn?.addEventListener('click', rollDice);
-rerollBtn?.addEventListener('click', rollDice);
+  diceBtn?.addEventListener("click", rollDice);
+  rerollBtn?.addEventListener("click", rollDice);
+});
