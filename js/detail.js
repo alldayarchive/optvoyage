@@ -8,13 +8,7 @@ const destId = params.get('id');
 
 const item = DESTINATIONS.find(d => d.id === destId) || DESTINATIONS[0];
 
-if (!item) {
-  alert('존재하지 않는 여행지입니다.');
-  window.location.href = 'index.html';
-}
-
 document.title = `${item.title} - optvoyage`;
-document.getElementById('headerDetailTitle').textContent = item.title;
 document.getElementById('detailImg').src = item.image;
 document.getElementById('detailCategoryBadge').textContent = item.category.split('/')[0];
 document.getElementById('detailTitle').textContent = item.title;
@@ -25,7 +19,23 @@ document.getElementById('detailDesc').textContent = item.desc;
 document.getElementById('detailAddress').textContent = item.address;
 document.getElementById('detailTel').textContent = item.tel;
 
-// Gourmet Food
+// 학습 코너 정보가 있을 경우 활성화
+if (item.eduInfo && item.eduInfo.isEdu) {
+  const eduBadge = document.getElementById('detailEduBadge');
+  const eduBlock = document.getElementById('eduSectionBlock');
+  const eduContent = document.getElementById('eduBoxContent');
+  
+  eduBadge.style.display = 'inline-block';
+  eduBadge.innerHTML = `<i class="fa-solid fa-graduation-cap"></i> ${item.eduInfo.badge}`;
+  eduBlock.style.display = 'block';
+
+  eduContent.innerHTML = `
+    <div style="margin-bottom: 8px;"><strong>📖 역사·과학 스토리:</strong> ${item.eduInfo.story}</div>
+    <div><strong>💡 관람 꿀팁:</strong> ${item.eduInfo.tip}</div>
+  `;
+}
+
+// 맛집
 if (item.gourmetInfo) {
   document.getElementById('foodName').textContent = item.gourmetInfo.recommended;
   document.getElementById('foodMenu').textContent = item.gourmetInfo.specialty;
@@ -34,25 +44,17 @@ if (item.gourmetInfo) {
   document.getElementById('foodSection').style.display = 'none';
 }
 
-// Stay Info
-if (item.stayInfo) {
-  document.getElementById('stayPriceRange').textContent = item.stayInfo.priceRange;
-  document.getElementById('stayType').textContent = item.stayInfo.type;
-} else {
-  document.getElementById('staySection').style.display = 'none';
-}
-
-// Pet Info
+// 반려동물
 const petBox = document.getElementById('petBox');
 if (item.petInfo) {
   petBox.innerHTML = `
-    <div style="margin-bottom: 4px;"><strong>동반 가능 여부:</strong> ${item.petInfo.allowed ? '✅ 동반 가능' : '❌ 일반 출입 제한 (시각장애인 안내견 제외)'}</div>
-    <div style="margin-bottom: 4px;"><strong>허용 견종/크기:</strong> ${item.petInfo.size}</div>
+    <div style="margin-bottom: 4px;"><strong>동반 가능:</strong> ${item.petInfo.allowed ? '✅ 동반 가능' : '❌ 일반 출입 제한 (안내견 제외)'}</div>
+    <div style="margin-bottom: 4px;"><strong>허용 크기:</strong> ${item.petInfo.size}</div>
     <div><strong>이용 수칙:</strong> ${item.petInfo.rules}</div>
   `;
 }
 
-// Barrier Free
+// 무장애
 const bfBox = document.getElementById('bfBox');
 if (item.barrierFree) {
   bfBox.innerHTML = `
@@ -65,7 +67,7 @@ if (item.barrierFree) {
   `;
 }
 
-// Tags
+// 연관 태그
 const tagsGrid = document.getElementById('detailTagsGrid');
 item.tags.forEach(tag => {
   const chip = document.createElement('a');
@@ -75,11 +77,11 @@ item.tags.forEach(tag => {
   tagsGrid.appendChild(chip);
 });
 
-// Map Link
+// 카카오맵 길찾기
 const kakaoMapUrl = `https://map.kakao.com/link/search/${encodeURIComponent(item.title + ' ' + item.address)}`;
 document.getElementById('kakaoMapLink').href = kakaoMapUrl;
 
-// Bookmark
+// 찜하기 버튼
 const bottomBookmarkBtn = document.getElementById('bottomBookmarkBtn');
 function updateBookmarkUI() {
   const bookmarked = isBookmarked(item.id);
@@ -93,13 +95,13 @@ bottomBookmarkBtn.addEventListener('click', () => {
   updateBookmarkUI();
 });
 
-// Share
+// 링크 복사 공유
 function shareCurrentUrl() {
   const url = window.location.href;
   if (navigator.clipboard) {
     navigator.clipboard.writeText(`${item.title} - optvoyage에서 확인해보세요! ${url}`)
-      .then(() => showToast('✨ 상세 링크가 클립보드에 복사되었습니다!'))
-      .catch(() => showToast('링크가 준비되었습니다.'));
+      .then(() => showToast('✨ 상세 링크가 복사되었습니다!'))
+      .catch(() => showToast('공유 링크가 준비되었습니다.'));
   }
 }
 document.getElementById('bottomShareBtn').addEventListener('click', shareCurrentUrl);
