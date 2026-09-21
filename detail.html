@@ -2,10 +2,10 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>여행지 상세 정보 - optvoyage</title>
   <link rel="stylesheet" href="css/style.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
 </head>
 <body>
 
@@ -13,52 +13,70 @@
   <header class="site-header">
     <div class="header-left">
       <button class="back-btn" id="backBtn" aria-label="뒤로가기"><i class="fa-solid fa-arrow-left"></i></button>
+    </div>
+    <div class="header-center">
       <a href="index.html" class="logo-wrap">
-        <div class="logo-title" style="font-size: 19px;" id="headerDetailTitle">상세 정보</div>
+        <span class="logo-title">optvoyage</span>
       </a>
     </div>
     <div class="header-right">
       <button class="header-icon-btn" id="detailShareTopBtn" title="공유하기"><i class="fa-solid fa-share-nodes"></i></button>
       <button class="header-icon-btn" id="menuBtn" aria-label="메뉴"><i class="fa-solid fa-ellipsis-vertical"></i></button>
+      
       <div class="chrome-dropdown" id="dropdownMenu">
         <div class="dropdown-header">optvoyage 메뉴</div>
         <a href="index.html" class="dropdown-item"><i class="fa-solid fa-house"></i> <span>홈으로 이동</span></a>
         <a href="search.html" class="dropdown-item"><i class="fa-solid fa-sliders"></i> <span>세부 픽 검색</span></a>
         <a href="community.html" class="dropdown-item"><i class="fa-solid fa-users"></i> <span>여행자 추천 픽</span></a>
         <a href="random.html" class="dropdown-item"><i class="fa-solid fa-dice"></i> <span>운명의 랜덤 픽</span></a>
+        <div class="dropdown-divider"></div>
+        <a href="https://buymeacoffee.com/djawjdaks8g" target="_blank" class="dropdown-item highlight-item">
+          <i class="fa-solid fa-mug-saucer" style="color: #f59e0b;"></i> <span>개발자 커피 후원</span>
+        </a>
+        <a href="support.html" class="dropdown-item"><i class="fa-solid fa-circle-info"></i> <span>고객지원</span></a>
         <a href="privacy.html" class="dropdown-item"><i class="fa-solid fa-shield-halved"></i> <span>프라이버시</span></a>
       </div>
     </div>
   </header>
 
-  <!-- Large Image Hero Banner -->
+  <!-- Large Hero Image -->
   <div class="detail-hero-banner">
-    <img id="detailImg" class="detail-hero-img" src="" alt="여행지 대표 사진">
+    <img id="detailImg" class="detail-hero-img" src="" alt="여행지 사진">
+    <div class="detail-img-gradient"></div>
   </div>
 
   <!-- Detail Content Container -->
   <main class="detail-body-container" id="detailContainer">
 
     <div class="detail-main-header">
-      <span class="card-tag-pill" id="detailCategoryBadge" style="margin-bottom: 8px; display: inline-block;">관광지</span>
+      <div class="detail-badge-group">
+        <span class="card-tag-pill" id="detailCategoryBadge">관광지</span>
+        <span class="card-tag-pill edu-pill" id="detailEduBadge" style="display: none;"><i class="fa-solid fa-graduation-cap"></i> 역사·학습 탐방지</span>
+      </div>
       <h1 class="detail-title" id="detailTitle">여행지명 로딩 중...</h1>
       <div class="detail-meta-row">
-        <span style="color: #d97706; font-weight: 700; display: flex; align-items: center; gap: 4px;">
-          <i class="fa-solid fa-star"></i> <span id="detailRating">4.9</span> (<span id="detailReviewCount">0</span>)
-        </span>
-        <span><i class="fa-solid fa-location-dot"></i> <span id="detailRegion">지역</span></span>
+        <span class="meta-rating"><i class="fa-solid fa-star"></i> <span id="detailRating">4.9</span> (<span id="detailReviewCount">0</span>)</span>
+        <span class="meta-region"><i class="fa-solid fa-location-dot"></i> <span id="detailRegion">지역</span></span>
       </div>
     </div>
 
-    <!-- Description Block -->
+    <!-- 소개글 -->
     <div class="detail-section-block">
-      <h3 class="detail-block-title"><i class="fa-solid fa-align-left" style="color: var(--primary-600);"></i> 소개</h3>
-      <p id="detailDesc" style="font-size: 15px; line-height: 1.7; color: var(--text-main);"></p>
+      <h3 class="detail-block-title"><i class="fa-solid fa-align-left" style="color: var(--primary-600);"></i> 소개 및 여행 포인트</h3>
+      <p id="detailDesc" class="detail-desc-text"></p>
     </div>
 
-    <!-- Basic Info -->
+    <!-- 학습 코너 특별 정보 (공룡 발자국, 인물 생가, 유적지 스토리) -->
+    <div class="detail-section-block" id="eduSectionBlock" style="display: none;">
+      <h3 class="detail-block-title" style="color: #059669;">
+        <i class="fa-solid fa-graduation-cap"></i> 💡 학습 & 역사 탐방 가이드
+      </h3>
+      <div class="box-highlight box-edu" id="eduBoxContent"></div>
+    </div>
+
+    <!-- 위치 및 연락처 -->
     <div class="detail-section-block">
-      <h3 class="detail-block-title"><i class="fa-solid fa-circle-info" style="color: var(--primary-600);"></i> 이용 안내</h3>
+      <h3 class="detail-block-title"><i class="fa-solid fa-circle-info" style="color: var(--primary-600);"></i> 위치 및 이용 정보</h3>
       <div class="detail-info-row">
         <strong>도로명 주소</strong>
         <span id="detailAddress">-</span>
@@ -69,7 +87,38 @@
       </div>
     </div>
 
-    <!-- Gourmet Food Info -->
+    <!-- 어필리에이트 제휴 특가 박스 (세시간전 링크 7종 자연스러운 결합) -->
+    <div class="detail-section-block affiliate-detail-box">
+      <h3 class="detail-block-title"><i class="fa-solid fa-gift" style="color: #ea580c;"></i> 이 명소 연계 추천 혜택</h3>
+      <div class="aff-deal-list">
+        <a href="https://3ha.in/r/725499" target="_blank" rel="noopener noreferrer" class="aff-deal-item">
+          <div class="deal-icon" style="background: #e0f2fe; color: #0284c7;"><i class="fa-solid fa-bed"></i></div>
+          <div class="deal-info">
+            <strong>주변 인기 숙소 실시간 최저가 예약</strong>
+            <span>호텔, 리조트, 감성 펜션 즉시 예약</span>
+          </div>
+          <span class="deal-btn">최저가 보기 &gt;</span>
+        </a>
+        <a href="https://3ha.in/r/725525" target="_blank" rel="noopener noreferrer" class="aff-deal-item">
+          <div class="deal-icon" style="background: #fef3c7; color: #d97706;"><i class="fa-solid fa-ticket"></i></div>
+          <div class="deal-info">
+            <strong>주변 액티비티 & 테마파크 할인권</strong>
+            <span>체험 패스 및 레저 시설 단독 할인</span>
+          </div>
+          <span class="deal-btn">할인받기 &gt;</span>
+        </a>
+        <a href="https://3ha.in/r/725527" target="_blank" rel="noopener noreferrer" class="aff-deal-item">
+          <div class="deal-icon" style="background: #ecfdf5; color: #059669;"><i class="fa-solid fa-car"></i></div>
+          <div class="deal-info">
+            <strong>실시간 최저가 렌터카 가격 비교</strong>
+            <span>자차 없이 편리한 당일/주말 렌트</span>
+          </div>
+          <span class="deal-btn">비교하기 &gt;</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- 미식 맛집 가이드 -->
     <div class="detail-section-block" id="foodSection">
       <h3 class="detail-block-title"><i class="fa-solid fa-utensils" style="color: #ea580c;"></i> 주변 대표 찐맛집 & 미식 가이드</h3>
       <div class="box-highlight box-food">
@@ -79,40 +128,26 @@
       </div>
     </div>
 
-    <!-- Stay Price Info -->
-    <div class="detail-section-block" id="staySection">
-      <h3 class="detail-block-title"><i class="fa-solid fa-bed" style="color: #16a34a;"></i> 숙소 가격 및 유형 안내</h3>
-      <div class="detail-info-row">
-        <strong>예상 가격대</strong>
-        <span id="stayPriceRange">-</span>
-      </div>
-      <div class="detail-info-row">
-        <strong>숙소 유형</strong>
-        <span id="stayType">-</span>
-      </div>
-    </div>
-
-    <!-- Pet Rules Box (TourAPI detailPetTour) -->
+    <!-- 반려동물 및 무장애 안내 -->
     <div class="detail-section-block">
       <h3 class="detail-block-title"><i class="fa-solid fa-paw" style="color: #ca8a04;"></i> 반려동물 동반 안내 (TourAPI 4.0)</h3>
       <div class="box-highlight box-pet" id="petBox"></div>
     </div>
 
-    <!-- Barrier Free Box (TourAPI detailWithTour) -->
     <div class="detail-section-block">
-      <h3 class="detail-block-title"><i class="fa-solid fa-wheelchair" style="color: #4f46e5;"></i> 열린관광 무장애 편의시설 (TourAPI 4.0)</h3>
+      <h3 class="detail-block-title"><i class="fa-solid fa-wheelchair" style="color: #4f46e5;"></i> 열린관광 무장애 편의시설</h3>
       <div class="box-highlight box-bf" id="bfBox"></div>
     </div>
 
-    <!-- Tags Cloud -->
+    <!-- 태그 클라우드 -->
     <div class="detail-section-block" style="border-bottom: none;">
-      <h3 class="detail-block-title"><i class="fa-solid fa-tags" style="color: var(--primary-600);"></i> 연관 세부 픽 태그</h3>
-      <div style="display: flex; flex-wrap: wrap; gap: 8px;" id="detailTagsGrid"></div>
+      <h3 class="detail-block-title"><i class="fa-solid fa-tags" style="color: var(--primary-600);"></i> 연관 세부 픽 키워드</h3>
+      <div class="detail-tags-cloud" id="detailTagsGrid"></div>
     </div>
 
   </main>
 
-  <!-- Yanolja Style Bottom Fixed Action Bar -->
+  <!-- 하단 고정 액션 바 -->
   <div class="detail-bottom-bar">
     <div class="detail-bottom-inner">
       <button class="btn-icon-square" id="bottomBookmarkBtn" title="찜하기">
@@ -121,8 +156,11 @@
       <button class="btn-icon-square" id="bottomShareBtn" title="공유하기">
         <i class="fa-solid fa-share-nodes"></i>
       </button>
+      <a href="https://3ha.in/r/725499" target="_blank" rel="noopener noreferrer" class="btn-large-affiliate">
+        <i class="fa-solid fa-bed"></i> 주변 숙소 특가
+      </a>
       <a href="#" id="kakaoMapLink" target="_blank" rel="noopener noreferrer" class="btn-large-action">
-        <i class="fa-solid fa-route"></i> 카카오맵 길찾기
+        <i class="fa-solid fa-route"></i> 길찾기
       </a>
     </div>
   </div>
