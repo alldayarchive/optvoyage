@@ -3,26 +3,24 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>optvoyage - 100+ 세부 취향과 배움으로 고르는 나만의 맞춤 여행</title>
-  <meta name="description" content="전국 관광지, 공룡발자국, 위인생가, 고대유적지 학습여행부터 감성 숙소, 계곡, 반려견 동반까지 100가지 세부 취향으로 픽하는 0원 맞춤 여행 플랫폼 optvoyage">
+  <title>optvoyage - 150+ 세부 취향으로 고르는 나만의 맞춤 여행</title>
+  <meta name="description" content="한국관광공사 TourAPI 공공데이터 기반 150가지 세부 픽 맞춤 여행. 공룡발자국, 위인생가, 청정계곡, 반려견 동반, 기념일 감성숙소까지 0원 무료 플랫폼.">
   <meta property="og:title" content="optvoyage - 나만의 맞춤 여행 큐레이션">
-  <meta property="og:description" content="수백 가지 세부 조건과 역사·생가 학습 코너로 완성하는 스마트 국내여행">
-  <meta property="og:image" content="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80">
+  <meta property="og:description" content="구글처럼 심플하게, 야놀자처럼 직관적으로 150+ 세부 취향을 픽하세요!">
+  <meta property="og:type" content="website">
   <link rel="stylesheet" href="css/style.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" referrerpolicy="no-referrer" />
 </head>
 <body>
 
-  <!-- Site Header (상단 중앙 로고) -->
+  <!-- 상단 중앙 로고 헤더 -->
   <header class="site-header">
     <div class="header-left">
-      <a href="search.html?cat=edu" class="header-sub-link" title="학습 탐방 코너">
-        <i class="fa-solid fa-graduation-cap"></i>
-        <span class="sub-link-txt">학습코너</span>
+      <a href="search.html" class="header-sub-link" title="전국 지도 및 탐색">
+        <i class="fa-solid fa-map-location-dot"></i>
       </a>
     </div>
 
-    <!-- 로고 중앙 배치 -->
     <div class="header-center">
       <a href="index.html" class="logo-wrap">
         <span class="logo-icon"><i class="fa-solid fa-compass"></i></span>
@@ -31,28 +29,28 @@
     </div>
 
     <div class="header-right">
-      <!-- 바이미어커피 후원 뱃지 -->
-      <a href="https://buymeacoffee.com/djawjdaks8g" target="_blank" rel="noopener noreferrer" class="coffee-sponsor-btn" title="optvoyage 개발자에게 커피 한잔 후원하기">
+      <!-- 바이미어커피 후원 버튼 -->
+      <a href="https://buymeacoffee.com/djawjdaks8g" target="_blank" rel="noopener noreferrer" class="coffee-sponsor-btn" title="optvoyage 커피 한 잔 후원하기">
         <i class="fa-solid fa-mug-hot"></i>
-        <span class="sponsor-text">후원</span>
+        <span class="sponsor-text">커피 후원</span>
       </a>
 
-      <!-- 3도트 햄버거 메뉴 버튼 -->
       <button class="header-icon-btn" id="menuBtn" aria-label="메뉴 열기">
-        <i class="fa-solid fa-ellipsis-vertical"></i>
+        <i class="fa-solid fa-bars"></i>
       </button>
 
+      <!-- 우측 상단 드롭다운 메뉴 -->
       <div class="chrome-dropdown" id="dropdownMenu">
-        <div class="dropdown-header">optvoyage 서비스 안내</div>
+        <div class="dropdown-header">optvoyage 메뉴</div>
         <a href="search.html" class="dropdown-item">
           <i class="fa-solid fa-sliders" style="color: var(--primary-600);"></i>
-          <span>100+ 세부 픽 맞춤 검색</span>
-          <span class="badge">150+</span>
+          <span>150+ 세부 픽 검색</span>
+          <span class="badge">HOT</span>
         </a>
         <a href="search.html?cat=edu" class="dropdown-item">
           <i class="fa-solid fa-graduation-cap" style="color: #059669;"></i>
-          <span>공룡발자국·생가 학습코너</span>
-          <span class="badge" style="background:#ecfdf5; color:#059669;">HOT</span>
+          <span>생가·유적·공룡 학습코너</span>
+          <span class="badge-new">NEW</span>
         </a>
         <a href="community.html" class="dropdown-item">
           <i class="fa-solid fa-users" style="color: #d97706;"></i>
@@ -71,30 +69,30 @@
           <i class="fa-solid fa-mug-saucer" style="color: #f59e0b;"></i>
           <span>☕ 개발자 커피 후원하기</span>
         </a>
-        <a href="support.html" class="dropdown-item">
-          <i class="fa-solid fa-circle-info" style="color: #64748b;"></i>
-          <span>고객지원 및 공공 API 안내</span>
+        <a href="mailto:offthemain@proton.me" class="dropdown-item">
+          <i class="fa-solid fa-envelope" style="color: #64748b;"></i>
+          <span>제휴/문의 (offthemain@proton.me)</span>
         </a>
         <a href="privacy.html" class="dropdown-item">
           <i class="fa-solid fa-shield-halved" style="color: #64748b;"></i>
-          <span>개인정보처리방침</span>
+          <span>개인정보처리방침 & API 출처</span>
         </a>
         <a href="terms.html" class="dropdown-item">
           <i class="fa-solid fa-file-contract" style="color: #64748b;"></i>
-          <span>이용약관 & 제휴안내</span>
+          <span>이용약관</span>
         </a>
       </div>
     </div>
   </header>
 
-  <!-- 구글 스타일 클린 미니멀 히어로 섹션 -->
+  <!-- 구글 감성의 미니멀 히어로 섹션 -->
   <section class="google-hero-section">
     <div class="google-hero-container">
       <div class="hero-brand-symbol">
         <i class="fa-solid fa-paper-plane"></i>
       </div>
       <h1 class="google-hero-heading">어디로 떠나고 싶으신가요?</h1>
-      <p class="google-hero-desc">100가지 세부 취향, 역사 학습 탐방, 계절과 분위기로 완성하는 0원 맞춤 여행</p>
+      <p class="google-hero-desc">150가지 취향 조합, 역사·생가·공룡 학습, 분위기와 계절로 찾는 맞춤 여행</p>
 
       <!-- 중앙 대형 검색창 -->
       <form class="google-search-box" id="heroSearchForm">
@@ -103,16 +101,17 @@
         <button type="submit" class="search-submit-btn" aria-label="검색"><i class="fa-solid fa-arrow-right"></i></button>
       </form>
 
+      <!-- 빠른 액션 버튼 -->
       <div class="google-hero-actions">
         <a href="search.html" class="hero-action-btn primary-action">
-          <i class="fa-solid fa-sliders"></i> 100+ 세부 취향 픽하기
+          <i class="fa-solid fa-sliders"></i> 150+ 세부 취향 픽하기
         </a>
         <a href="random.html" class="hero-action-btn secondary-action">
           <i class="fa-solid fa-dice"></i> 🎲 운명의 랜덤 픽
         </a>
       </div>
 
-      <!-- 추천 핫 칩 -->
+      <!-- 추천 핫태그 -->
       <div class="quick-tag-chips">
         <span class="tag-chip-label">추천 픽:</span>
         <a href="search.html?tag=공룡발자국/화석지" class="quick-chip"><i class="fa-solid fa-bone"></i> 공룡발자국</a>
@@ -124,16 +123,16 @@
     </div>
   </section>
 
-  <!-- 메인 본문 컨테이너 -->
+  <!-- 메인 컨텐츠 영역 -->
   <main class="container">
     
-    <!-- 야놀자 스타일 퀵 카테고리 그리드 -->
+    <!-- 야놀자 스타일 퀵 카테고리 -->
     <div class="category-icons-grid">
       <a href="search.html" class="category-icon-item">
         <div class="category-icon-circle" style="background: #e0f2fe; color: #0284c7;">
           <i class="fa-solid fa-sliders"></i>
         </div>
-        <span>100+ 세부픽</span>
+        <span>150+ 세부픽</span>
       </a>
       <a href="search.html?cat=edu" class="category-icon-item">
         <div class="category-icon-circle" style="background: #ecfdf5; color: #059669;">
@@ -167,45 +166,45 @@
       </a>
     </div>
 
-    <!-- 세시간전(3ha) 어필리에이트 스마트 혜택 배너 (자연스러운 융합) -->
+    <!-- 세시간전(3ha) 어필리에이트 스마트 특가 배너 -->
     <section class="affiliate-smart-banner">
       <div class="aff-banner-content">
-        <div class="aff-tag"><i class="fa-solid fa-tag"></i> optvoyage 여행자 전용 제휴 특가</div>
-        <h3 class="aff-title">선택하신 명소 주변 최저가 숙소 & 액티비티를 만나보세요</h3>
-        <p class="aff-desc">전국 호텔, 펜션, 리조트 실시간 할인부터 인기 레저 체험권까지 스마트하게 예약하세요.</p>
+        <div class="aff-tag"><i class="fa-solid fa-tag"></i> optvoyage 제휴 특가 혜택</div>
+        <h3 class="aff-title">선택한 여행지 주변 숙소 & 액티비티를 최저가로 즐기세요</h3>
+        <p class="aff-desc">전국 감성 호텔·펜션부터 렌터카, 인기 테마파크 할인권까지 실시간 확인</p>
       </div>
       <div class="aff-banner-actions">
         <a href="https://3ha.in/r/725499" target="_blank" rel="noopener noreferrer" class="aff-btn aff-btn-primary">
           <i class="fa-solid fa-bed"></i> 전국 숙소 실시간 최저가
         </a>
         <a href="https://3ha.in/r/725525" target="_blank" rel="noopener noreferrer" class="aff-btn aff-btn-secondary">
-          <i class="fa-solid fa-ticket"></i> 액티비티 & 입장권 할인
+          <i class="fa-solid fa-ticket"></i> 인기 액티비티 할인권
         </a>
       </div>
     </section>
 
-    <!-- 섹션 1: 학습 코너 (위인 생가, 유적지, 공룡 발자국 등) -->
+    <!-- Section 1: 학습 코너 (생가 / 유적 / 공룡발자국) -->
     <div class="section-header" style="margin-top: 36px;">
       <h2 class="section-title">
         <i class="fa-solid fa-landmark-flag" style="color: #059669;"></i>
-        <span>배움이 가득한 학습 코너 (생가·유적·화석)</span>
+        <span>배움이 있는 학습 코너 (위인생가·유적·공룡발자국)</span>
       </h2>
       <a href="search.html?cat=edu" class="section-link">전체보기 &gt;</a>
     </div>
     <div class="cards-grid" id="eduPicksGrid"></div>
 
-    <!-- 섹션 2: 에디터 추천 픽 -->
-    <div class="section-header" style="margin-top: 40px;">
+    <!-- Section 2: Editor's Picks -->
+    <div class="section-header" style="margin-top: 36px;">
       <h2 class="section-title">
         <i class="fa-solid fa-star" style="color: #f59e0b;"></i>
-        <span>결정장애를 위한 에디터 추천 픽</span>
+        <span>에디터 추천 픽 여행지</span>
       </h2>
       <a href="search.html?view=editor" class="section-link">더보기 &gt;</a>
     </div>
     <div class="cards-grid" id="editorPicksGrid"></div>
 
-    <!-- 섹션 3: 실시간 인기 여행지 -->
-    <div class="section-header" style="margin-top: 40px;">
+    <!-- Section 3: Popular Destinations -->
+    <div class="section-header" style="margin-top: 36px;">
       <h2 class="section-title">
         <i class="fa-solid fa-fire" style="color: #ef4444;"></i>
         <span>지금 인기 있는 맞춤 여행지</span>
@@ -214,45 +213,45 @@
     </div>
     <div class="cards-grid" id="popularGrid"></div>
 
-    <!-- 추가 어필리에이트 제휴 카드 그리드 (렌터카 / 글램핑 / 패키지 / KTX) -->
+    <!-- 추가 어필리에이트 제휴 카드 모음 -->
     <section class="affiliate-grid-section">
       <div class="aff-card">
         <i class="fa-solid fa-car"></i>
         <div class="aff-info">
           <h4>전국 렌터카 실시간 비교</h4>
-          <p>자차 없이 떠나는 여행, 내륙/제주 최저가 검색</p>
+          <p>내륙 및 제주 전 차종 최저가 예약</p>
         </div>
-        <a href="https://3ha.in/r/725527" target="_blank" rel="noopener noreferrer" class="aff-card-link">비교하기 &gt;</a>
+        <a href="https://3ha.in/r/725527" target="_blank" rel="noopener noreferrer" class="aff-card-link">조회 &gt;</a>
       </div>
       <div class="aff-card">
         <i class="fa-solid fa-campground"></i>
         <div class="aff-info">
-          <h4>감성 글램핑 & 캠핑장 특가</h4>
-          <p>불멍과 별빛 힐링, 고캠핑 연계 인기 스팟</p>
+          <h4>감성 글램핑 & 캠핑 특가</h4>
+          <p>불멍과 별빛 힐링, 고캠핑 연계 명소</p>
         </div>
         <a href="https://3ha.in/r/725529" target="_blank" rel="noopener noreferrer" class="aff-card-link">둘러보기 &gt;</a>
       </div>
       <div class="aff-card">
-        <i class="fa-solid fa-map"></i>
+        <i class="fa-solid fa-map-location-dot"></i>
         <div class="aff-info">
           <h4>지역 대표 힐링 투어 패키지</h4>
-          <p>부모님 효도, 연인과 함께하는 알짜배기 코스</p>
+          <p>가족·연인과 가기 좋은 엄선 코스</p>
         </div>
-        <a href="https://3ha.in/r/725530" target="_blank" rel="noopener noreferrer" class="aff-card-link">특가보기 &gt;</a>
+        <a href="https://3ha.in/r/725530" target="_blank" rel="noopener noreferrer" class="aff-card-link">특가 &gt;</a>
       </div>
       <div class="aff-card">
         <i class="fa-solid fa-train"></i>
         <div class="aff-info">
           <h4>KTX 기차 + 숙박 결합 할인</h4>
-          <p>교통비와 호텔을 한 번에 최대 할인 혜택</p>
+          <p>교통비와 숙소를 결합해 더 알뜰하게</p>
         </div>
-        <a href="https://3ha.in/r/725534" target="_blank" rel="noopener noreferrer" class="aff-card-link">혜택받기 &gt;</a>
+        <a href="https://3ha.in/r/725534" target="_blank" rel="noopener noreferrer" class="aff-card-link">혜택 &gt;</a>
       </div>
     </section>
 
   </main>
 
-  <!-- 모바일 하단 고정 내비게이션 바 -->
+  <!-- 모바일 하단 내비게이션 -->
   <nav class="bottom-nav">
     <a href="index.html" class="bottom-nav-item active">
       <i class="fa-solid fa-house"></i>
@@ -276,27 +275,23 @@
     </a>
   </nav>
 
-  <!-- 푸터 (공공누리 1유형 정식 표기 & 어필리에이트 수수료 고지) -->
+  <!-- 푸터 -->
   <footer class="site-footer">
     <div class="container">
       <div class="footer-top">
         <div class="footer-logo">optvoyage</div>
         <div class="footer-links">
-          <a href="https://buymeacoffee.com/djawjdaks8g" target="_blank" rel="noopener noreferrer" style="color: #f59e0b; font-weight: 700;">☕ 바이미어커피 후원</a>
+          <a href="https://buymeacoffee.com/djawjdaks8g" target="_blank" rel="noopener noreferrer" style="color: #f59e0b; font-weight: 700;">☕ 커피 한 잔 후원</a>
           <a href="mailto:offthemain@proton.me">제휴문의 (offthemain@proton.me)</a>
-          <a href="support.html">고객지원 & API 출처</a>
           <a href="privacy.html">개인정보처리방침</a>
           <a href="terms.html">이용약관</a>
+          <a href="https://www.culture.go.kr" target="_blank" rel="noopener noreferrer">한국문화정보원</a>
         </div>
       </div>
-      <p class="footer-desc">
-        본 사이트는 한국관광공사 TourAPI 4.0 및 한국문화정보원 공공누리 제1유형 공공데이터를 기반으로 제작되었습니다.<br>
-        일부 링크는 제휴 마케팅 링크로 연결되며, 이용자에게 발생하는 추가 비용 없이 소정의 수수료를 제공받아 무료 서비스를 유지하는 데 사용됩니다.
-      </p>
+      <p class="footer-desc">본 서비스는 한국관광공사 TourAPI 4.0 및 한국문화정보원 공공데이터를 기반으로 운영되며, 제휴 마케팅 링크를 통해 일정액의 수수료를 제공받을 수 있으나 이용자의 추가 비용은 전혀 발생하지 않습니다.</p>
       <p class="footer-copy">© 2025 optvoyage. All rights reserved. 대한민국 전국 맞춤 여행 플랫폼</p>
     </div>
   </footer>
 
   <script type="module" src="js/main.js"></script>
 </body>
-</html>
