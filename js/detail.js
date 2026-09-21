@@ -3,107 +3,109 @@ import { initCommonUI, toggleBookmark, isBookmarked, showToast } from './common.
 
 initCommonUI();
 
-const params = new URLSearchParams(window.location.search);
-const destId = params.get('id');
+const urlParams = new URLSearchParams(window.location.search);
+const id = urlParams.get('id') || 'tour-001';
+const item = DESTINATIONS.find(d => d.id === id) || DESTINATIONS[0];
 
-const item = DESTINATIONS.find(d => d.id === destId) || DESTINATIONS[0];
-
-if (!item) {
-  alert('존재하지 않는 여행지입니다.');
-  window.location.href = 'index.html';
-}
-
-document.title = `${item.title} - optvoyage`;
-document.getElementById('detailImg').src = item.image;
-document.getElementById('detailCategoryBadge').textContent = item.category.split('/')[0];
 document.getElementById('detailTitle').textContent = item.title;
+document.getElementById('headerDetailTitle').textContent = item.title;
+document.getElementById('detailCategoryBadge').textContent = item.category;
 document.getElementById('detailRating').textContent = item.rating;
-document.getElementById('detailReviewCount').textContent = item.reviewCount.toLocaleString();
+document.getElementById('detailReviewCount').textContent = item.reviewCount;
 document.getElementById('detailRegion').textContent = item.region;
 document.getElementById('detailDesc').textContent = item.desc;
 document.getElementById('detailAddress').textContent = item.address;
 document.getElementById('detailTel').textContent = item.tel;
+document.getElementById('detailImg').src = item.image;
 
-// 학습 코너 정보 블록
-const eduBlock = document.getElementById('eduSectionBlock');
-const eduBadge = document.getElementById('detailEduBadge');
-if (item.eduInfo) {
-  eduBlock.style.display = 'block';
-  eduBadge.style.display = 'inline-block';
-  document.getElementById('eduBoxContent').innerHTML = `
-    <div style="margin-bottom: 6px;"><strong>탐방 테마:</strong> ${item.eduInfo.type}</div>
-    <div><strong>학습 & 관람 포인트:</strong> ${item.eduInfo.point}</div>
-  `;
+// Render Affiliate Dynamic Buttons ( 자연스러운 예약 및 할인 링크 )
+const affiliateGrid = document.getElementById('affiliateLinksGrid');
+if (affiliateGrid) {
+  AFFILIATE_LINKS.forEach(link => {
+    const a = document.createElement('a');
+    a.href = link.url;
+    a.target = '_blank';
+    a.rel = 'noopener noreferrer';
+    a.className = 'affiliate-btn';
+    a.innerHTML = `<i class="fa-solid ${link.icon}"></i> ${link.name}`;
+    affiliateGrid.appendChild(a);
+  });
 }
 
-// 맛집 정보
+// Food Info
 if (item.gourmetInfo) {
   document.getElementById('foodName').textContent = item.gourmetInfo.recommended;
   document.getElementById('foodMenu').textContent = item.gourmetInfo.specialty;
   document.getElementById('foodPrice').textContent = item.gourmetInfo.avgPrice;
-} else {
-  document.getElementById('foodSection').style.display = 'none';
 }
 
-// 반려동물 안내
+// Stay Info
+if (item.stayInfo) {
+  document.getElementById('stayPriceRange').textContent = item.stayInfo.priceRange;
+  document.getElementById('stayType').textContent = item.stayInfo.type;
+}
+
+// Pet Info
 const petBox = document.getElementById('petBox');
 if (item.petInfo) {
   petBox.innerHTML = `
-    <div style="margin-bottom: 4px;"><strong>동반 여부:</strong> ${item.petInfo.allowed ? '✅ 동반 가능' : '❌ 일반 출입 제한 (시각장애인 안내견 제외)'}</div>
-    <div style="margin-bottom: 4px;"><strong>허용 크기:</strong> ${item.petInfo.size}</div>
-    <div><strong>이용 수칙:</strong> ${item.petInfo.rules}</div>
+    <strong>동반 여부:</strong> ${item.petInfo.allowed ? '가능' : '제한'}<br>
+    <strong>입장 범위:</strong> ${item.petInfo.size}<br>
+    <strong>준수 사항:</strong> ${item.petInfo.rules}
   `;
 }
 
-// 무장애 시설
+// Barrier Free Info
 const bfBox = document.getElementById('bfBox');
 if (item.barrierFree) {
   bfBox.innerHTML = `
-    <div style="margin-bottom: 6px;"><strong>편의시설 안내:</strong> ${item.barrierFree.details}</div>
-    <div style="display: flex; gap: 6px; flex-wrap: wrap;">
-      ${item.barrierFree.ramp ? '<span class="card-tag-pill" style="background:#c7d2fe; color:#312e81;">경사로 완비</span>' : ''}
-      ${item.barrierFree.parking ? '<span class="card-tag-pill" style="background:#c7d2fe; color:#312e81;">장애인 주차구역</span>' : ''}
-      ${item.barrierFree.toilet ? '<span class="card-tag-pill" style="background:#c7d2fe; color:#312e81;">전용 화장실</span>' : ''}
-    </div>
+    <strong>편의 지원:</strong> ${item.barrierFree.details}
   `;
 }
 
-// 태그
-const tagsGrid = document.getElementById('detailTagsGrid');
-item.tags.forEach(tag => {
-  const chip = document.createElement('a');
-  chip.href = `search.html?tag=${encodeURIComponent(tag)}`;
-  chip.className = 'tag-chip';
-  chip.textContent = `#${tag}`;
-  tagsGrid.appendChild(chip);
-});
+// KakaoMap Link
+const kakaoMapLink = document.getElementById('kakaoMapLink');
+if (kakaoMapLink) {
+  kakaoMapLink.href = `https://map.kakao.com/link/search/${encodeURIComponent(item.title)}`;
+}
 
-// 카카오맵 길찾기
-const kakaoMapUrl = `https://map.kakao.com/link/search/${encodeURIComponent(item.title + ' ' + item.address)}`;
-document.getElementById('kakaoMapLink').href = kakaoMapUrl;
+// Tags Grid
+const detailTagsGrid = document.getElementById('detailTagsGrid');
+if (detailTagsGrid) {
+  item.tags.forEach(tag => {
+    const span = document.createElement('a');
+    span.href = `search.html?tag=${encodeURIComponent(tag)}`;
+    span.className = 'card-tag-pill';
+    span.textContent = `#${tag}`;
+    detailTagsGrid.appendChild(span);
+  });
+}
 
-// 찜하기 버튼
+// Bookmark Button
 const bottomBookmarkBtn = document.getElementById('bottomBookmarkBtn');
-function updateBookmarkUI() {
-  const bookmarked = isBookmarked(item.id);
-  bottomBookmarkBtn.classList.toggle('active', bookmarked);
-  bottomBookmarkBtn.querySelector('i').className = bookmarked ? 'fa-solid fa-heart' : 'fa-regular fa-heart';
-}
-updateBookmarkUI();
-
-bottomBookmarkBtn.addEventListener('click', () => {
-  toggleBookmark(item.id);
-  updateBookmarkUI();
-});
-
-// 공유 핸들러
-function shareCurrentUrl() {
-  const url = window.location.href;
-  if (navigator.clipboard) {
-    navigator.clipboard.writeText(`${item.title} - optvoyage에서 확인해보세요! ${url}`)
-      .then(() => showToast('✨ 상세 링크가 클립보드에 복사되었습니다!'))
-      .catch(() => showToast('링크 복사 완료'));
+if (bottomBookmarkBtn) {
+  if (isBookmarked(item.id)) {
+    bottomBookmarkBtn.classList.add('active');
   }
+  bottomBookmarkBtn.addEventListener('click', () => {
+    const added = toggleBookmark(item.id);
+    bottomBookmarkBtn.classList.toggle('active', added);
+  });
 }
-document.getElementById('bottomShareBtn').addEventListener('click', shareCurrentUrl);
-document.getElementById('detailShareTopBtn').addEventListener('click', shareCurrentUrl);
+
+// Share Button
+const shareHandler = () => {
+  if (navigator.share) {
+    navigator.share({
+      title: item.title,
+      text: item.desc,
+      url: window.location.href
+    }).catch(() => {});
+  } else {
+    navigator.clipboard.writeText(window.location.href);
+    showToast('공유 링크가 클립보드에 복사되었습니다!');
+  }
+};
+
+document.getElementById('bottomShareBtn')?.addEventListener('click', shareHandler);
+document.getElementById('detailShareTopBtn')?.addEventListener('click', shareHandler);
