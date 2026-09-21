@@ -1,4 +1,4 @@
-import { CATEGORIES, COMMUNITY_PICKS } from './data.js';
+import { COMMUNITY_PICKS } from './data.js';
 import { initCommonUI, showToast } from './common.js';
 
 initCommonUI();
@@ -7,9 +7,9 @@ const selectedTags = new Set();
 const userCustomPicks = JSON.parse(localStorage.getItem('optvoyage_my_custom_picks') || '[]');
 
 const popularSampleTags = [
-  "크리스마스/연말분위기", "신년해돋이/일출", "10만원이하가성비숙소", "로컬찐맛집밀집",
-  "반려견동반가능", "시원한계곡", "푸른동해바다", "인피니티풀보유", "개별프라이빗온수풀",
-  "완만한무장애나눔길", "입장료무료", "베이커리/빵지순례", "백년가게/노포맛집", "연인과함께(커플)"
+  "공룡발자국/화석지", "위인생가/유적지", "기념일/로맨틱", "시원한계곡", "반려견동반가능",
+  "푸른동해바다", "인피니티풀보유", "개별프라이빗온수풀", "전통한옥스테이", "10만원이하가성비숙소",
+  "입장료무료", "베이커리/빵지순례", "로컬찐맛집밀집", "부모님효도여행"
 ];
 
 const pickAvailableTags = document.getElementById('pickAvailableTags');
@@ -48,14 +48,13 @@ document.getElementById('createAndShareBtn').addEventListener('click', () => {
     author: '나 (My Pick)',
     likes: 1,
     tags: Array.from(selectedTags),
-    desc: desc || '내가 고른 감성 여행 코스'
+    desc: desc || '내가 고른 감성 맞춤 코스'
   };
 
   userCustomPicks.unshift(newPick);
   localStorage.setItem('optvoyage_my_custom_picks', JSON.stringify(userCustomPicks));
 
-  const payload = btoa(unescape(encodeURIComponent(JSON.stringify({ title, tags: newPick.tags }))));
-  const shareUrl = `${window.location.origin}${window.location.pathname.replace('community.html', 'search.html')}?custom=${payload}`;
+  const shareUrl = `${window.location.origin}/search.html?tag=${encodeURIComponent(newPick.tags[0])}`;
 
   if (navigator.clipboard) {
     navigator.clipboard.writeText(shareUrl)
@@ -81,7 +80,6 @@ function renderAllCommunityPicks() {
     card.style.display = 'flex';
     card.style.flexDirection = 'column';
     card.style.cursor = 'pointer';
-    card.style.transition = 'var(--transition)';
 
     card.innerHTML = `
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
@@ -99,8 +97,7 @@ function renderAllCommunityPicks() {
     `;
 
     card.addEventListener('click', () => {
-      const firstTag = pick.tags[0];
-      window.location.href = `search.html?tag=${encodeURIComponent(firstTag)}`;
+      window.location.href = `search.html?tag=${encodeURIComponent(pick.tags[0])}`;
     });
 
     grid.appendChild(card);
