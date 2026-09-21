@@ -1,7 +1,6 @@
-// optvoyage - Common Utilities & Navigation
+// optvoyage - Common Utilities & Bookmark Storage
 
 export function initCommonUI() {
-  // 3-dots Menu Toggle
   const menuBtn = document.getElementById('menuBtn');
   const dropdownMenu = document.getElementById('dropdownMenu');
 
@@ -18,7 +17,6 @@ export function initCommonUI() {
     });
   }
 
-  // Back button
   const backBtn = document.getElementById('backBtn');
   if (backBtn) {
     backBtn.addEventListener('click', () => {
@@ -31,7 +29,6 @@ export function initCommonUI() {
   }
 }
 
-// Bookmark storage helpers
 export function getBookmarks() {
   try {
     return new Set(JSON.parse(localStorage.getItem('optvoyage_bookmarks') || '[]'));
@@ -59,7 +56,6 @@ export function isBookmarked(id) {
   return getBookmarks().has(id);
 }
 
-// Toast notification helper
 export function showToast(message) {
   let toast = document.getElementById('toastMsg');
   if (!toast) {
