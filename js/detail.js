@@ -1,4 +1,4 @@
-import { DESTINATIONS } from './data.js';
+import { DESTINATIONS, AFFILIATE_LINKS } from './data.js';
 import { initCommonUI, toggleBookmark, isBookmarked, showToast } from './common.js';
 
 initCommonUI();
@@ -7,6 +7,11 @@ const params = new URLSearchParams(window.location.search);
 const destId = params.get('id');
 
 const item = DESTINATIONS.find(d => d.id === destId) || DESTINATIONS[0];
+
+if (!item) {
+  alert('존재하지 않는 여행지입니다.');
+  window.location.href = 'index.html';
+}
 
 document.title = `${item.title} - optvoyage`;
 document.getElementById('detailImg').src = item.image;
@@ -19,23 +24,19 @@ document.getElementById('detailDesc').textContent = item.desc;
 document.getElementById('detailAddress').textContent = item.address;
 document.getElementById('detailTel').textContent = item.tel;
 
-// 학습 코너 정보가 있을 경우 활성화
-if (item.eduInfo && item.eduInfo.isEdu) {
-  const eduBadge = document.getElementById('detailEduBadge');
-  const eduBlock = document.getElementById('eduSectionBlock');
-  const eduContent = document.getElementById('eduBoxContent');
-  
-  eduBadge.style.display = 'inline-block';
-  eduBadge.innerHTML = `<i class="fa-solid fa-graduation-cap"></i> ${item.eduInfo.badge}`;
+// 학습 코너 정보 블록
+const eduBlock = document.getElementById('eduSectionBlock');
+const eduBadge = document.getElementById('detailEduBadge');
+if (item.eduInfo) {
   eduBlock.style.display = 'block';
-
-  eduContent.innerHTML = `
-    <div style="margin-bottom: 8px;"><strong>📖 역사·과학 스토리:</strong> ${item.eduInfo.story}</div>
-    <div><strong>💡 관람 꿀팁:</strong> ${item.eduInfo.tip}</div>
+  eduBadge.style.display = 'inline-block';
+  document.getElementById('eduBoxContent').innerHTML = `
+    <div style="margin-bottom: 6px;"><strong>탐방 테마:</strong> ${item.eduInfo.type}</div>
+    <div><strong>학습 & 관람 포인트:</strong> ${item.eduInfo.point}</div>
   `;
 }
 
-// 맛집
+// 맛집 정보
 if (item.gourmetInfo) {
   document.getElementById('foodName').textContent = item.gourmetInfo.recommended;
   document.getElementById('foodMenu').textContent = item.gourmetInfo.specialty;
@@ -44,17 +45,17 @@ if (item.gourmetInfo) {
   document.getElementById('foodSection').style.display = 'none';
 }
 
-// 반려동물
+// 반려동물 안내
 const petBox = document.getElementById('petBox');
 if (item.petInfo) {
   petBox.innerHTML = `
-    <div style="margin-bottom: 4px;"><strong>동반 가능:</strong> ${item.petInfo.allowed ? '✅ 동반 가능' : '❌ 일반 출입 제한 (안내견 제외)'}</div>
+    <div style="margin-bottom: 4px;"><strong>동반 여부:</strong> ${item.petInfo.allowed ? '✅ 동반 가능' : '❌ 일반 출입 제한 (시각장애인 안내견 제외)'}</div>
     <div style="margin-bottom: 4px;"><strong>허용 크기:</strong> ${item.petInfo.size}</div>
     <div><strong>이용 수칙:</strong> ${item.petInfo.rules}</div>
   `;
 }
 
-// 무장애
+// 무장애 시설
 const bfBox = document.getElementById('bfBox');
 if (item.barrierFree) {
   bfBox.innerHTML = `
@@ -67,7 +68,7 @@ if (item.barrierFree) {
   `;
 }
 
-// 연관 태그
+// 태그
 const tagsGrid = document.getElementById('detailTagsGrid');
 item.tags.forEach(tag => {
   const chip = document.createElement('a');
@@ -95,13 +96,13 @@ bottomBookmarkBtn.addEventListener('click', () => {
   updateBookmarkUI();
 });
 
-// 링크 복사 공유
+// 공유 핸들러
 function shareCurrentUrl() {
   const url = window.location.href;
   if (navigator.clipboard) {
     navigator.clipboard.writeText(`${item.title} - optvoyage에서 확인해보세요! ${url}`)
-      .then(() => showToast('✨ 상세 링크가 복사되었습니다!'))
-      .catch(() => showToast('공유 링크가 준비되었습니다.'));
+      .then(() => showToast('✨ 상세 링크가 클립보드에 복사되었습니다!'))
+      .catch(() => showToast('링크 복사 완료'));
   }
 }
 document.getElementById('bottomShareBtn').addEventListener('click', shareCurrentUrl);
