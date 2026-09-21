@@ -3,13 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>150+ 세부 픽 맞춤 검색 - optvoyage</title>
+  <title>여행지 상세 정보 - optvoyage</title>
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" referrerpolicy="no-referrer" />
 </head>
 <body>
 
-  <!-- Search Header -->
   <header class="site-header">
     <div class="header-left">
       <button class="back-btn" id="backBtn" aria-label="뒤로가기"><i class="fa-solid fa-arrow-left"></i></button>
@@ -17,116 +16,157 @@
     <div class="header-center">
       <a href="index.html" class="logo-wrap">
         <span class="logo-title">optvoyage</span>
-        <span class="header-page-title">세부 픽</span>
       </a>
     </div>
     <div class="header-right">
-      <button class="header-icon-btn" id="resetBtn" title="필터 전체 초기화">
-        <i class="fa-solid fa-rotate-left"></i>
-      </button>
-      <button class="header-icon-btn" id="menuBtn" aria-label="메뉴">
-        <i class="fa-solid fa-bars"></i>
-      </button>
-
+      <button class="header-icon-btn" id="detailShareTopBtn" title="공유하기"><i class="fa-solid fa-share-nodes"></i></button>
+      <button class="header-icon-btn" id="menuBtn" aria-label="메뉴"><i class="fa-solid fa-bars"></i></button>
+      
       <div class="chrome-dropdown" id="dropdownMenu">
         <div class="dropdown-header">optvoyage 메뉴</div>
         <a href="index.html" class="dropdown-item"><i class="fa-solid fa-house"></i> <span>홈으로 이동</span></a>
+        <a href="search.html" class="dropdown-item"><i class="fa-solid fa-sliders"></i> <span>세부 픽 검색</span></a>
         <a href="community.html" class="dropdown-item"><i class="fa-solid fa-users"></i> <span>여행자 추천 픽</span></a>
         <a href="random.html" class="dropdown-item"><i class="fa-solid fa-dice"></i> <span>운명의 랜덤 픽</span></a>
-        <a href="search.html?view=bookmarks" class="dropdown-item"><i class="fa-solid fa-heart"></i> <span>내가 찜한 보관함</span></a>
         <div class="dropdown-divider"></div>
         <a href="https://buymeacoffee.com/djawjdaks8g" target="_blank" class="dropdown-item highlight-item">
           <i class="fa-solid fa-mug-saucer" style="color: #f59e0b;"></i> <span>개발자 커피 후원</span>
         </a>
         <a href="mailto:offthemain@proton.me" class="dropdown-item">
-          <i class="fa-solid fa-envelope"></i> <span>문의 (offthemain@proton.me)</span>
+          <i class="fa-solid fa-envelope"></i> <span>제휴/문의</span>
         </a>
-        <a href="privacy.html" class="dropdown-item"><i class="fa-solid fa-shield-halved"></i> <span>프라이버시 규정</span></a>
+        <a href="privacy.html" class="dropdown-item"><i class="fa-solid fa-shield-halved"></i> <span>프라이버시</span></a>
         <a href="terms.html" class="dropdown-item"><i class="fa-solid fa-file-contract"></i> <span>이용약관</span></a>
       </div>
     </div>
   </header>
 
-  <main class="container" style="padding-top: 16px;">
+  <!-- 대형 이미지 배너 -->
+  <div class="detail-hero-banner">
+    <img id="detailImg" class="detail-hero-img" src="" alt="여행지 사진">
+    <div class="detail-img-gradient"></div>
+  </div>
 
-    <!-- 검색창 -->
-    <div class="main-search-bar" style="margin-bottom: 16px;">
-      <i class="fa-solid fa-magnifying-glass search-leading-icon"></i>
-      <input type="text" id="keywordInput" placeholder="장소명, 유적지, 공룡발자국, 계곡, 지역명 검색...">
-      <button id="keywordSearchBtn">검색</button>
-    </div>
+  <main class="detail-body-container" id="detailContainer">
 
-    <!-- 픽 선택기 카드 -->
-    <div class="pick-selector-card">
-      <div class="pick-selector-header">
-        <div class="pick-header-title">
-          <i class="fa-solid fa-sliders" style="color: var(--primary-600);"></i>
-          <span>150+ 세부 취향 픽 선택기</span>
-        </div>
-        <span class="pick-helper-text">조건을 조합할수록 딱 맞는 여행지가 픽됩니다!</span>
+    <div class="detail-main-header">
+      <div class="detail-badge-group">
+        <span class="card-tag-pill" id="detailCategoryBadge">관광지</span>
+        <span class="card-tag-pill edu-pill" id="detailEduBadge" style="display: none;"><i class="fa-solid fa-graduation-cap"></i> 학습 탐방지</span>
       </div>
-
-      <!-- 카테고리 탭 (가로 스크롤) -->
-      <div class="category-tabs-bar" id="categoryTabsBar"></div>
-
-      <!-- 태그 칩 영역 -->
-      <div class="tag-chips-wrap" id="tagChipsBox">
-        <div class="tag-chips-header" id="currentCatTitle">태그 목록을 불러오는 중...</div>
-        <div class="tag-chips-flex" id="currentCatTags"></div>
+      <h1 class="detail-title" id="detailTitle">여행지명 로딩 중...</h1>
+      <div class="detail-meta-row">
+        <span class="meta-rating"><i class="fa-solid fa-star"></i> <span id="detailRating">4.9</span> (<span id="detailReviewCount">0</span>)</span>
+        <span class="meta-region"><i class="fa-solid fa-location-dot"></i> <span id="detailRegion">지역</span></span>
       </div>
     </div>
 
-    <!-- 활성화된 필터 요약 -->
-    <div id="activeFilterSummary" class="active-filter-summary">
-      <div class="summary-left">
-        <span class="summary-label"><i class="fa-solid fa-check"></i> 내가 픽한 조건:</span>
-        <div class="active-tags-container" id="activeTagsContainer"></div>
-      </div>
-      <button id="clearAllTagsBtn" class="clear-all-btn">
-        <i class="fa-solid fa-xmark"></i> 전체 해제
-      </button>
+    <!-- 소개글 -->
+    <div class="detail-section-block">
+      <h3 class="detail-block-title"><i class="fa-solid fa-align-left" style="color: var(--primary-600);"></i> 소개 및 여행 포인트</h3>
+      <p id="detailDesc" class="detail-desc-text"></p>
     </div>
 
-    <!-- 결과 카운터 & 어필리에이트 숙소 버튼 -->
-    <div class="search-result-meta-bar">
-      <div class="result-title-group">
-        <h2 class="search-result-heading" id="searchResultTitle">맞춤 여행지</h2>
-        <span class="result-count-badge">총 <strong id="resultTotalCount">0</strong>곳</span>
-      </div>
-      <a href="https://3ha.in/r/725499" target="_blank" rel="noopener noreferrer" class="aff-badge-link">
-        <i class="fa-solid fa-bed"></i> 이 지역 최저가 숙소
-      </a>
+    <!-- 학습 코너 특별 가이드 (공룡발자국, 생가, 유적지) -->
+    <div class="detail-section-block" id="eduSectionBlock" style="display: none;">
+      <h3 class="detail-block-title" style="color: #059669;">
+        <i class="fa-solid fa-graduation-cap"></i> 💡 학습 & 역사 탐방 가이드
+      </h3>
+      <div class="box-highlight box-edu" id="eduBoxContent"></div>
     </div>
 
-    <!-- 카드 그리드 -->
-    <div class="cards-grid" id="searchResultsGrid"></div>
+    <!-- 위치 및 이용안내 -->
+    <div class="detail-section-block">
+      <h3 class="detail-block-title"><i class="fa-solid fa-circle-info" style="color: var(--primary-600);"></i> 위치 및 이용 안내</h3>
+      <div class="detail-info-row">
+        <strong>도로명 주소</strong>
+        <span id="detailAddress">-</span>
+      </div>
+      <div class="detail-info-row">
+        <strong>문의 전화</strong>
+        <span id="detailTel">-</span>
+      </div>
+    </div>
 
-    <div style="height: 40px;"></div>
+    <!-- 세시간전 제휴 연계 특가 박스 -->
+    <div class="detail-section-block affiliate-detail-box">
+      <h3 class="detail-block-title"><i class="fa-solid fa-gift" style="color: #ea580c;"></i> 이 여행지 연계 추천 혜택</h3>
+      <div class="aff-deal-list">
+        <a href="https://3ha.in/r/725499" target="_blank" rel="noopener noreferrer" class="aff-deal-item">
+          <div class="deal-icon" style="background: #e0f2fe; color: #0284c7;"><i class="fa-solid fa-bed"></i></div>
+          <div class="deal-info">
+            <strong>이 지역 주변 숙소 최저가 예약</strong>
+            <span>호텔, 리조트, 감성펜션 실시간 잔여 객실 조회</span>
+          </div>
+          <span class="deal-btn">최저가 보기 &gt;</span>
+        </a>
+        <a href="https://3ha.in/r/725525" target="_blank" rel="noopener noreferrer" class="aff-deal-item">
+          <div class="deal-icon" style="background: #fef3c7; color: #d97706;"><i class="fa-solid fa-ticket"></i></div>
+          <div class="deal-info">
+            <strong>주변 인기 액티비티 & 입장권 할인</strong>
+            <span>테마파크, 체험, 투어 패스 단독 할인권</span>
+          </div>
+          <span class="deal-btn">할인받기 &gt;</span>
+        </a>
+        <a href="https://3ha.in/r/725527" target="_blank" rel="noopener noreferrer" class="aff-deal-item">
+          <div class="deal-icon" style="background: #ecfdf5; color: #059669;"><i class="fa-solid fa-car"></i></div>
+          <div class="deal-info">
+            <strong>실시간 최저가 렌터카 가격비교</strong>
+            <span>가장 저렴한 렌터카 당일/주말 실시간 대여</span>
+          </div>
+          <span class="deal-btn">비교하기 &gt;</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- 미식 맛집 -->
+    <div class="detail-section-block" id="foodSection">
+      <h3 class="detail-block-title"><i class="fa-solid fa-utensils" style="color: #ea580c;"></i> 주변 대표 찐맛집 & 미식 가이드</h3>
+      <div class="box-highlight box-food">
+        <div style="margin-bottom: 6px;"><strong>추천 맛집:</strong> <span id="foodName">-</span></div>
+        <div style="margin-bottom: 6px;"><strong>대표 메뉴:</strong> <span id="foodMenu">-</span></div>
+        <div><strong>예상 가격:</strong> <span id="foodPrice">-</span></div>
+      </div>
+    </div>
+
+    <!-- 반려동물 동반 안내 -->
+    <div class="detail-section-block">
+      <h3 class="detail-block-title"><i class="fa-solid fa-paw" style="color: #ca8a04;"></i> 반려동물 동반 안내 (한국관광공사 공공데이터)</h3>
+      <div class="box-highlight box-pet" id="petBox"></div>
+    </div>
+
+    <!-- 무장애 편의시설 -->
+    <div class="detail-section-block">
+      <h3 class="detail-block-title"><i class="fa-solid fa-wheelchair" style="color: #4f46e5;"></i> 열린관광 무장애 편의시설</h3>
+      <div class="box-highlight box-bf" id="bfBox"></div>
+    </div>
+
+    <!-- 연관 세부 픽 태그 -->
+    <div class="detail-section-block" style="border-bottom: none;">
+      <h3 class="detail-block-title"><i class="fa-solid fa-tags" style="color: var(--primary-600);"></i> 연관 세부 픽 키워드</h3>
+      <div class="detail-tags-cloud" id="detailTagsGrid"></div>
+    </div>
+
   </main>
 
-  <nav class="bottom-nav">
-    <a href="index.html" class="bottom-nav-item">
-      <i class="fa-solid fa-house"></i>
-      <span>홈</span>
-    </a>
-    <a href="search.html" class="bottom-nav-item active">
-      <i class="fa-solid fa-sliders"></i>
-      <span>세부 픽</span>
-    </a>
-    <a href="community.html" class="bottom-nav-item">
-      <i class="fa-solid fa-users"></i>
-      <span>여행자 픽</span>
-    </a>
-    <a href="random.html" class="bottom-nav-item">
-      <i class="fa-solid fa-dice"></i>
-      <span>랜덤 픽</span>
-    </a>
-    <a href="search.html?view=bookmarks" class="bottom-nav-item">
-      <i class="fa-solid fa-heart"></i>
-      <span>보관함</span>
-    </a>
-  </nav>
+  <!-- 하단 고정 액션바 -->
+  <div class="detail-bottom-bar">
+    <div class="detail-bottom-inner">
+      <button class="btn-icon-square" id="bottomBookmarkBtn" title="찜하기">
+        <i class="fa-regular fa-heart"></i>
+      </button>
+      <button class="btn-icon-square" id="bottomShareBtn" title="공유하기">
+        <i class="fa-solid fa-share-nodes"></i>
+      </button>
+      <a href="https://3ha.in/r/725499" target="_blank" rel="noopener noreferrer" class="btn-large-affiliate">
+        <i class="fa-solid fa-bed"></i> 주변 숙소 특가
+      </a>
+      <a href="#" id="kakaoMapLink" target="_blank" rel="noopener noreferrer" class="btn-large-action">
+        <i class="fa-solid fa-route"></i> 길찾기
+      </a>
+    </div>
+  </div>
 
-  <script type="module" src="js/search.js"></script>
+  <script type="module" src="js/detail.js"></script>
 </body>
 </html>
