@@ -1,4 +1,4 @@
-// optvoyage - Common Utilities & Bookmark Storage
+// optvoyage - Common Utilities & Navigation
 
 export function initCommonUI() {
   const menuBtn = document.getElementById('menuBtn');
