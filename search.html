@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>100+ 세부 픽 맞춤 검색 - optvoyage</title>
+  <title>150+ 세부 픽 맞춤 검색 - optvoyage</title>
   <link rel="stylesheet" href="css/style.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" referrerpolicy="no-referrer" />
 </head>
 <body>
 
-  <!-- Search Header (중앙 로고) -->
+  <!-- Search Header -->
   <header class="site-header">
     <div class="header-left">
       <button class="back-btn" id="backBtn" aria-label="뒤로가기"><i class="fa-solid fa-arrow-left"></i></button>
@@ -25,7 +25,7 @@
         <i class="fa-solid fa-rotate-left"></i>
       </button>
       <button class="header-icon-btn" id="menuBtn" aria-label="메뉴">
-        <i class="fa-solid fa-ellipsis-vertical"></i>
+        <i class="fa-solid fa-bars"></i>
       </button>
 
       <div class="chrome-dropdown" id="dropdownMenu">
@@ -33,13 +33,16 @@
         <a href="index.html" class="dropdown-item"><i class="fa-solid fa-house"></i> <span>홈으로 이동</span></a>
         <a href="community.html" class="dropdown-item"><i class="fa-solid fa-users"></i> <span>여행자 추천 픽</span></a>
         <a href="random.html" class="dropdown-item"><i class="fa-solid fa-dice"></i> <span>운명의 랜덤 픽</span></a>
-        <a href="search.html?view=bookmarks" class="dropdown-item"><i class="fa-solid fa-heart"></i> <span>내 보관함</span></a>
+        <a href="search.html?view=bookmarks" class="dropdown-item"><i class="fa-solid fa-heart"></i> <span>내가 찜한 보관함</span></a>
         <div class="dropdown-divider"></div>
         <a href="https://buymeacoffee.com/djawjdaks8g" target="_blank" class="dropdown-item highlight-item">
           <i class="fa-solid fa-mug-saucer" style="color: #f59e0b;"></i> <span>개발자 커피 후원</span>
         </a>
-        <a href="support.html" class="dropdown-item"><i class="fa-solid fa-circle-info"></i> <span>공공 API 및 지원</span></a>
-        <a href="privacy.html" class="dropdown-item"><i class="fa-solid fa-shield-halved"></i> <span>프라이버시</span></a>
+        <a href="mailto:offthemain@proton.me" class="dropdown-item">
+          <i class="fa-solid fa-envelope"></i> <span>문의 (offthemain@proton.me)</span>
+        </a>
+        <a href="privacy.html" class="dropdown-item"><i class="fa-solid fa-shield-halved"></i> <span>프라이버시 규정</span></a>
+        <a href="terms.html" class="dropdown-item"><i class="fa-solid fa-file-contract"></i> <span>이용약관</span></a>
       </div>
     </div>
   </header>
@@ -47,36 +50,36 @@
   <main class="container" style="padding-top: 16px;">
 
     <!-- 검색창 -->
-    <div class="main-search-bar" style="margin-bottom: 16px; max-width: 100%;">
+    <div class="main-search-bar" style="margin-bottom: 16px;">
       <i class="fa-solid fa-magnifying-glass search-leading-icon"></i>
       <input type="text" id="keywordInput" placeholder="장소명, 유적지, 공룡발자국, 계곡, 지역명 검색...">
       <button id="keywordSearchBtn">검색</button>
     </div>
 
-    <!-- 100+ 픽 선택기 (야놀자 스타일 탭 & 칩/체크박스) -->
+    <!-- 픽 선택기 카드 -->
     <div class="pick-selector-card">
       <div class="pick-selector-header">
         <div class="pick-header-title">
           <i class="fa-solid fa-sliders" style="color: var(--primary-600);"></i>
-          <span>100+ 세부 취향 픽 선택기</span>
+          <span>150+ 세부 취향 픽 선택기</span>
         </div>
-        <span class="pick-helper-text">여러 조건을 조합해 나만의 여행지를 찾아보세요</span>
+        <span class="pick-helper-text">조건을 조합할수록 딱 맞는 여행지가 픽됩니다!</span>
       </div>
 
       <!-- 카테고리 탭 (가로 스크롤) -->
       <div class="category-tabs-bar" id="categoryTabsBar"></div>
 
-      <!-- 태그 칩들 -->
+      <!-- 태그 칩 영역 -->
       <div class="tag-chips-wrap" id="tagChipsBox">
-        <div class="tag-chips-header" id="currentCatTitle">카테고리 불러오는 중...</div>
+        <div class="tag-chips-header" id="currentCatTitle">태그 목록을 불러오는 중...</div>
         <div class="tag-chips-flex" id="currentCatTags"></div>
       </div>
     </div>
 
-    <!-- 선택한 필터 요약 바 -->
+    <!-- 활성화된 필터 요약 -->
     <div id="activeFilterSummary" class="active-filter-summary">
       <div class="summary-left">
-        <span class="summary-label"><i class="fa-solid fa-check"></i> 픽한 조건:</span>
+        <span class="summary-label"><i class="fa-solid fa-check"></i> 내가 픽한 조건:</span>
         <div class="active-tags-container" id="activeTagsContainer"></div>
       </div>
       <button id="clearAllTagsBtn" class="clear-all-btn">
@@ -84,10 +87,10 @@
       </button>
     </div>
 
-    <!-- 결과 카운터 및 제휴 퀵 버튼 -->
+    <!-- 결과 카운터 & 어필리에이트 숙소 버튼 -->
     <div class="search-result-meta-bar">
       <div class="result-title-group">
-        <h2 class="search-result-heading" id="searchResultTitle">여행지 검색 결과</h2>
+        <h2 class="search-result-heading" id="searchResultTitle">맞춤 여행지</h2>
         <span class="result-count-badge">총 <strong id="resultTotalCount">0</strong>곳</span>
       </div>
       <a href="https://3ha.in/r/725499" target="_blank" rel="noopener noreferrer" class="aff-badge-link">
@@ -95,13 +98,12 @@
       </a>
     </div>
 
-    <!-- 여행지 카드 그리드 -->
+    <!-- 카드 그리드 -->
     <div class="cards-grid" id="searchResultsGrid"></div>
 
     <div style="height: 40px;"></div>
   </main>
 
-  <!-- 하단 내비게이션 -->
   <nav class="bottom-nav">
     <a href="index.html" class="bottom-nav-item">
       <i class="fa-solid fa-house"></i>
