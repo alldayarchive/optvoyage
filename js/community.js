@@ -7,9 +7,9 @@ const selectedTags = new Set();
 const userCustomPicks = JSON.parse(localStorage.getItem('optvoyage_my_custom_picks') || '[]');
 
 const popularSampleTags = [
-  "공룡발자국/화석지", "위인생가/유적지", "기념일/로맨틱", "시원한계곡", "반려견동반가능",
-  "푸른동해바다", "인피니티풀보유", "개별프라이빗온수풀", "전통한옥스테이", "10만원이하가성비숙소",
-  "입장료무료", "베이커리/빵지순례", "로컬찐맛집밀집", "부모님효도여행"
+  "공룡발자국/화석지", "위인생가/유적지", "기념일/로맨틱", "크리스마스/연말분위기",
+  "시원한계곡", "푸른동해바다", "반려견동반가능", "10만원이하가성비숙소",
+  "인피니티풀보유", "개별프라이빗온수풀", "로컬찐맛집밀집", "입장료무료"
 ];
 
 const pickAvailableTags = document.getElementById('pickAvailableTags');
@@ -48,18 +48,19 @@ document.getElementById('createAndShareBtn').addEventListener('click', () => {
     author: '나 (My Pick)',
     likes: 1,
     tags: Array.from(selectedTags),
-    desc: desc || '내가 고른 감성 맞춤 코스'
+    desc: desc || '내가 직접 조합한 맞춤 여행 코스'
   };
 
   userCustomPicks.unshift(newPick);
   localStorage.setItem('optvoyage_my_custom_picks', JSON.stringify(userCustomPicks));
 
-  const shareUrl = `${window.location.origin}/search.html?tag=${encodeURIComponent(newPick.tags[0])}`;
+  const firstTag = newPick.tags[0];
+  const shareUrl = `${window.location.origin}${window.location.pathname.replace('community.html', 'search.html')}?tag=${encodeURIComponent(firstTag)}`;
 
   if (navigator.clipboard) {
     navigator.clipboard.writeText(shareUrl)
-      .then(() => showToast('✨ 픽이 저장되고 공유 링크가 복사되었습니다!'))
-      .catch(() => showToast('✨ 픽이 저장되었습니다!'));
+      .then(() => showToast('✨ 나만의 픽이 저장되고 공유 링크가 복사되었습니다!'))
+      .catch(() => showToast('✨ 나만의 픽이 저장되었습니다!'));
   }
 
   renderAllCommunityPicks();
