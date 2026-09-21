@@ -1,137 +1,862 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>optvoyage - 150+ 세부 취향으로 고르는 나만의 맞춤 여행</title>
-  <meta name="description" content="한국관광공사 TourAPI 공공데이터 기반 150가지 세부 픽 맞춤 여행.">
-  <link rel="stylesheet" href="css/style.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>optvoyage - 나만의 조건으로 고르는 전국 맞춤 여행</title>
+<meta name="description" content="전국 217곳을 92가지 세부 조건으로 조합해 나만의 여행 픽을 만듭니다. 숨은지수로 사람 없는 여행지만 골라볼 수도 있습니다.">
+<meta property="og:title" content="optvoyage - 나만의 맞춤 여행 큐레이션">
+<meta property="og:description" content="150가지 세부 취향을 조합해 전국에서 나만의 여행지를 찾으세요.">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --p50:#EFF7FF; --p100:#DCEEFF; --p200:#B9DCFF; --p400:#4DA3F5;
+  --p500:#1E88E5; --p600:#0F6FCC; --p700:#0B569E; --p900:#082F55;
+  --navy:#12263F; --gray:#5B6B7C; --gray2:#8D9AA8;
+  --bg:#F4F8FC; --card:#FFFFFF; --line:#E3EBF2; --line2:#EEF3F8;
+  --amber:#F0A020; --amber-bg:#FFF6E6; --coral:#FF6B5A;
+  --sh:0 2px 4px rgba(18,38,63,.04), 0 8px 24px -12px rgba(18,38,63,.14);
+  --sh2:0 4px 20px -6px rgba(15,111,204,.28);
+  --r:16px;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --p50:#0E2338; --p100:#123049; --p200:#1B4463; --p400:#5FB2F0;
+  --p500:#3E9BEF; --p600:#68B4F5; --p700:#9AD0FA; --p900:#CCE7FF;
+  --navy:#E8F1F9; --gray:#A8B8C6; --gray2:#7A8A98;
+  --bg:#0A1725; --card:#12233A; --line:#20415E; --line2:#182C45;
+  --amber:#F5B54A; --amber-bg:#3A2C12; --coral:#FF8474;
+  --sh:0 2px 4px rgba(0,0,0,.3), 0 10px 26px -14px rgba(0,0,0,.6);
+  --sh2:0 4px 20px -6px rgba(0,0,0,.5);
+}}
+:root[data-theme="dark"]{
+  --p50:#0E2338; --p100:#123049; --p200:#1B4463; --p400:#5FB2F0;
+  --p500:#3E9BEF; --p600:#68B4F5; --p700:#9AD0FA; --p900:#CCE7FF;
+  --navy:#E8F1F9; --gray:#A8B8C6; --gray2:#7A8A98;
+  --bg:#0A1725; --card:#12233A; --line:#20415E; --line2:#182C45;
+  --amber:#F5B54A; --amber-bg:#3A2C12; --coral:#FF8474;
+  --sh:0 2px 4px rgba(0,0,0,.3), 0 10px 26px -14px rgba(0,0,0,.6);
+  --sh2:0 4px 20px -6px rgba(0,0,0,.5);
+}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 70px);-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--navy);
+  font-family:"Noto Sans KR",-apple-system,BlinkMacSystemFont,"Malgun Gothic",sans-serif;
+  font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased}
+h1,h2,h3{margin:0;font-weight:700;letter-spacing:-.02em}
+button{font:inherit;color:inherit;cursor:pointer;border:0;background:none}
+a{color:var(--p600);text-decoration:none}
+:focus-visible{outline:2px solid var(--p500);outline-offset:2px;border-radius:6px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+svg.ic{width:1em;height:1em;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;vertical-align:-.12em}
+
+/* ── header ── */
+.hd{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:var(--card);border-bottom:1px solid var(--line2)}
+.hd-in{max-width:1200px;margin:0 auto;padding:0 14px;height:58px;display:grid;grid-template-columns:1fr auto 1fr;align-items:center}
+.hd-l{display:flex;gap:4px}
+.hd-r{display:flex;gap:6px;justify-content:flex-end;align-items:center;position:relative}
+.ibtn{width:38px;height:38px;border-radius:11px;display:grid;place-items:center;color:var(--gray);font-size:17px}
+.ibtn:hover{background:var(--p50);color:var(--p600)}
+.logo{display:flex;align-items:center;gap:7px;color:var(--navy)}
+.logo .mk{width:30px;height:30px;border-radius:9px;display:grid;place-items:center;color:#fff;font-size:15px;
+  background:linear-gradient(135deg,var(--p400),var(--p600))}
+.logo b{font-size:19px;letter-spacing:-.04em;font-weight:700}
+.coffee{display:inline-flex;align-items:center;gap:6px;padding:8px 13px;border-radius:999px;font-size:13px;font-weight:500;
+  background:var(--amber-bg);color:var(--amber)}
+.coffee:hover{filter:brightness(.97)}
+@media (max-width:560px){.coffee span{display:none}.coffee{padding:9px}}
+.drop{position:absolute;top:46px;right:0;width:250px;background:var(--card);border:1px solid var(--line);
+  border-radius:14px;box-shadow:var(--sh);padding:7px;display:none;z-index:60}
+.drop.open{display:block}
+.drop .dh{font-size:11px;color:var(--gray2);padding:7px 10px 5px}
+.drop a,.drop button{display:flex;align-items:center;gap:10px;width:100%;padding:10px;border-radius:10px;
+  font-size:13.5px;color:var(--navy);text-align:left}
+.drop a:hover,.drop button:hover{background:var(--p50)}
+.drop .bg{margin-left:auto;font-size:10px;font-weight:700;color:#fff;background:var(--coral);padding:2px 6px;border-radius:5px}
+.drop hr{border:0;border-top:1px solid var(--line2);margin:5px 8px}
+
+/* ── hero ── */
+.hero{background:linear-gradient(170deg,var(--p50),var(--bg) 70%);border-bottom:1px solid var(--line2)}
+.hero-in{max-width:1200px;margin:0 auto;padding:36px 16px 28px;text-align:center}
+.hero h1{font-size:clamp(20px,4.6vw,28px);line-height:1.45}
+.hero h1 em{font-style:normal;color:var(--p600)}
+.hero h1 .num{color:var(--coral)}
+.hero h1 .sl{color:var(--gray);font-weight:400}
+.hero .sub{font-size:13px;color:var(--gray);margin:10px 0 0}
+.sbox{max-width:620px;margin:20px auto 0;display:flex;align-items:center;gap:10px;background:var(--card);
+  border:1px solid var(--line);border-radius:999px;padding:12px 18px;box-shadow:var(--sh)}
+.sbox:focus-within{border-color:var(--p400);box-shadow:var(--sh2)}
+.sbox input{flex:1;border:0;background:none;font:inherit;font-size:15px;color:var(--navy);outline:0;min-width:0}
+.sbox svg{color:var(--gray2);flex:none;font-size:18px}
+.qacts{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:16px}
+.qa{display:inline-flex;align-items:center;gap:6px;padding:9px 16px;border-radius:999px;font-size:13.5px;font-weight:500;
+  background:var(--card);border:1px solid var(--line);color:var(--navy);box-shadow:var(--sh)}
+.qa:hover{border-color:var(--p400);color:var(--p600)}
+.qa.on{background:linear-gradient(135deg,var(--p500),var(--p700));border-color:transparent;color:#fff;box-shadow:var(--sh2)}
+
+/* ── layout ── */
+.wrap{max-width:1200px;margin:0 auto;padding:20px 14px 60px;display:grid;grid-template-columns:318px 1fr;gap:22px;align-items:start}
+@media (max-width:920px){.wrap{grid-template-columns:1fr;gap:14px}}
+
+/* ── console ── */
+.cs{background:var(--card);border:1px solid var(--line2);border-radius:var(--r);box-shadow:var(--sh);overflow:hidden}
+@media (min-width:921px){.cs{position:sticky;top:calc(env(safe-area-inset-top,0px) + 70px);max-height:calc(100vh - 96px);overflow-y:auto}}
+.cs-h{padding:14px 16px;border-bottom:1px solid var(--line2);display:flex;align-items:center;gap:8px;
+  background:linear-gradient(135deg,var(--p500),var(--p700));color:#fff}
+.cs-h h2{font-size:15px}
+.cs-h .cnt{margin-left:auto;font-size:11.5px;opacity:.85}
+summary{list-style:none;cursor:pointer}
+summary::-webkit-details-marker{display:none}
+.grp{border-bottom:1px solid var(--line2)}
+.grp:last-child{border-bottom:0}
+.grp-t{display:flex;align-items:center;gap:9px;padding:12px 16px;font-size:13.5px;font-weight:500}
+.grp-t .dot{width:6px;height:6px;border-radius:50%;background:var(--p400);flex:none}
+.grp-t .n{margin-left:auto;font-size:11.5px;color:var(--gray2)}
+.grp-t .n.act{color:var(--p600);font-weight:700}
+.grp-t .car{color:var(--gray2);font-size:10px;transition:transform .18s}
+.grp[open] .car{transform:rotate(180deg)}
+.grp-b{padding:0 13px 14px;display:flex;flex-wrap:wrap;gap:6px}
+.chip{padding:6px 11px;border-radius:999px;border:1px solid var(--line);background:var(--card);
+  font-size:12.5px;color:var(--gray);display:inline-flex;align-items:center;gap:5px;line-height:1.4}
+.chip i{font-style:normal;font-size:10.5px;color:var(--gray2)}
+.chip:hover{border-color:var(--p400);color:var(--p600)}
+.chip.on{background:var(--p500);border-color:var(--p500);color:#fff;font-weight:500}
+.chip.on i{color:rgba(255,255,255,.75)}
+.chip.zero{opacity:.3;cursor:not-allowed}
+.chip.zero:hover{border-color:var(--line);color:var(--gray)}
+.mon{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;width:100%}
+.mon .chip{justify-content:center;padding:7px 0;border-radius:10px}
+.seg{display:flex;width:100%;border:1px solid var(--line);border-radius:11px;overflow:hidden}
+.seg button{flex:1;padding:8px 2px;font-size:12px;color:var(--gray);border-right:1px solid var(--line)}
+.seg button:last-child{border-right:0}
+.seg button.on{background:var(--p50);color:var(--p600);font-weight:700}
+.note{width:100%;font-size:11.5px;color:var(--gray2);margin:9px 0 0;line-height:1.6}
+.obs-row{display:flex;gap:5px;width:100%}
+.obs-row button{flex:1;padding:9px 0;border:1px solid var(--line);border-radius:11px;font-size:11.5px;color:var(--gray)}
+.obs-row button.on{background:var(--amber-bg);border-color:var(--amber);color:var(--amber);font-weight:700}
+
+/* ── results ── */
+.rhead{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:12px}
+.rhead h2{font-size:17px}
+.rhead .sp{flex:1}
+.sel{font-size:12.5px;padding:8px 12px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--navy)}
+.active-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
+.at{display:inline-flex;align-items:center;gap:6px;padding:5px 9px 5px 12px;border-radius:999px;
+  background:var(--p500);color:#fff;font-size:12px}
+.at b{font-weight:500}
+.at button{color:#fff;opacity:.75;font-size:14px;line-height:1}
+.at button:hover{opacity:1}
+.at.clearall{background:var(--card);border:1px solid var(--line);color:var(--gray)}
+
+.list{display:grid;grid-template-columns:repeat(auto-fill,minmax(258px,1fr));gap:14px}
+.card{display:block;text-align:left;width:100%;background:var(--card);border:1px solid var(--line2);
+  border-radius:var(--r);overflow:hidden;box-shadow:var(--sh);transition:transform .15s,box-shadow .15s}
+.card:hover{transform:translateY(-2px);box-shadow:var(--sh2)}
+.ch{height:92px;position:relative;display:grid;place-items:center;color:#fff}
+.ch svg.big{width:34px;height:34px;opacity:.95;stroke-width:1.6}
+.ch .rg{position:absolute;left:11px;top:10px;font-size:11px;background:rgba(255,255,255,.22);
+  backdrop-filter:blur(3px);padding:3px 9px;border-radius:999px;font-weight:500}
+.ch .mt{position:absolute;right:11px;top:10px;font-size:11px;font-weight:700;background:#fff;color:var(--p600);
+  padding:3px 9px;border-radius:999px}
+.cb{padding:13px 14px 14px}
+.cb h3{font-size:15.5px;line-height:1.4}
+.cb .ds{font-size:12.5px;color:var(--gray);margin:6px 0 9px;line-height:1.6;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.cb .mr{display:flex;align-items:center;gap:8px;font-size:11.5px;color:var(--gray2);flex-wrap:wrap}
+.obs{display:inline-flex;align-items:center;gap:3px;color:var(--amber)}
+.obs .d{width:5px;height:5px;border-radius:50%;background:currentColor;opacity:.25}
+.obs .d.f{opacity:1}
+.mtags{display:flex;flex-wrap:wrap;gap:4px;margin-top:9px}
+.mtag{font-size:11px;padding:3px 8px;border-radius:7px;background:var(--bg);color:var(--gray)}
+.mtag.hit{background:var(--p100);color:var(--p700);font-weight:500}
+.empty{grid-column:1/-1;text-align:center;padding:48px 20px;background:var(--card);border:1px dashed var(--line);border-radius:var(--r)}
+.empty h3{font-size:17px;margin-bottom:7px}
+.empty p{font-size:13.5px;color:var(--gray);margin:0 0 16px}
+.more{width:100%;padding:14px;border:1px solid var(--line);border-radius:13px;background:var(--card);
+  font-size:13.5px;color:var(--gray);margin-top:14px;box-shadow:var(--sh)}
+.more:hover{border-color:var(--p400);color:var(--p600)}
+
+/* ── deals ── */
+.deals{max-width:1200px;margin:0 auto;padding:6px 14px 46px}
+.deals h2{font-size:18px;margin-bottom:4px}
+.deals .sub{font-size:12.5px;color:var(--gray);margin:0 0 14px}
+.dgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(168px,1fr));gap:11px}
+.deal{display:flex;align-items:center;gap:11px;padding:14px;background:var(--card);border:1px solid var(--line2);
+  border-radius:14px;box-shadow:var(--sh);color:var(--navy)}
+.deal:hover{border-color:var(--p400);transform:translateY(-2px)}
+.deal .ib{width:38px;height:38px;border-radius:11px;display:grid;place-items:center;flex:none;color:#fff}
+.deal .tt{font-size:13.5px;font-weight:500;line-height:1.35}
+.deal .st{font-size:11px;color:var(--gray2)}
+.adnote{font-size:11.5px;color:var(--gray2);margin-top:12px;line-height:1.6;
+  background:var(--card);border:1px solid var(--line2);border-radius:12px;padding:11px 14px}
+
+/* ── sheet ── */
+dialog{border:0;padding:0;background:transparent;max-width:none;max-height:none;width:100%;height:100%;margin:0}
+dialog::backdrop{background:rgba(10,30,50,.5)}
+.sheet{position:fixed;right:0;top:0;bottom:0;width:min(520px,100%);background:var(--card);display:flex;flex-direction:column;
+  padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (max-width:600px){.sheet{top:7vh;border-radius:20px 20px 0 0;width:100%;overflow:hidden}}
+.sh-hero{position:relative;height:120px;display:grid;place-items:center;color:#fff;flex:none}
+.sh-hero svg.big{width:40px;height:40px;stroke-width:1.5}
+.sh-hero .x{position:absolute;right:12px;top:12px;width:34px;height:34px;border-radius:50%;
+  background:rgba(255,255,255,.25);color:#fff;display:grid;place-items:center;font-size:18px}
+.sh-body{flex:1;overflow-y:auto;padding:18px 18px 34px}
+.sh-body h2{font-size:21px;line-height:1.35}
+.sh-loc{font-size:12.5px;color:var(--gray2);margin:6px 0 14px;display:flex;align-items:center;gap:8px}
+.sh-body p{font-size:14px;line-height:1.8;color:var(--gray)}
+.box{border:1px solid var(--line2);border-radius:13px;padding:13px 15px;margin-top:13px;background:var(--bg)}
+.box h4{font-size:11.5px;color:var(--gray2);font-weight:500;margin:0 0 5px}
+.box p{margin:0;font-size:13.5px;color:var(--navy)}
+.facts{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:13px}
+.fact{border:1px solid var(--line2);border-radius:13px;padding:11px 13px}
+.fact span{display:block;font-size:11.5px;color:var(--gray2);margin-bottom:3px}
+.fact b{font-size:13.5px;font-weight:500}
+.sh-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:15px}
+.sh-tags button{font-size:12px;padding:5px 11px;border-radius:999px;border:1px solid var(--line);color:var(--gray)}
+.sh-tags button:hover{border-color:var(--p400);color:var(--p600)}
+.ad-row{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:14px}
+.ad-btn{display:flex;align-items:center;gap:9px;padding:12px;border-radius:13px;border:1px solid var(--line);
+  font-size:12.5px;font-weight:500;color:var(--navy)}
+.ad-btn:hover{border-color:var(--p400)}
+.ad-btn .ib{width:30px;height:30px;border-radius:9px;display:grid;place-items:center;color:#fff;flex:none;font-size:13px}
+.sh-foot{flex:none;display:flex;gap:9px;padding:12px 18px;border-top:1px solid var(--line2);background:var(--card)}
+.btn{flex:1;text-align:center;padding:13px;border-radius:13px;font-size:14px;font-weight:500;
+  border:1px solid var(--line);color:var(--navy)}
+.btn.pri{background:linear-gradient(135deg,var(--p500),var(--p700));border-color:transparent;color:#fff}
+
+/* ── panel ── */
+.panel{background:var(--card);border:1px solid var(--line2);border-radius:var(--r);padding:18px;box-shadow:var(--sh);margin-bottom:16px}
+.panel h2{font-size:17px;margin-bottom:4px}
+.panel .sub{font-size:12.5px;color:var(--gray);margin:0 0 14px}
+.pickrow{display:flex;align-items:center;gap:10px;padding:12px 0;border-top:1px solid var(--line2)}
+.pickrow .nm{font-size:14px;font-weight:500}
+.pickrow .tg{font-size:11.5px;color:var(--gray2);margin-top:2px}
+.pickrow .sp{flex:1}
+.mini{font-size:12px;padding:6px 11px;border:1px solid var(--line);border-radius:9px;color:var(--gray)}
+.mini:hover{border-color:var(--p400);color:var(--p600)}
+.inp{flex:1;padding:11px 14px;border:1px solid var(--line);border-radius:11px;background:var(--bg);color:var(--navy);font:inherit;font-size:13.5px}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(24px + env(safe-area-inset-bottom,0px));
+  background:var(--navy);color:var(--bg);padding:11px 20px;border-radius:999px;font-size:13px;z-index:90;
+  opacity:0;pointer-events:none;transition:opacity .2s}
+.toast.show{opacity:1}
+footer{background:var(--card);border-top:1px solid var(--line2)}
+.ft{max-width:1200px;margin:0 auto;padding:26px 16px 42px;font-size:12px;color:var(--gray2);line-height:1.85}
+.ft b{color:var(--gray);font-weight:500}
+.ft .lg{display:flex;align-items:center;gap:7px;color:var(--navy);margin-bottom:10px}
+</style>
 </head>
 <body>
 
-  <header class="site-header">
-    <div class="header-left">
-      <a href="search.html" class="header-sub-link" title="전국 탐색"><i class="fa-solid fa-map-location-dot"></i></a>
+<svg style="display:none">
+<symbol id="i-compass" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M15.5 8.5l-2 5.5-5.5 2 2-5.5z"/></symbol>
+<symbol id="i-map" viewBox="0 0 24 24"><path d="M9 3L3 6v15l6-3 6 3 6-3V3l-6 3-6-3zM9 3v15M15 6v15"/></symbol>
+<symbol id="i-coffee" viewBox="0 0 24 24"><path d="M17 8h1a3 3 0 010 6h-1M3 8h14v6a5 5 0 01-5 5H8a5 5 0 01-5-5V8zM6 2v2M10 2v2M14 2v2"/></symbol>
+<symbol id="i-menu" viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h18"/></symbol>
+<symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></symbol>
+<symbol id="i-dice" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="4"/><circle cx="8.5" cy="8.5" r="1.2" fill="currentColor" stroke="none"/><circle cx="15.5" cy="15.5" r="1.2" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1.2" fill="currentColor" stroke="none"/></symbol>
+<symbol id="i-bookmark" viewBox="0 0 24 24"><path d="M6 3h12v18l-6-4-6 4V3z"/></symbol>
+<symbol id="i-eye" viewBox="0 0 24 24"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></symbol>
+<symbol id="i-cal" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/></symbol>
+<symbol id="i-moon" viewBox="0 0 24 24"><path d="M21 13A9 9 0 1111 3a7 7 0 1010 10z"/></symbol>
+<symbol id="i-sliders" viewBox="0 0 24 24"><path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"/></symbol>
+<symbol id="i-bed" viewBox="0 0 24 24"><path d="M2 18v-6h20v6M2 18v3M22 18v3M2 12V6M6 12V9h5v3"/></symbol>
+<symbol id="i-ticket" viewBox="0 0 24 24"><path d="M3 8a2 2 0 012-2h14a2 2 0 012 2v2a2 2 0 000 4v2a2 2 0 01-2 2H5a2 2 0 01-2-2v-2a2 2 0 000-4V8z"/><path d="M13 6v12"/></symbol>
+<symbol id="i-car" viewBox="0 0 24 24"><path d="M5 17h14M3 17v-4l2-5h14l2 5v4M3 17v2M21 17v2"/><circle cx="7.5" cy="14" r="1.2" fill="currentColor" stroke="none"/><circle cx="16.5" cy="14" r="1.2" fill="currentColor" stroke="none"/></symbol>
+<symbol id="i-tent" viewBox="0 0 24 24"><path d="M12 4L3 20h18L12 4zM12 4v16"/></symbol>
+<symbol id="i-flag" viewBox="0 0 24 24"><path d="M5 21V4h13l-2.5 4L18 12H5"/></symbol>
+<symbol id="i-tag" viewBox="0 0 24 24"><path d="M3 12V4h8l10 10-8 8L3 12z"/><circle cx="7.5" cy="7.5" r="1.2" fill="currentColor" stroke="none"/></symbol>
+<symbol id="i-train" viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="13" rx="3"/><path d="M5 10h14M8 20l-2 2M16 20l2 2M9 16h6"/></symbol>
+<symbol id="i-wave" viewBox="0 0 24 24"><path d="M2 7c3 0 3 3 6 3s3-3 6-3 3 3 6 3M2 13c3 0 3 3 6 3s3-3 6-3 3 3 6 3"/></symbol>
+<symbol id="i-mtn" viewBox="0 0 24 24"><path d="M2 20l7-12 4 6 2-3 7 9H2z"/></symbol>
+<symbol id="i-tree" viewBox="0 0 24 24"><path d="M12 3l6 8h-4l4 6H6l4-6H6l6-8zM12 17v4"/></symbol>
+<symbol id="i-drop" viewBox="0 0 24 24"><path d="M12 3s6 6.5 6 10.5A6 6 0 016 13.5C6 9.5 12 3 12 3z"/></symbol>
+<symbol id="i-house" viewBox="0 0 24 24"><path d="M3 11l9-7 9 7M5 10v10h14V10M10 20v-6h4v6"/></symbol>
+<symbol id="i-frame" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M3 15l5-5 4 4 3-3 6 6"/></symbol>
+<symbol id="i-cave" viewBox="0 0 24 24"><path d="M3 21V11a9 9 0 0118 0v10h-6v-7a3 3 0 00-6 0v7H3z"/></symbol>
+<symbol id="i-island" viewBox="0 0 24 24"><path d="M2 19c3 0 3 2 6 2s3-2 6-2 3 2 6 2M12 17V7M12 7c0-3 4-3 4 0M12 7c0-3-4-3-4 0"/></symbol>
+</svg>
+
+<header class="hd"><div class="hd-in">
+  <div class="hd-l">
+    <button class="ibtn" id="btnFilter" title="조건 고르기" aria-label="조건 고르기"><svg class="ic"><use href="#i-sliders"/></svg></button>
+    <button class="ibtn" id="btnDeals" title="여행 특가" aria-label="여행 특가"><svg class="ic"><use href="#i-tag"/></svg></button>
+  </div>
+  <a class="logo" href="#top"><span class="mk"><svg class="ic"><use href="#i-compass"/></svg></span><b>optvoyage</b></a>
+  <div class="hd-r">
+    <a class="coffee" href="https://buymeacoffee.com/djawjdaks8g" target="_blank" rel="noopener noreferrer" title="커피 한 잔 후원하기">
+      <svg class="ic"><use href="#i-coffee"/></svg><span>커피 후원</span></a>
+    <button class="ibtn" id="btnMenu" aria-label="메뉴 열기"><svg class="ic"><use href="#i-menu"/></svg></button>
+    <div class="drop" id="dropMenu">
+      <div class="dh">optvoyage 메뉴</div>
+      <button id="mFilter"><svg class="ic" style="color:var(--p500)"><use href="#i-sliders"/></svg>조건 조합으로 찾기<span class="bg">HOT</span></button>
+      <button id="mHidden"><svg class="ic" style="color:var(--amber)"><use href="#i-eye"/></svg>아무도 안 가는 곳</button>
+      <button id="mMonth"><svg class="ic" style="color:var(--p500)"><use href="#i-cal"/></svg>이번 달에 좋은 곳</button>
+      <button id="mDice"><svg class="ic" style="color:var(--coral)"><use href="#i-dice"/></svg>운명의 랜덤 픽</button>
+      <button id="mSaved"><svg class="ic" style="color:var(--p500)"><use href="#i-bookmark"/></svg>나만의 픽 보관함<span class="bg" id="savedN2">0</span></button>
+      <hr>
+      <button id="mDeals"><svg class="ic" style="color:var(--coral)"><use href="#i-tag"/></svg>여행 특가 모아보기</button>
+      <a href="https://buymeacoffee.com/djawjdaks8g" target="_blank" rel="noopener noreferrer"><svg class="ic" style="color:var(--amber)"><use href="#i-coffee"/></svg>커피 한 잔 후원하기</a>
+      <hr>
+      <button id="mTheme"><svg class="ic"><use href="#i-moon"/></svg>화면 밝기 전환</button>
     </div>
+  </div>
+</div></header>
 
-    <div class="header-center">
-      <a href="index.html" class="logo-wrap">
-        <span class="logo-icon"><i class="fa-solid fa-compass"></i></span>
-        <span class="logo-title">optvoyage</span>
-      </a>
+<section class="hero" id="top"><div class="hero-in">
+  <h1 id="sentence"></h1>
+  <p class="sub">전국 <b id="totalN">0</b>곳 · 92가지 세부 조건 · 사람이 적을수록 높아지는 숨은지수</p>
+  <label class="sbox">
+    <svg class="ic"><use href="#i-search"/></svg>
+    <input id="qBox" type="search" placeholder="여행지 이름이나 지역으로 찾기" aria-label="여행지 검색">
+  </label>
+  <div class="qacts">
+    <button class="qa" id="actHidden"><svg class="ic"><use href="#i-eye"/></svg>아무도 안 가는 곳</button>
+    <button class="qa" id="actMonth"><svg class="ic"><use href="#i-cal"/></svg>이번 달에 좋은 곳</button>
+    <button class="qa" id="actDice"><svg class="ic"><use href="#i-dice"/></svg>랜덤 픽</button>
+    <button class="qa" id="actSaved"><svg class="ic"><use href="#i-bookmark"/></svg>내 보관함 <b id="savedN">0</b></button>
+  </div>
+</div></section>
+
+<main class="wrap">
+  <aside class="cs" id="console">
+    <div class="cs-h"><svg class="ic"><use href="#i-sliders"/></svg><h2>세부 조건 고르기</h2><span class="cnt" id="pickedN">0개 선택</span></div>
+    <div id="groups"></div>
+  </aside>
+  <div>
+    <div id="savedPanel" hidden></div>
+    <div class="rhead">
+      <h2 id="rTitle">결과</h2><div class="sp"></div>
+      <select class="sel" id="sortSel">
+        <option value="match">일치율 높은 순</option>
+        <option value="obs">숨은지수 높은 순</option>
+        <option value="obsLow">알려진 곳 먼저</option>
+        <option value="region">지역 순</option>
+        <option value="rand">무작위</option>
+      </select>
     </div>
+    <div class="active-tags" id="activeTags"></div>
+    <div class="list" id="list"></div>
+    <button class="more" id="moreBtn" hidden>더 보기</button>
+  </div>
+</main>
 
-    <div class="header-right">
-      <a href="https://buymeacoffee.com/djawjdaks8g" target="_blank" class="coffee-sponsor-btn" title="후원하기">
-        <i class="fa-solid fa-mug-hot"></i>
-        <span class="sponsor-text">커피 후원</span>
-      </a>
-      <button class="header-icon-btn" id="menuBtn"><i class="fa-solid fa-bars"></i></button>
+<section class="deals" id="deals">
+  <h2>여행 특가 모아보기</h2>
+  <p class="sub">숙소·액티비티·렌터카 실시간 최저가를 한곳에서 비교합니다.</p>
+  <div class="dgrid" id="dealGrid"></div>
+  <p class="adnote">위 링크는 제휴(어필리에이트) 링크입니다. 이용자가 추가로 부담하는 금액은 없으며, 예약이 발생하면 optvoyage가 일정 수수료를 받습니다. 이 수수료는 사이트 운영과 데이터 보강에 쓰입니다.</p>
+</section>
 
-      <div class="chrome-dropdown" id="dropdownMenu">
-        <div class="dropdown-header">optvoyage 메뉴</div>
-        <a href="search.html" class="dropdown-item"><i class="fa-solid fa-sliders" style="color: var(--primary-600);"></i> 150+ 세부 픽 검색</a>
-        <a href="search.html?cat=edu" class="dropdown-item"><i class="fa-solid fa-graduation-cap" style="color: #059669;"></i> 학습·유적 픽</a>
-        <a href="community.html" class="dropdown-item"><i class="fa-solid fa-users" style="color: #d97706;"></i> 여행자 추천 픽</a>
-        <a href="random.html" class="dropdown-item"><i class="fa-solid fa-dice" style="color: #9333ea;"></i> 운명의 랜덤 픽</a>
-        <a href="search.html?view=bookmarks" class="dropdown-item"><i class="fa-solid fa-heart" style="color: #ef4444;"></i> 내가 찜한 보관함</a>
-        <div class="dropdown-divider"></div>
-        <a href="https://buymeacoffee.com/djawjdaks8g" target="_blank" class="dropdown-item highlight-item"><i class="fa-solid fa-mug-saucer" style="color: #f59e0b;"></i> 개발자 커피 후원</a>
-        <a href="privacy.html" class="dropdown-item"><i class="fa-solid fa-shield-halved"></i> 개인정보처리방침</a>
-        <a href="terms.html" class="dropdown-item"><i class="fa-solid fa-file-contract"></i> 이용약관</a>
+<footer><div class="ft">
+  <div class="lg"><span class="mk" style="width:24px;height:24px;border-radius:7px;display:grid;place-items:center;color:#fff;font-size:12px;background:linear-gradient(135deg,var(--p400),var(--p600))"><svg class="ic"><use href="#i-compass"/></svg></span><b style="color:var(--navy);font-size:15px">optvoyage</b></div>
+  전국 217곳을 92가지 조건으로 조합해 고르는 맞춤 여행 큐레이션.<br>
+  수록 정보는 직접 정리한 자료입니다. 개방 시간·통제 여부·물때·축제 일정은 방문 전 각 지자체 공지로 확인하세요.<br>
+  숨은지수는 붐빔 정도에 대한 상대적 추정치이며 공식 통계가 아닙니다. 주민이 사는 마을에서는 조용히 걸어주세요.<br>
+  <b>제휴 고지</b> — 본 사이트는 제휴 마케팅 링크를 포함하며 이를 통해 수수료를 받을 수 있습니다.
+</div></footer>
+
+<dialog id="dlg"><div class="sheet" id="sheet"></div></dialog>
+<div class="toast" id="toast"></div>
+
+<script>
+const AFF={
+  STAY:{u:"https://3ha.in/r/725499",t:"전국 숙소 최저가",s:"실시간 가격 비교",i:"i-bed",c:"#1E88E5"},
+  ACT:{u:"https://3ha.in/r/725525",t:"인기 액티비티 할인",s:"입장권·체험권",i:"i-ticket",c:"#FF6B5A"},
+  CAR:{u:"https://3ha.in/r/725527",t:"렌터카 가격비교",s:"섬·지방 여행 필수",i:"i-car",c:"#0B569E"},
+  GLAM:{u:"https://3ha.in/r/725529",t:"감성 글램핑·캠핑",s:"계곡·숲속 명소",i:"i-tent",c:"#2E9E6B"},
+  TOUR:{u:"https://3ha.in/r/725530",t:"지역 힐링 투어",s:"가이드 동행 코스",i:"i-flag",c:"#7B5BD6"},
+  CPN:{u:"https://3ha.in/r/725531",t:"여행 할인 쿠폰팩",s:"예약 전 먼저 받기",i:"i-tag",c:"#F0A020"},
+  KTX:{u:"https://3ha.in/r/725534",t:"KTX + 숙박 결합",s:"기차여행 특가",i:"i-train",c:"#0F6FCC"}
+};
+
+const DATA = [{"n":"백사실계곡","s":"서울","g":"종로구","o":4,"t":["계곡","숲","조용한","사람 적은","혼자","무료","대중교통","더울 때","반나절","둘레길"],"d":"도심 한복판에 도롱뇽이 사는 1급수 계곡이 남아 있다. 별서터 주춧돌만 남은 터가 계곡 가운데 있어 폐허 같은 정취가 있다.","p":"부암동 쪽에서 내려오면 오르막이 거의 없다. 여름 평일 오전이 가장 한산하다.","w":"6~9월"},{"n":"안산 자락길","s":"서울","g":"서대문구","o":3,"t":["숲","완만한 길","무료","대중교통","부모님과","혼자","반나절","둘레길","조용한"],"d":"산 중턱을 한 바퀴 도는 7km 무장애 데크길. 계단이 거의 없어 유모차와 휠체어로도 한 바퀴가 가능하다.","p":"메타세쿼이아 구간은 서대문독립공원 쪽 입구가 가깝다.","w":"사계절"},{"n":"경춘선 숲길","s":"서울","g":"노원구","o":3,"t":["폐역·폐선","숲","자전거","무료","대중교통","혼자","둘이서","반나절","조용한","기차여행"],"d":"경춘선 옛 철길을 걷는 6km 산책로. 화랑대 폐역에 옛 전차와 신호등이 그대로 서 있다.","p":"화랑대역 구간은 해 질 무렵 조명이 켜진다.","w":"4~11월"},{"n":"용마폭포공원","s":"서울","g":"중랑구","o":5,"t":["폭포","절벽·기암","산업유산","무료","대중교통","사람 적은","사진","더울 때","반나절"],"d":"채석장으로 깎여나간 51m 절벽에 인공폭포를 걸어놓은 공원. 도심에서 보기 힘든 수직 암벽 풍경이다.","p":"폭포 가동은 여름철 정해진 시간에만. 뒤쪽 용마산 등산로와 이어진다.","w":"6~8월"},{"n":"길상사","s":"서울","g":"성북구","o":3,"t":["사찰","숲","조용한","혼자","무료","대중교통","반나절","단풍","사진"],"d":"요정이던 대원각을 절로 내놓아 만든 도량. 기와 대신 한옥 별채들이 숲 사이에 흩어져 있어 절 같지 않은 절이다.","p":"경내 침묵 구역이 있다. 가을 단풍이 짧고 진하다.","w":"10~11월"},{"n":"낙산공원 성곽길","s":"서울","g":"종로구","o":2,"t":["성곽·산성","야경","밤","무료","대중교통","둘이서","혼자","반나절","사진","완만한 길"],"d":"한양도성 성곽을 따라 걷다 보면 도심 야경이 통째로 아래에 깔린다. 오르막이 짧아 밤 산책으로 부담이 없다.","p":"혜화문에서 시작해 동대문 방향으로 내려오면 계속 내리막이다.","w":"사계절"},{"n":"선유도공원","s":"서울","g":"영등포구","o":3,"t":["강","산업유산","숲","무료","대중교통","혼자","둘이서","조용한","반나절","사진","비 오는 날"],"d":"정수장 콘크리트 구조물을 헐지 않고 식물을 올려 만든 공원. 녹조 정화조 자리가 지금은 수생식물원이다.","p":"비 오는 날 콘크리트가 젖으면 분위기가 가장 좋다.","w":"사계절"},{"n":"고덕수변생태공원","s":"서울","g":"강동구","o":5,"t":["강","습지","숲","사람 적은","조용한","혼자","무료","반나절","완만한 길"],"d":"한강 본류에 붙은 버드나무 습지. 서울 한강공원 중 가장 사람이 없고 자전거도 적다.","p":"암사역에서 걸어가면 20분. 여름엔 모기가 많다.","w":"4~6월, 10월"},{"n":"서울생활사박물관","s":"서울","g":"노원구","o":4,"t":["박물관","근대건축","무료","대중교통","아이와","부모님과","비 오는 날","반나절","사람 적은"],"d":"옛 북부지방법원 건물을 그대로 쓴 무료 박물관. 1950~90년대 서울 집과 골목을 방 단위로 재현해 놨다.","p":"뒤편에 옛 구치감 건물이 남아 있다. 비 오는 날 갈 만하다.","w":"사계절"},{"n":"국립서울현충원 수양벚꽃","s":"서울","g":"동작구","o":3,"t":["벚꽃","숲","무료","대중교통","조용한","부모님과","혼자","반나절","사진"],"d":"가지가 늘어지는 수양벚나무가 능선을 따라 줄지어 선다. 여의도와 달리 노점도 인파도 없다.","p":"4월 초 한 주가 절정. 정숙이 원칙인 공간이다.","w":"4월 초"},{"n":"굴업도","s":"인천","g":"옹진군","o":5,"t":["섬","바다","들판","별·은하수","배편 필요","많이 걷기","사람 적은","혼자","1박 이상","일출","노을","트레킹"],"d":"사슴이 돌아다니는 개머리언덕이 통째로 억새밭이다. 편의점도 식당도 사실상 없어 먹을 것을 지고 들어가야 한다.","p":"덕적도에서 한 번 더 갈아탄다. 기상으로 발이 묶이는 일이 잦으니 일정에 하루 여유를 둘 것.","w":"9~10월"},{"n":"교동도 대룡시장","s":"인천","g":"강화군","o":4,"t":["전통시장","근대건축","어촌","쓸쓸한","사진","혼자","부모님과","당일치기","사람 적은","드라이브"],"d":"황해도 연백에서 피란 온 실향민들이 고향 시장을 본떠 만든 골목. 간판과 약방이 1960년대에서 멈춰 있다.","p":"민통선 안이라 다리 입구에서 신분증 확인과 출입증 발급을 거친다.","w":"사계절"},{"n":"석모도 민머루해변","s":"인천","g":"강화군","o":4,"t":["바다","갯벌","노을","온천","사람 적은","조용한","둘이서","당일치기","물때 확인","드라이브"],"d":"서해 치고 모래가 고운 해변에 낙조가 정면으로 떨어진다. 근처에 바다를 보며 앉는 노천 해수탕이 있다.","p":"물이 빠지면 갯벌이 끝없이 드러난다. 물때표를 먼저 볼 것.","w":"4~10월"},{"n":"소래습지생태공원","s":"인천","g":"남동구","o":4,"t":["습지","염전","갯벌","억새·갈대","노을","무료","대중교통","사진","혼자","반나절","사람 적은"],"d":"버려진 염전 터에 풍차와 소금창고가 남아 있다. 갈대와 염생식물이 붉게 물드는 가을이 압권이다.","p":"칠면초가 붉어지는 9~10월이 정점. 그늘이 거의 없다.","w":"9~10월"},{"n":"배다리 헌책방골목","s":"인천","g":"동구","o":4,"t":["책방·도서관","근대건축","벽화마을","혼자","비 오는 날","무료","대중교통","반나절","조용한","사람 적은"],"d":"한국전쟁 후 생긴 헌책방 거리가 몇 집 남아 버티고 있다. 골목 안에 작은 전시공간과 오래된 양조장 건물이 섞여 있다.","p":"평일 낮에 가야 문 연 집이 많다.","w":"사계절"},{"n":"개항장 근대건축 거리","s":"인천","g":"중구","o":2,"t":["근대건축","박물관","산업유산","둘이서","아이와","대중교통","사진","반나절","비 오는 날"],"d":"옛 일본 은행 세 곳과 청국 조계지 계단이 한 블록 안에 몰려 있다. 계단 하나를 사이에 두고 석등 모양이 바뀐다.","p":"차이나타운 쪽은 붐비니 자유공원 방향으로 빠지면 한산하다.","w":"사계절"},{"n":"백령도 두무진","s":"인천","g":"옹진군","o":5,"t":["섬","절벽·기암","바다","지질공원","배편 필요","1박 이상","사람 적은","노을","트레킹","혼자"],"d":"10억 년 된 사암 절벽이 병풍처럼 바다에 꽂혀 있다. 유람선을 타야 절벽 앞면을 볼 수 있다.","p":"인천에서 뱃길 4시간. 파도로 결항이 잦으니 여유 일정 필수.","w":"5~10월"},{"n":"장봉도 갯티길","s":"인천","g":"옹진군","o":5,"t":["섬","갯벌","바다","둘레길","배편 필요","사람 적은","조용한","혼자","당일치기","노을","많이 걷기"],"d":"삼목선착장에서 40분이면 닿는데도 사람이 거의 없다. 해안을 따라 난 갯티길이 섬을 한 바퀴 돈다.","p":"차 없이 들어가 마을버스로 이동해도 충분하다.","w":"4~10월"},{"n":"무의도 호룡곡산","s":"인천","g":"중구","o":3,"t":["섬","산","바다","등산","대중교통","당일치기","혼자","둘이서","트레킹","일출"],"d":"해발 246m인데 능선에서 서해 섬들이 줄줄이 보인다. 다리가 놓여 배 없이 들어간다.","p":"광명항에서 올라 하나개로 내려오는 코스가 편하다.","w":"사계절"},{"n":"승봉도","s":"인천","g":"옹진군","o":5,"t":["섬","바다","해수욕","사람 적은","조용한","배편 필요","1박 이상","둘이서","노을","갯벌"],"d":"이일레해변 백사장이 완만하고 넓은데 사람은 손에 꼽을 만큼 적다. 섬 반대편엔 촛대바위가 서 있다.","p":"대부도·인천에서 배편. 성수기 외에는 식당 영업이 들쭉날쭉하다.","w":"6~9월"},{"n":"연천 재인폭포","s":"경기","g":"연천군","o":3,"t":["폭포","절벽·기암","지질공원","계곡","무료","주차 쉬움","아이와","당일치기","더울 때","사진","드라이브"],"d":"현무암 주상절리 절벽에서 18m를 곧장 떨어진다. 폭포 위를 가로지르는 유리 전망대가 놓여 있다.","p":"장마 직후 수량이 가장 많다. 겨울엔 빙벽이 된다.","w":"6~9월"},{"n":"전곡리 선사유적지","s":"경기","g":"연천군","o":4,"t":["선사유적","박물관","들판","아이와","무료","주차 쉬움","당일치기","반나절","사람 적은","완만한 길"],"d":"동아시아 최초의 아슐리안 주먹도끼가 나온 자리. 한탄강 물줄기가 감싸는 너른 둔치가 유적 전체를 덮고 있다.","p":"선사박물관은 실내라 비 오는 날 대안이 된다.","w":"4~10월"},{"n":"시흥 갯골생태공원","s":"경기","g":"시흥시","o":4,"t":["습지","염전","갯벌","억새·갈대","노을","무료","주차 쉬움","사진","혼자","반나절","사람 적은"],"d":"내륙 깊숙이 파고든 갯골을 따라 폐염전이 남아 있다. 나무로 짠 흔들전망대에 오르면 소금밭 구획이 한눈에 들어온다.","p":"해질녘 갯골에 물이 들어찰 때가 가장 좋다.","w":"9~11월"},{"n":"포천 비둘기낭 폭포","s":"경기","g":"포천시","o":3,"t":["폭포","동굴","절벽·기암","지질공원","계곡","무료","주차 쉬움","사진","당일치기","더울 때"],"d":"현무암 협곡 안쪽에 숨은 에메랄드빛 소(沼). 물빛이 계절에 따라 옥색에서 청록으로 바뀐다.","p":"전망대에서만 내려다본다. 옆 한탄강 하늘다리와 묶으면 반나절.","w":"5~10월"},{"n":"파주 감악산 출렁다리","s":"경기","g":"파주시","o":2,"t":["출렁다리","산","등산","계곡","무료","주차 쉬움","당일치기","둘이서","트레킹","단풍"],"d":"150m 산악 현수교가 계곡을 가로지른다. 다리만 건너도 되고 정상까지 2시간이면 오른다.","p":"주말 주차장이 금방 찬다. 아침 일찍 가면 다리가 비어 있다.","w":"4~6월, 10월"},{"n":"안성 칠장사","s":"경기","g":"안성시","o":5,"t":["사찰","숲","조용한","사람 적은","혼자","무료","반나절","단풍","드라이브"],"d":"임꺽정 설화와 어사 박문수 이야기가 함께 붙어 있는 산속 절. 국보 혜소국사비가 요란한 표지 없이 서 있다.","p":"주차장에서 경내까지 5분. 관광버스가 오지 않는다.","w":"10~11월"},{"n":"제부도","s":"경기","g":"화성시","o":2,"t":["섬","바다","갯벌","노을","물때 확인","드라이브","당일치기","둘이서","아이와","사진"],"d":"하루 두 번 바닷길이 열려야 들어간다. 섬 서쪽 매바위 앞으로 해가 떨어진다.","p":"물때표대로 길이 닫히면 몇 시간 갇힌다. 들어갈 때 나올 시간을 먼저 확인할 것.","w":"4~10월"},{"n":"남양주 수종사","s":"경기","g":"남양주시","o":3,"t":["사찰","강","산","운해","조용한","일출","혼자","반나절","사진","많이 걷기"],"d":"두물머리가 발밑에 내려다보이는 절. 새벽에 강 안개가 깔리면 산봉우리만 섬처럼 남는다.","p":"차로 올라가는 길이 매우 좁고 가파르다. 걸어서 40분 코스를 권한다.","w":"10~11월 새벽"},{"n":"여주 신륵사","s":"경기","g":"여주시","o":3,"t":["사찰","강","노을","부모님과","조용한","주차 쉬움","반나절","단풍","드라이브"],"d":"강가에 세운 보기 드문 절. 남한강 물길을 바로 내려다보는 벽돌탑과 정자가 있다.","p":"해질녘 강 쪽 정자에서 보는 노을이 좋다.","w":"사계절"},{"n":"구봉도 낙조전망대","s":"경기","g":"안산시","o":3,"t":["바다","노을","섬","둘레길","갯벌","주차 쉬움","둘이서","당일치기","사진","완만한 길"],"d":"대부도 끝자락 바위 능선을 걸어 나가면 바다 위 데크에 닿는다. 서해 낙조를 정면으로 받는 자리다.","p":"주차장에서 왕복 1시간 30분. 해지기 한 시간 전에 출발하면 맞는다.","w":"사계절"},{"n":"가평 용추계곡","s":"경기","g":"가평군","o":3,"t":["계곡","숲","폭포","더울 때","아이와","주차 쉬움","당일치기","무료","트레킹","반려견"],"d":"아홉 개 소(沼)가 이어지는 물길을 따라 길이 나 있다. 위로 올라갈수록 사람이 줄어든다.","p":"하류는 유료 평상이 많다. 상류 쪽으로 20분만 더 걸으면 한산하다.","w":"7~8월"},{"n":"영월 선돌","s":"강원","g":"영월군","o":4,"t":["절벽·기암","강","노을","무료","주차 쉬움","사진","혼자","반나절","드라이브","사람 적은"],"d":"70m 높이 바위가 강 위에서 두 쪽으로 갈라져 서 있다. 주차장에서 5분만 걸으면 전망대다.","p":"오후 역광을 피해 오전에 가면 바위 색이 산다.","w":"사계절"},{"n":"영월 한반도지형","s":"강원","g":"영월군","o":2,"t":["강","절벽·기암","숲","완만한 길","주차 쉬움","아이와","부모님과","당일치기","사진"],"d":"강물이 휘감아 돌며 만든 땅 모양이 한반도를 빼닮았다. 전망대까지 소나무 숲길이 이어진다.","p":"안개 낀 아침에 가면 윤곽이 더 또렷하다.","w":"사계절"},{"n":"정선 몰운대","s":"강원","g":"정선군","o":5,"t":["절벽·기암","계곡","숲","쓸쓸한","사람 적은","혼자","무료","반나절","사진","드라이브"],"d":"깎아지른 석벽 끝에 늙은 소나무 한 그루가 서 있다. 안내판 하나 외에 아무 시설이 없다.","p":"난간이 없는 벼랑이다. 가장자리에 서지 말 것.","w":"5~10월"},{"n":"정선 아우라지","s":"강원","g":"정선군","o":3,"t":["강","기차여행","자전거","부모님과","주차 쉬움","당일치기","조용한","사진","드라이브"],"d":"골지천과 송천이 만나 한강이 시작되는 자리. 옛 뗏목꾼 이야기가 정선아리랑으로 남았다.","p":"레일바이크 종점과 붙어 있어 함께 묶기 좋다.","w":"4~10월"},{"n":"태백 검룡소","s":"강원","g":"태백시","o":4,"t":["계곡","숲","완만한 길","조용한","혼자","당일치기","더울 때","사람 적은","트레킹"],"d":"한강이 처음 솟아나는 샘. 사계절 9도의 물이 하루 2천 톤씩 바위를 타고 흘러내린다.","p":"주차장에서 왕복 50분 숲길. 겨울엔 결빙으로 통제될 때가 있다.","w":"6~9월"},{"n":"삼척 덕풍계곡","s":"강원","g":"삼척시","o":5,"t":["계곡","폭포","산","많이 걷기","사람 적은","혼자","더울 때","1박 이상","트레킹","비포장"],"d":"응봉산 깊은 협곡을 따라 용소 세 개가 차례로 나온다. 길이 험해 사람이 거의 들어오지 않는다.","p":"비 예보가 있으면 들어가지 않는다. 계곡물이 순식간에 불어난다.","w":"7~8월"},{"n":"삼척 초곡 용굴촛대바위길","s":"강원","g":"삼척시","o":4,"t":["바다","절벽·기암","동굴","일출","완만한 길","무료","사진","당일치기","사람 적은","드라이브"],"d":"어촌 방파제 옆 바위 틈으로 난 해안 데크. 파도가 동굴을 통과하며 소리를 낸다.","p":"파도가 높은 날은 구간이 통제된다. 주차는 초곡항에.","w":"사계절"},{"n":"인제 원대리 자작나무숲","s":"강원","g":"인제군","o":2,"t":["숲","설경","트레킹","많이 걷기","사진","당일치기","둘이서","혼자","추울 때","예약 필요"],"d":"흰 자작나무 69만 그루가 한 산비탈을 덮고 있다. 눈이 오면 나무와 땅의 경계가 사라진다.","p":"입구에서 숲까지 오르막 3.2km. 월요일 휴장과 산불조심기간 통제를 확인할 것.","w":"12~2월, 6~8월"},{"n":"인제 곰배령","s":"강원","g":"인제군","o":3,"t":["산","들판","봄꽃","예약 필요","트레킹","많이 걷기","혼자","당일치기","사람 적은","숲"],"d":"정상이 5만 평 야생화 초원이다. 하루 입산 인원을 제한해 길이 늘 조용하다.","p":"산림청 사전 예약 필수. 신분증을 지참하고 시간을 지켜야 한다.","w":"5~9월"},{"n":"양구 두타연","s":"강원","g":"양구군","o":5,"t":["계곡","폭포","숲","사람 적은","조용한","예약 필요","트레킹","혼자","당일치기","쓸쓸한"],"d":"민통선 안에 50년 넘게 사람 손이 닿지 않은 계곡. 열목어가 사는 물빛이 비현실적으로 푸르다.","p":"출입신청과 신분증 확인이 필요하고 정해진 시간에만 개방한다. 지정 통로를 벗어나지 말 것.","w":"6~10월"},{"n":"철원 한탄강 주상절리길","s":"강원","g":"철원군","o":2,"t":["절벽·기암","강","지질공원","많이 걷기","설경","사진","당일치기","둘이서","추울 때","트레킹"],"d":"협곡 절벽 중턱에 잔도를 매달아 3.6km를 걷는다. 겨울엔 강이 얼어 얼음 위로도 걷는다.","p":"중간 탈출로가 적어 한 방향으로 끝까지 간다. 편도 2시간.","w":"11~3월"},{"n":"철원 소이산 전망대","s":"강원","g":"철원군","o":4,"t":["산","들판","쓸쓸한","케이블카·모노레일","사람 적은","혼자","반나절","사진","드라이브"],"d":"철원평야와 비무장지대가 통째로 내려다보인다. 산 전체가 오랫동안 지뢰지대로 묶여 있던 자리다.","p":"모노레일로 오를 수 있다. 노동당사와 묶어 반나절.","w":"9~11월"},{"n":"홍천 은행나무숲","s":"강원","g":"홍천군","o":3,"t":["숲","단풍","무료","주차 쉬움","사진","부모님과","당일치기","드라이브","조용한"],"d":"한 사람이 아내의 병을 기원하며 30년간 심은 2천 그루 은행나무. 10월 한 달만 문을 연다.","p":"개방 기간이 해마다 공지된다. 그 외엔 닫혀 있다.","w":"10월"},{"n":"평창 육백마지기","s":"강원","g":"평창군","o":3,"t":["산","들판","별·은하수","노을","운해","드라이브","사진","혼자","1박 이상","추울 때"],"d":"해발 1,256m 능선이 통째로 평평한 밭이다. 풍력발전기 아래에서 은하수와 운해를 같이 본다.","p":"오르는 길이 좁고 급경사다. 겨울과 야간 운전은 피할 것.","w":"6월, 9~10월"},{"n":"강릉 안반데기","s":"강원","g":"강릉시","o":3,"t":["산","들판","운해","별·은하수","일출","드라이브","사진","1박 이상","추울 때","설경"],"d":"해발 1,100m 고랭지 배추밭이 능선을 따라 펼쳐진다. 새벽에 아래 골짜기가 구름으로 가득 찬다.","p":"일출 보려면 어둠 속 임도를 올라야 한다. 사륜구동이 안전하다.","w":"7~10월"},{"n":"고성 건봉사","s":"강원","g":"고성군","o":4,"t":["사찰","숲","조용한","사람 적은","혼자","무료","반나절","쓸쓸한","단풍"],"d":"한때 전각 642칸을 두었던 큰 절이 전쟁으로 거의 사라지고 불이문 하나만 살아남았다. 터의 규모만 남아 오히려 인상적이다.","p":"민통선 인근이라 개방 시간이 있다. 주변 소음이 거의 없다.","w":"사계절"},{"n":"동해 무릉계곡","s":"강원","g":"동해시","o":2,"t":["계곡","폭포","절벽·기암","산","등산","더울 때","당일치기","아이와","트레킹","단풍"],"d":"너럭바위 하나가 축구장만 하다. 위로 올라가면 쌍폭포와 용추폭포가 이어진다.","p":"무릉반석까지는 평지에 가깝다. 폭포까지는 왕복 2시간.","w":"7~8월, 10월"},{"n":"단양 사인암","s":"충북","g":"단양군","o":3,"t":["절벽·기암","강","계곡","무료","주차 쉬움","사진","혼자","반나절","드라이브","단풍"],"d":"강물 옆에 책을 세로로 쌓은 듯한 수직 절벽이 솟아 있다. 옛 선비들이 새긴 글자가 바위 곳곳에 남았다.","p":"바로 앞까지 차가 들어간다. 물이 맑은 초여름이 좋다.","w":"5~10월"},{"n":"단양 남한강 잔도","s":"충북","g":"단양군","o":2,"t":["강","절벽·기암","완만한 길","자전거","사진","당일치기","둘이서","트레킹","케이블카·모노레일"],"d":"절벽 허리에 매단 1.2km 데크길이 강 위를 지난다. 발밑이 뚫려 있어 물이 그대로 보인다.","p":"만천하스카이워크와 이어 걸을 수 있다. 여름 한낮엔 그늘이 없다.","w":"4~11월"},{"n":"괴산 산막이옛길","s":"충북","g":"괴산군","o":2,"t":["호수","숲","완만한 길","부모님과","아이와","당일치기","트레킹","사진","단풍"],"d":"괴산댐 물가를 따라 4km 나무데크가 이어진다. 편도로 걷고 배로 돌아나오는 방법이 있다.","p":"주말엔 유람선 대기가 길다. 평일 오전이 한산하다.","w":"4~11월"},{"n":"괴산 화양구곡","s":"충북","g":"괴산군","o":3,"t":["계곡","숲","절벽·기암","더울 때","무료","트레킹","혼자","당일치기","단풍","조용한"],"d":"희고 넓은 바위 위로 물이 흐르는 아홉 굽이. 송시열이 이름 붙인 바위들이 차례로 나온다.","p":"주차장에서 안쪽까지 걸어 들어간다. 계곡 출입 통제 구간을 지킬 것.","w":"7~8월, 10월"},{"n":"옥천 부소담악","s":"충북","g":"옥천군","o":4,"t":["호수","절벽·기암","숲","사람 적은","혼자","조용한","반나절","사진","트레킹"],"d":"대청호 물 위로 700m 바위 능선이 병풍처럼 떠 있다. 수위에 따라 모양이 달라진다.","p":"추소리 주차 후 20분 산길. 난간 없는 구간이 있다.","w":"봄·가을"},{"n":"영동 월류봉","s":"충북","g":"영동군","o":4,"t":["강","절벽·기암","둘레길","무료","조용한","혼자","반나절","사진","사람 적은","완만한 길"],"d":"달이 머물다 간다는 이름의 봉우리 아래로 초강천이 감아 돈다. 물가를 따라 걷는 길이 잘 나 있다.","p":"강 건너편 정자에서 보는 각도가 제일 낫다.","w":"사계절"},{"n":"진천 농다리","s":"충북","g":"진천군","o":3,"t":["강","완만한 길","무료","주차 쉬움","아이와","부모님과","반나절","사진","조용한"],"d":"천 년을 버틴 돌다리. 시멘트 없이 붉은 돌을 지네 다리처럼 엮어 물살을 흘려보낸다.","p":"다리를 건너 초롱길로 이어 걸으면 저수지가 나온다.","w":"사계절"},{"n":"제천 배론성지","s":"충북","g":"제천시","o":4,"t":["천주교성지","숲","조용한","사람 적은","혼자","무료","반나절","단풍","쓸쓸한"],"d":"박해를 피한 신자들이 숨어 살며 옹기를 굽던 골짜기. 황사영이 백서를 쓴 토굴이 복원돼 있다.","p":"산책로가 잘 정비돼 있고 늘 조용하다.","w":"10~11월"},{"n":"보은 말티재 전망대","s":"충북","g":"보은군","o":3,"t":["산","숲","드라이브","사진","주차 쉬움","반나절","단풍","부모님과"],"d":"열두 굽이 고갯길이 발아래 뱀처럼 휘감긴다. 나무로 지은 전망대에 오르면 굽이가 한 장에 담긴다.","p":"속리산 법주사와 묶어 반나절 코스.","w":"10~11월"},{"n":"충주 탄금대","s":"충북","g":"충주시","o":3,"t":["강","숲","절벽·기암","무료","완만한 길","부모님과","반나절","조용한","사진"],"d":"우륵이 가야금을 탔다는 솔숲 언덕이자 신립이 배수진을 친 자리. 남한강이 절벽 아래로 붙어 흐른다.","p":"평지 산책로 30분. 대중교통으로 접근이 쉽다.","w":"사계절"},{"n":"단양 온달동굴","s":"충북","g":"단양군","o":4,"t":["동굴","더울 때","추울 때","아이와","비 오는 날","주차 쉬움","반나절","사람 적은"],"d":"4억 5천만 년 된 석회동굴 내부를 760m 걸어 들어간다. 천장이 낮아 허리를 굽히는 구간이 여러 번 나온다.","p":"동굴 안은 연중 15도 안팎. 키 큰 사람은 헬멧을 꼭 쓸 것.","w":"사계절"},{"n":"서천 신성리 갈대밭","s":"충남","g":"서천군","o":4,"t":["강","습지","억새·갈대","노을","무료","주차 쉬움","사진","혼자","반나절","쓸쓸한","사람 적은"],"d":"금강 하구에 10만 평 갈대가 사람 키를 훌쩍 넘겨 자란다. 갈대 사이로 난 길에 들어서면 하늘만 보인다.","p":"바람 부는 날 소리가 좋다. 겨울 철새도 함께 본다.","w":"10~12월"},{"n":"서천 마량리 동백나무숲","s":"충남","g":"서천군","o":4,"t":["바다","숲","동백","노을","사람 적은","조용한","혼자","반나절","사진","드라이브"],"d":"바닷바람에 눌려 옆으로 자란 500살 동백 80여 그루가 언덕을 덮는다. 뒤편으로 서해 낙조가 떨어진다.","p":"동백은 3월 말~4월 초. 그 외엔 바다 전망만 본다.","w":"3~4월"},{"n":"태안 신두리 해안사구","s":"충남","g":"태안군","o":3,"t":["모래사구","바다","습지","완만한 길","무료","사진","혼자","반나절","사람 적은","드라이브"],"d":"바람이 수천 년 쌓아 만든 국내 최대 모래언덕. 사막 식물과 해당화가 자라는 독특한 생태지다.","p":"데크로만 다닌다. 모래 위를 걸으면 사구가 무너진다.","w":"5~6월, 9~10월"},{"n":"보령 무창포 신비의바닷길","s":"충남","g":"보령시","o":3,"t":["바다","갯벌","섬","물때 확인","아이와","주차 쉬움","당일치기","노을","사진"],"d":"한 달에 며칠, 석대도까지 1.5km 바닷길이 갈라진다. 드러난 바위 사이에 해산물이 남는다.","p":"물길 열리는 날짜와 시각이 공지된다. 반드시 미리 확인할 것.","w":"4~9월"},{"n":"예산 수덕사","s":"충남","g":"예산군","o":2,"t":["사찰","산","단풍","부모님과","주차 쉬움","반나절","조용한","등산"],"d":"고려시대 목조건축이 남은 대웅전이 배흘림기둥 위에 앉아 있다. 뒤로 덕숭산 등산로가 이어진다.","p":"일주문에서 대웅전까지 오르막 계단이 꽤 있다.","w":"10~11월"},{"n":"청양 천장호 출렁다리","s":"충남","g":"청양군","o":3,"t":["호수","출렁다리","산","숲","주차 쉬움","아이와","당일치기","사진","트레킹"],"d":"호수를 가로지르는 207m 흔들다리 뒤로 칠갑산이 서 있다. 다리 중간이 제법 흔들린다.","p":"다리만 보면 30분. 칠갑산 등산과 묶으면 하루.","w":"4~11월"},{"n":"부여 궁남지","s":"충남","g":"부여군","o":2,"t":["호수","연꽃","야경","무료","완만한 길","부모님과","아이와","반나절","사진","밤"],"d":"백제의 별궁 연못으로 알려진 인공 호수. 7월이면 연못 전체가 연잎으로 덮인다.","p":"연꽃은 아침에 핀다. 여름 야간 조명도 볼 만하다.","w":"7월"},{"n":"공주 마곡사","s":"충남","g":"공주시","o":3,"t":["사찰","숲","계곡","단풍","조용한","부모님과","반나절","트레킹","사람 적은"],"d":"절 가운데로 개울이 흐르고 다리가 경내를 둘로 나눈다. 백범 김구가 한때 몸을 숨긴 곳이다.","p":"뒤편 백범길·솔바람길 산책로가 잘 나 있다.","w":"10~11월, 4월"},{"n":"아산 외암민속마을","s":"충남","g":"아산시","o":3,"t":["고택·옛마을","산골마을","돌담","부모님과","아이와","반나절","사진","조용한","완만한 길"],"d":"사람이 실제로 사는 조선 후기 반가 마을. 돌담 총 길이만 5.3km다.","p":"주민 거주지다. 마당과 창을 들여다보지 않는 것이 예의.","w":"사계절"},{"n":"서산 간월암","s":"충남","g":"서산시","o":2,"t":["사찰","바다","섬","노을","물때 확인","사진","둘이서","반나절","드라이브"],"d":"물이 들면 섬이 되고 빠지면 걸어 들어가는 암자. 서해로 지는 해가 암자 뒤로 걸린다.","p":"물때에 따라 진입이 막힌다. 일몰 시각과 물때를 같이 볼 것.","w":"사계절"},{"n":"서산 개심사","s":"충남","g":"서산시","o":3,"t":["사찰","숲","벚꽃","조용한","사람 적은","혼자","반나절","사진"],"d":"휜 나무를 그대로 기둥으로 쓴 건물이 남아 있다. 4월 말 겹벚꽃이 청벚으로 피는 것으로 알려져 있다.","p":"주차장에서 계단 오르막 15분. 겹벚꽃 시기만 붐빈다.","w":"4월 말"},{"n":"당진 아미미술관","s":"충남","g":"당진시","o":4,"t":["폐교","미술관","숲","사진","조용한","둘이서","혼자","반나절","비 오는 날","사람 적은"],"d":"문 닫은 초등학교를 작가가 그대로 쓰고 있다. 교실 벽에 식물과 설치작품이 뒤엉켜 자란다.","p":"관람 동선이 짧다. 흐린 날 사진이 더 낫다.","w":"사계절"},{"n":"당진 왜목마을","s":"충남","g":"당진시","o":4,"t":["바다","일출","노을","사람 적은","드라이브","반나절","혼자","사진","조용한"],"d":"서해인데 일출을 본다. 해안선이 북쪽으로 꺾인 지형 때문에 해가 바다에서 떠 바다로 진다.","p":"일출 방향은 계절마다 조금씩 달라진다. 겨울이 가장 또렷하다.","w":"12~2월"},{"n":"논산 명재고택","s":"충남","g":"논산시","o":5,"t":["고택·옛마을","조용한","사람 적은","혼자","무료","반나절","사진","부모님과"],"d":"담장을 낮게 두고 장독대를 앞마당에 펼쳐놓은 조선 후기 집. 사람이 거의 없어 마루에 오래 앉아 있게 된다.","p":"후손이 관리하는 집이다. 사전 문의 후 방문하면 안전하다.","w":"사계절"},{"n":"장태산 자연휴양림","s":"대전","g":"서구","o":3,"t":["숲","산","완만한 길","단풍","주차 쉬움","아이와","당일치기","사진","트레킹"],"d":"국내에서 보기 드문 메타세쿼이아 대군락. 나무 중간 높이에 놓인 스카이웨이를 걷는다.","p":"평일 오전은 거의 비어 있다. 11월 초 낙엽이 절정.","w":"10~11월, 6~8월"},{"n":"계족산 황톳길","s":"대전","g":"대덕구","o":3,"t":["산","숲","둘레길","무료","트레킹","혼자","반나절","더울 때","완만한 길"],"d":"능선을 따라 14.5km 황토가 깔려 있다. 신발을 벗고 걷는 사람이 대부분이다.","p":"발 씻는 곳이 구간마다 있다. 비 온 직후가 가장 부드럽다.","w":"4~10월"},{"n":"대청호 오백리길","s":"대전","g":"동구","o":4,"t":["호수","숲","둘레길","조용한","사람 적은","혼자","많이 걷기","당일치기","사진","쓸쓸한"],"d":"댐이 생기며 물에 잠긴 마을 터를 지나는 길. 수위가 낮아지면 옛 길과 나무 밑동이 드러난다.","p":"찬샘마을 구간이 접근성이 좋다. 그늘이 많아 여름에도 걷는다.","w":"4~11월"},{"n":"소제동 철도관사촌","s":"대전","g":"동구","o":3,"t":["근대건축","산업유산","사진","둘이서","대중교통","반나절","비 오는 날","조용한"],"d":"1920년대 철도 노동자 사택 수십 채가 한 골목에 남았다. 일부는 카페로 바뀌고 일부는 비어 있다.","p":"대전역에서 도보 10분. 남은 빈집이 빠르게 줄고 있다.","w":"사계절"},{"n":"상소동 산림욕장 돌탑","s":"대전","g":"동구","o":5,"t":["숲","계곡","무료","사람 적은","조용한","혼자","반나절","더울 때","사진"],"d":"주민들이 하나씩 쌓아 올린 돌탑 수백 기가 숲 전체에 흩어져 있다. 이국적이라기보단 기이한 풍경이다.","p":"여름 계곡물이 시원하다. 주차 무료.","w":"6~9월"},{"n":"비암사","s":"세종","g":"전의면","o":5,"t":["사찰","숲","단풍","조용한","사람 적은","혼자","무료","반나절","쓸쓸한"],"d":"백제 유민이 세웠다는 이야기가 전하는 작은 절. 500년 넘은 느티나무가 마당을 덮는다.","p":"주차장 바로 옆이 경내다. 사람이 거의 없다.","w":"10~11월"},{"n":"영평사 구절초","s":"세종","g":"장군면","o":4,"t":["사찰","산","메밀·구절초","무료","사진","조용한","반나절","부모님과","사람 적은"],"d":"장군산 자락 절 마당과 산비탈이 온통 흰 구절초로 덮인다. 개화기에만 축제가 열린다.","p":"9월 말~10월 초 2주가 전부다.","w":"9월 말~10월 초"},{"n":"국립세종수목원","s":"세종","g":"연기면","o":3,"t":["수목원","숲","비 오는 날","아이와","부모님과","주차 쉬움","반나절","사진","완만한 길","예약 필요"],"d":"국내 최초 도심형 국립수목원. 한국 전통정원과 대형 온실이 함께 있어 비 오는 날에도 볼 게 있다.","p":"온라인 예매가 편하다. 실내 온실은 겨울에 특히 좋다.","w":"사계절"},{"n":"고복자연공원","s":"세종","g":"연서면","o":5,"t":["호수","숲","둘레길","조용한","사람 적은","혼자","무료","반나절","완만한 길","반려견"],"d":"저수지 둘레를 따라 데크와 흙길이 이어진다. 세종 시내에서 가까운데 사람이 거의 없다.","p":"한 바퀴 1시간. 조명이 없어 해 지기 전에 나올 것.","w":"4~11월"},{"n":"밀마루전망대","s":"세종","g":"보람동","o":5,"t":["야경","밤","무료","대중교통","사람 적은","혼자","반나절","사진"],"d":"세종 신도시 전체를 한 장에 담는 42m 전망대. 계획도시의 격자 구조가 그대로 보인다.","p":"무료 입장. 해 진 직후 30분이 가장 좋다.","w":"사계절"},{"n":"진안 마이산","s":"전북","g":"진안군","o":2,"t":["산","절벽·기암","사찰","벚꽃","등산","당일치기","아이와","사진","트레킹"],"d":"말 귀 모양 바위산 두 개가 들판에 불쑥 솟아 있다. 탑사에는 사람이 쌓은 돌탑 80여 기가 백 년 넘게 서 있다.","p":"남부주차장에서 탑사까지가 가장 짧다. 벚꽃길은 4월 중순.","w":"4월, 10월"},{"n":"진안 운일암반일암","s":"전북","g":"진안군","o":4,"t":["계곡","숲","절벽·기암","더울 때","무료","사람 적은","당일치기","트레킹","드라이브"],"d":"하루 중 반나절만 해가 든다는 깊은 협곡. 바위와 물이 뒤엉킨 구간이 5km 이어진다.","p":"여름에도 물이 차다. 데크길이 정비돼 있어 걷기 편하다.","w":"7~8월"},{"n":"순창 용궐산 하늘길","s":"전북","g":"순창군","o":3,"t":["산","강","절벽·기암","많이 걷기","사진","당일치기","트레킹","혼자"],"d":"암벽에 나무 잔도를 붙여 섬진강 상류를 내려다보며 걷는다. 경사 구간이 꽤 가파르다.","p":"계단이 많아 무릎에 부담이 간다. 물을 넉넉히.","w":"4~6월, 10월"},{"n":"임실 옥정호 붕어섬","s":"전북","g":"임실군","o":3,"t":["호수","출렁다리","섬","운해","사진","당일치기","둘이서","봄꽃","트레킹"],"d":"붕어를 닮은 섬으로 출렁다리가 놓였다. 새벽 물안개가 섬을 감싸면 물 위에 떠 있는 것처럼 보인다.","p":"운해는 일교차 큰 가을 새벽. 국사봉 전망대에서 내려다보는 각도가 유명하다.","w":"10~11월 새벽"},{"n":"부안 직소폭포","s":"전북","g":"부안군","o":3,"t":["폭포","계곡","산","숲","트레킹","많이 걷기","더울 때","당일치기","단풍"],"d":"내변산 안쪽 30m 폭포. 가는 길에 봉래구곡과 저수지가 차례로 나온다.","p":"내소사 방면보다 내변산탐방지원센터에서 오르는 편이 짧다. 왕복 2시간.","w":"7~8월, 10월"},{"n":"부안 곰소염전","s":"전북","g":"부안군","o":4,"t":["염전","바다","노을","사진","드라이브","사람 적은","반나절","혼자","쓸쓸한"],"d":"아직 소금을 걷는 천일염전. 오후 늦게 수면에 하늘이 통째로 비친다.","p":"작업 중인 염전이다. 둑 위를 함부로 걷지 말 것.","w":"5~9월"},{"n":"고창 학원농장 청보리밭","s":"전북","g":"고창군","o":3,"t":["들판","청보리","메밀·구절초","사진","주차 쉬움","아이와","둘이서","반나절","드라이브"],"d":"언덕 전체가 보리밭이다. 가을에는 같은 자리가 흰 메밀꽃으로 바뀐다.","p":"보리는 4월 중순~5월 초, 메밀은 9월. 그 사이엔 빈 밭이다.","w":"4~5월, 9월"},{"n":"고창 고인돌 유적","s":"전북","g":"고창군","o":4,"t":["선사유적","들판","숲","무료","완만한 길","아이와","반나절","사람 적은","조용한"],"d":"산비탈 2km 구간에 고인돌 440여 기가 몰려 있다. 세계적으로 이 밀도가 드물다.","p":"모로모로 열차를 타면 편하다. 그늘이 적다.","w":"4~6월, 9~10월"},{"n":"군산 근대역사거리","s":"전북","g":"군산시","o":2,"t":["근대건축","박물관","산업유산","사진","아이와","부모님과","대중교통","반나절","비 오는 날"],"d":"쌀을 실어 나르던 항구 도시의 은행·세관·사택이 한 구역에 남았다. 일본식 사찰 동국사도 그 안에 있다.","p":"주말은 붐빈다. 평일 오전에 걸어 다니면 좋다.","w":"사계절"},{"n":"완주 화암사","s":"전북","g":"완주군","o":5,"t":["사찰","숲","계곡","조용한","사람 적은","혼자","무료","반나절","단풍","많이 걷기"],"d":"가파른 철계단을 올라야 나오는 작은 절. 국내에 하나 남은 하앙식 구조 건물이 이 절에 있다.","p":"주차장에서 계곡길 20분. 절 앞 계단이 가파르다.","w":"10~11월"},{"n":"익산 미륵사지","s":"전북","g":"익산시","o":3,"t":["고분·왕릉","선사유적","들판","박물관","무료","주차 쉬움","아이와","반나절","사진","사람 적은"],"d":"백제 최대 사찰이 있던 자리에 석탑 하나와 텅 빈 터만 남았다. 빈 공간의 규모가 오히려 압도적이다.","p":"해질녘 석탑 그림자가 길다. 옆 박물관은 무료.","w":"사계절"},{"n":"정읍 구절초지방정원","s":"전북","g":"정읍시","o":4,"t":["메밀·구절초","숲","강","사진","주차 쉬움","부모님과","반나절","사람 적은","완만한 길"],"d":"솔숲 바닥이 온통 흰 구절초로 덮인다. 나무 사이로 꽃이 퍼져 있어 들판 꽃밭과는 느낌이 다르다.","p":"개화는 9월 말~10월 중순. 그 외 기간은 평범한 솔숲이다.","w":"9월 말~10월"},{"n":"김제 벽골제","s":"전북","g":"김제시","o":4,"t":["들판","박물관","산업유산","아이와","주차 쉬움","반나절","사람 적은","쓸쓸한","사진"],"d":"1,700년 전 저수지 제방이 들판을 가로질러 남아 있다. 지평선이 보이는 드문 평야 지대다.","p":"가을 지평선축제 때 외엔 매우 한산하다.","w":"9~10월"},{"n":"신안 증도 태평염전","s":"전남","g":"신안군","o":4,"t":["염전","바다","노을","산업유산","사진","드라이브","혼자","반나절","쓸쓸한","사람 적은"],"d":"단일 염전으로는 국내 최대. 나무 소금창고가 일직선으로 늘어서 있고 해질녘 수면이 분홍빛으로 바뀐다.","p":"소금박물관과 붙어 있다. 그늘이 전혀 없으니 모자 필수.","w":"5~9월"},{"n":"신안 도초도 수국길","s":"전남","g":"신안군","o":5,"t":["섬","수국","숲","배편 필요","사람 적은","사진","당일치기","조용한","둘이서"],"d":"폐교 자리와 팽나무 숲길을 따라 수국이 길게 심겼다. 사람보다 꽃이 많은 시기가 있다.","p":"6월 하순이 절정. 목포·암태도에서 배로 들어간다.","w":"6월"},{"n":"신안 퍼플섬","s":"전남","g":"신안군","o":3,"t":["섬","바다","사진","둘이서","당일치기","완만한 길","드라이브","봄꽃"],"d":"지붕과 다리까지 보라색으로 칠한 반월·박지도. 색이 강해 호불호가 갈린다.","p":"보라색 옷이나 소품이 있으면 입장료 혜택이 있다.","w":"6~9월"},{"n":"진도 관매도","s":"전남","g":"진도군","o":5,"t":["섬","바다","숲","절벽·기암","배편 필요","사람 적은","1박 이상","트레킹","혼자","해수욕"],"d":"삼백 년 된 곰솔숲이 해변 뒤를 통째로 덮고 있다. 섬 반대편엔 하늘다리와 기암 절벽이 있다.","p":"진도 팽목항에서 배. 숙소와 식당이 매우 제한적이다.","w":"6~9월"},{"n":"진도 세방낙조","s":"전남","g":"진도군","o":3,"t":["바다","노을","섬","드라이브","사진","혼자","반나절","주차 쉬움","쓸쓸한"],"d":"크고 작은 섬들 사이로 해가 떨어진다. 해안도로 전망대가 여러 곳 이어져 있다.","p":"일몰 30분 전 도착. 겨울 공기가 맑아 실루엣이 선명하다.","w":"10~2월"},{"n":"강진 가우도","s":"전남","g":"강진군","o":3,"t":["섬","바다","둘레길","출렁다리","완만한 길","당일치기","부모님과","사진","케이블카·모노레일"],"d":"다리를 걸어 들어가는 작은 섬. 해안을 한 바퀴 도는 2.5km 데크가 거의 평지다.","p":"양쪽 다리 길이가 다르다. 짧은 쪽으로 들어가 긴 쪽으로 나오면 편하다.","w":"사계절"},{"n":"강진 백운동원림","s":"전남","g":"강진군","o":5,"t":["고택·옛마을","숲","계곡","조용한","사람 적은","혼자","무료","반나절","단풍"],"d":"차밭 옆 계곡에 숨은 조선시대 별서정원. 담양 소쇄원과 비교되지만 찾는 사람이 훨씬 적다.","p":"월출산 차밭 주차 후 숲길 10분. 다산초당과 묶어 반나절.","w":"5~6월, 11월"},{"n":"보성 벌교 갯벌","s":"전남","g":"보성군","o":4,"t":["갯벌","습지","어촌","근대건축","사람 적은","사진","반나절","혼자","쓸쓸한"],"d":"꼬막이 나는 여자만 갯벌. 소설 『태백산맥』에 나온 건물들이 읍내에 그대로 남아 있다.","p":"꼬막철은 11~3월. 갯벌 체험은 물때를 봐야 한다.","w":"11~3월"},{"n":"곡성 섬진강 기차마을","s":"전남","g":"곡성군","o":3,"t":["기차여행","강","폐역·폐선","아이와","부모님과","주차 쉬움","당일치기","사진","자전거"],"d":"폐선된 전라선 구간을 증기기관차 모양 열차가 달린다. 강을 따라 자전거길도 나란히 간다.","p":"열차 시간표가 정해져 있다. 여름 장미공원이 함께 볼 만하다.","w":"4~10월"},{"n":"구례 사성암","s":"전남","g":"구례군","o":3,"t":["사찰","절벽·기암","산","강","운해","사진","반나절","혼자","조용한"],"d":"오산 절벽에 기둥을 박아 얹은 암자. 마루 끝에서 섬진강과 구례 들판이 통째로 내려다보인다.","p":"주차장에서 마을버스로 갈아탄다. 자차 진입은 제한될 때가 있다.","w":"10~11월"},{"n":"화순 운주사","s":"전남","g":"화순군","o":4,"t":["사찰","선사유적","들판","조용한","사람 적은","혼자","반나절","쓸쓸한","사진"],"d":"골짜기 전체에 석불 70여 구와 석탑이 아무렇게나 놓여 있다. 누가 왜 만들었는지 아직 모른다.","p":"드러누운 와불까지 올라가 보면 분위기가 완전히 다르다.","w":"사계절"},{"n":"화순 세량지","s":"전남","g":"화순군","o":4,"t":["호수","숲","벚꽃","사진","사람 적은","혼자","반나절","조용한","봄꽃"],"d":"작은 저수지 물에 산벚꽃과 연둣빛 새잎이 통째로 반사된다. 사진가들 사이에서만 알려진 곳이다.","p":"4월 초 아침 바람 없는 날이 조건. 그 외엔 평범한 저수지다.","w":"4월 초 아침"},{"n":"영광 백수해안도로","s":"전남","g":"영광군","o":3,"t":["바다","절벽·기암","노을","드라이브","완만한 길","사진","혼자","반나절","둘레길"],"d":"해안 절벽을 따라 난 16km 도로. 도로 아래로 나무 데크 산책로가 따로 나 있다.","p":"노을 명소 전망대가 여러 곳. 차를 세울 곳이 넉넉하다.","w":"사계절"},{"n":"고흥 쑥섬","s":"전남","g":"고흥군","o":5,"t":["섬","바다","숲","봄꽃","배편 필요","사람 적은","조용한","당일치기","둘이서","사진"],"d":"주민들이 직접 가꾼 정원이 섬 꼭대기에 있다. 오래전부터 고양이는 있어도 개는 없는 섬으로 알려져 있다.","p":"나로도 축정항에서 배로 5분. 입도 인원이 제한된다.","w":"4~10월"},{"n":"여수 금오도 비렁길","s":"전남","g":"여수시","o":4,"t":["섬","바다","절벽·기암","트레킹","많이 걷기","배편 필요","1박 이상","사람 적은","혼자","노을"],"d":"'비렁'은 벼랑의 사투리. 해안 절벽 끝을 따라 5개 코스 18km가 이어진다.","p":"1코스가 가장 짧고 경치가 좋다. 배 시간이 하루 몇 편뿐이다.","w":"3~6월, 9~11월"},{"n":"완도 청산도 슬로길","s":"전남","g":"완도군","o":3,"t":["섬","바다","다랑논","둘레길","배편 필요","1박 이상","사진","혼자","봄꽃","조용한"],"d":"돌담과 계단식 논이 바다까지 이어진다. 봄이면 유채와 청보리가 논을 덮는다.","p":"완도항에서 50분. 섬 안은 순환버스나 자전거로 돈다.","w":"4~5월"},{"n":"완도 보길도 세연정","s":"전남","g":"완도군","o":4,"t":["고택·옛마을","섬","숲","조용한","배편 필요","1박 이상","사진","혼자","사람 적은"],"d":"윤선도가 유배 대신 스스로 머물며 만든 정원. 바위와 물길을 거의 그대로 두고 정자만 얹었다.","p":"완도·해남에서 배. 섬 안 이동에는 차가 있으면 편하다.","w":"4~10월"},{"n":"해남 미황사","s":"전남","g":"해남군","o":4,"t":["사찰","산","바다","노을","조용한","사람 적은","혼자","반나절","등산","단풍"],"d":"달마산 바위 병풍 아래 단청을 벗은 대웅보전이 서 있다. 마당에서 서해가 보인다.","p":"뒤편 달마고도 둘레길은 17.7km. 일부 구간만 걸어도 된다.","w":"10~11월"},{"n":"담양 관방제림","s":"전남","g":"담양군","o":3,"t":["강","숲","단풍","무료","완만한 길","부모님과","혼자","반나절","조용한","자전거"],"d":"홍수를 막으려 심은 300년 고목이 2km 둑을 덮는다. 바로 옆 메타세쿼이아길보다 훨씬 한산하다.","p":"죽녹원·국수거리와 걸어서 이어진다.","w":"10~11월"},{"n":"장흥 정남진 편백숲","s":"전남","g":"장흥군","o":4,"t":["숲","산","온천","조용한","사람 적은","혼자","당일치기","더울 때","완만한 길","트레킹"],"d":"산 하나가 통째로 편백나무다. 우드랜드 안에 목재로 지은 숙소와 목욕시설이 있다.","p":"여름에도 숲 안이 서늘하다. 평일엔 거의 전세 수준.","w":"6~9월"},{"n":"무등산 서석대","s":"광주","g":"북구","o":2,"t":["산","절벽·기암","등산","지질공원","많이 걷기","트레킹","당일치기","설경","일출"],"d":"병풍처럼 늘어선 주상절리 돌기둥이 정상 능선에 서 있다. 겨울 상고대가 붙으면 완전히 다른 산이 된다.","p":"증심사·원효사 코스 모두 왕복 4~5시간. 정상부 통제 여부를 확인할 것.","w":"12~2월, 10월"},{"n":"양림동 근대역사마을","s":"광주","g":"남구","o":3,"t":["근대건축","벽화마을","책방·도서관","사진","대중교통","반나절","조용한","비 오는 날","둘이서"],"d":"선교사 사택과 한옥, 골목 벽화가 한 동네에 섞여 있다. 펭귄마을이라는 이름의 골목 공예촌이 안쪽에 있다.","p":"언덕이 많다. 편한 신발을 권한다.","w":"사계절"},{"n":"광주호 호수생태원","s":"광주","g":"북구","o":4,"t":["호수","습지","숲","무료","완만한 길","조용한","사람 적은","혼자","반나절","반려견"],"d":"호수 가장자리 습지에 나무데크를 낮게 깔아뒀다. 메타세쿼이아 길이 짧게 이어진다.","p":"무료 입장. 소쇄원·식영정과 차로 5분 거리다.","w":"4~11월"},{"n":"의재미술관","s":"광주","g":"동구","o":5,"t":["미술관","산","숲","조용한","사람 적은","혼자","비 오는 날","반나절","사진"],"d":"무등산 초입 차밭 옆에 앉은 작은 미술관. 남종화가 허백련의 화실과 춘설헌이 같이 있다.","p":"증심사 가는 길에 있다. 관람객이 늘 적다.","w":"사계절"},{"n":"5·18 민주광장과 옛 전남도청","s":"광주","g":"동구","o":2,"t":["근대건축","박물관","독립운동","무료","대중교통","아이와","반나절","조용한"],"d":"1980년 5월의 마지막 항전 장소. 총탄 자국이 남은 건물과 시계탑이 그 자리에 있다.","p":"주변 전일빌딩245와 함께 보면 맥락이 이어진다. 무료.","w":"사계절"},{"n":"영양 죽파리 자작나무숲","s":"경북","g":"영양군","o":5,"t":["숲","설경","많이 걷기","사람 적은","조용한","혼자","당일치기","트레킹","사진","비포장"],"d":"인제보다 넓은데 아는 사람이 훨씬 적다. 숲까지 임도를 3.2km 걸어 들어가야 해서 늘 한산하다.","p":"주차 후 왕복 2시간. 매점이 없으니 물과 간식을 챙길 것.","w":"12~2월, 6~8월"},{"n":"영양 반딧불이천문대와 밤하늘","s":"경북","g":"영양군","o":5,"t":["별·은하수","산","밤","사람 적은","조용한","1박 이상","사진","혼자","추울 때"],"d":"아시아 최초 국제밤하늘보호공원으로 지정된 지역. 가로등을 일부러 줄여 맨눈으로 은하수가 보인다.","p":"달 없는 밤이 조건. 숙소가 적으니 미리 잡을 것.","w":"6~9월 그믐"},{"n":"봉화 승부역","s":"경북","g":"봉화군","o":5,"t":["폐역·폐선","기차여행","계곡","산","쓸쓸한","사람 적은","혼자","당일치기","설경","조용한"],"d":"차로는 접근이 매우 어려운 산속 간이역. 하늘도 세 평, 땅도 세 평이라는 문구가 역에 새겨져 있다.","p":"백두대간협곡열차나 무궁화호로 간다. 열차 편수가 적어 시간표를 먼저 볼 것.","w":"12~2월, 10월"},{"n":"청송 주산지","s":"경북","g":"청송군","o":3,"t":["호수","숲","단풍","운해","사진","조용한","반나절","혼자","완만한 길"],"d":"300년 된 저수지 물속에 왕버들이 그대로 서서 자란다. 새벽 물안개가 낄 때가 가장 유명하다.","p":"주차장에서 20분. 수위가 낮으면 나무 밑동이 드러나 분위기가 달라진다.","w":"10~11월 새벽"},{"n":"청송 얼음골","s":"경북","g":"청송군","o":4,"t":["계곡","절벽·기암","추울 때","더울 때","무료","드라이브","반나절","사람 적은","사진"],"d":"여름에 얼음이 얼고 겨울엔 김이 오르는 골짜기. 겨울철엔 인공빙벽장이 되어 등반객이 모인다.","p":"한여름 계곡 바람이 서늘하다. 도로변이라 접근이 쉽다.","w":"7~8월, 1~2월"},{"n":"영덕 블루로드","s":"경북","g":"영덕군","o":3,"t":["바다","둘레길","등대","많이 걷기","일출","트레킹","혼자","당일치기","사진","노을"],"d":"해안 절벽과 백사장을 번갈아 걷는 64km 길. 구간마다 성격이 완전히 다르다.","p":"B코스(죽도산~축산항)가 경치가 좋고 길이도 적당하다.","w":"4~6월, 9~11월"},{"n":"영덕 괴시마을","s":"경북","g":"영덕군","o":5,"t":["고택·옛마을","산골마을","조용한","사람 적은","무료","혼자","반나절","사진","부모님과"],"d":"영해 들판을 내려다보는 언덕에 기와집 40여 채가 모여 있다. 관광객이 거의 없어 골목이 늘 비어 있다.","p":"실제 주민이 산다. 조용히 걸을 것.","w":"사계절"},{"n":"안동 만휴정","s":"경북","g":"안동시","o":3,"t":["고택·옛마을","계곡","폭포","숲","사진","조용한","반나절","혼자","단풍"],"d":"계곡 위 바위에 얹은 작은 정자. 좁은 외나무다리를 건너야 들어간다.","p":"주차 후 도보 10분. 정자 마루 출입이 제한될 때가 있다.","w":"5~6월, 10~11월"},{"n":"안동 하회마을","s":"경북","g":"안동시","o":1,"t":["고택·옛마을","강","산골마을","부모님과","아이와","당일치기","사진","완만한 길"],"d":"강이 마을을 휘감고 돈다. 세계유산이지만 여전히 사람이 사는 마을이다.","p":"건너편 부용대에 올라야 마을 전체가 보인다. 셔틀 이용.","w":"사계절"},{"n":"문경 철로자전거와 진남교반","s":"경북","g":"문경시","o":3,"t":["폐역·폐선","기차여행","자전거","강","아이와","당일치기","주차 쉬움","사진","드라이브"],"d":"폐선 위를 네 명이 함께 밟는 자전거로 달린다. 옆으로 영강과 고모산성 절벽이 지난다.","p":"주말 예약이 빨리 찬다. 구간마다 운영 시간이 다르다.","w":"4~11월"},{"n":"예천 회룡포","s":"경북","g":"예천군","o":3,"t":["강","들판","산","트레킹","사진","당일치기","혼자","완만한 길","조용한"],"d":"강이 마을을 350도 감아 돌아 거의 섬이 된 땅. 전망대에 올라야 그 모양이 보인다.","p":"장안사 뒤 회룡대까지 15분 오르막. 마을은 뿅뿅다리로 건넌다.","w":"사계절"},{"n":"예천 삼강주막","s":"경북","g":"예천군","o":4,"t":["강","양조장","고택·옛마을","무료","사람 적은","혼자","반나절","조용한","사진"],"d":"낙동강 마지막 주막을 복원해 놓았다. 뱃사공과 보부상이 묵던 자리에 막걸리와 두부를 판다.","p":"강변 회화나무 아래 평상이 좋다. 주차 무료.","w":"4~11월"},{"n":"영주 무섬마을","s":"경북","g":"영주시","o":4,"t":["고택·옛마을","강","산골마을","사진","조용한","사람 적은","반나절","혼자","완만한 길"],"d":"강모래 위에 앉은 마을로 들어가려면 폭 30cm 외나무다리를 건넌다. 난간이 없다.","p":"물이 불면 다리가 잠긴다. 신발을 적실 각오를 할 것.","w":"사계절"},{"n":"영주 부석사","s":"경북","g":"영주시","o":2,"t":["사찰","산","운해","단풍","부모님과","많이 걷기","당일치기","사진","노을"],"d":"무량수전 배흘림기둥에 기대 서면 소백산 능선이 파도처럼 겹쳐 보인다. 해 질 무렵이 특히 그렇다.","p":"일주문에서 무량수전까지 계단 오르막 20분.","w":"10~11월"},{"n":"울진 불영계곡","s":"경북","g":"울진군","o":3,"t":["계곡","절벽·기암","숲","드라이브","단풍","사람 적은","당일치기","사진","트레킹"],"d":"36번 국도를 따라 15km 협곡이 이어진다. 불영사 연못에 바위 그림자가 부처 모양으로 비친다고 한다.","p":"도로가 굽이가 많다. 전망대에 차를 세우고 봐야 안전하다.","w":"10~11월"},{"n":"울릉도 행남해안산책로","s":"경북","g":"울릉군","o":3,"t":["섬","바다","절벽·기암","등대","배편 필요","1박 이상","트레킹","사진","일출"],"d":"도동항에서 절벽에 붙여 만든 해안길을 따라 등대까지 걷는다. 발아래로 물속 바위가 그대로 보인다.","p":"낙석으로 일부 구간이 자주 통제된다. 현지 안내를 확인할 것.","w":"5~10월"},{"n":"경주 남산 불상길","s":"경북","g":"경주시","o":3,"t":["산","선사유적","사찰","등산","트레킹","많이 걷기","혼자","당일치기","사진","조용한"],"d":"산 전체가 노천 박물관이다. 바위마다 신라 사람들이 새긴 불상과 탑이 흩어져 있다.","p":"삼릉에서 올라 용장골로 내려오는 코스가 대표적. 왕복 4시간.","w":"4~5월, 10~11월"},{"n":"남평문씨 본리세거지","s":"대구","g":"달성군","o":5,"t":["고택·옛마을","돌담","숲","조용한","사람 적은","혼자","무료","반나절","사진"],"d":"흙돌담이 격자로 이어진 조선 후기 집성촌. 광거당과 인수문고가 담 안쪽에 있다.","p":"인근 마비정 벽화마을과 묶어 반나절. 거주 구역이니 조용히.","w":"사계절"},{"n":"비슬산 대견사","s":"대구","g":"달성군","o":3,"t":["산","사찰","절벽·기암","철쭉","케이블카·모노레일","트레킹","당일치기","사진","설경"],"d":"해발 1,000m 능선에 선 절. 봄이면 주변 30만 평이 참꽃으로 붉게 덮인다.","p":"전기차를 타면 정상 부근까지 오른다. 철쭉철은 매우 붐빈다.","w":"4월 말~5월 초"},{"n":"옻골마을","s":"대구","g":"동구","o":5,"t":["고택·옛마을","돌담","조용한","사람 적은","무료","혼자","반나절","사진","부모님과"],"d":"경주 최씨 종택과 흙담 골목이 통째로 남았다. 마을 앞 연못과 노거수가 여름에 특히 좋다.","p":"주차 공간이 좁다. 대중교통도 닿는다.","w":"6~8월"},{"n":"사문진나루터","s":"대구","g":"달성군","o":4,"t":["강","노을","숲","무료","주차 쉬움","부모님과","반나절","사진","조용한"],"d":"국내에 처음 피아노가 들어온 나루. 낙동강 물가에 늙은 팽나무들이 줄지어 서 있다.","p":"해질녘 주막촌 쪽 강변이 좋다. 유람선이 운항한다.","w":"사계절"},{"n":"앞산 전망대","s":"대구","g":"남구","o":3,"t":["산","야경","밤","케이블카·모노레일","사진","둘이서","반나절","대중교통"],"d":"대구 분지 전체가 발아래 깔린다. 도시 야경을 한 장에 담기 좋은 자리다.","p":"케이블카로 올라 조금 더 걸으면 전망대다. 운행 종료 시각을 확인할 것.","w":"사계절"},{"n":"불로동 고분군","s":"대구","g":"동구","o":5,"t":["고분·왕릉","들판","노을","무료","사람 적은","조용한","혼자","반나절","사진","완만한 길"],"d":"언덕 위에 삼국시대 무덤 200여 기가 잔디 봉우리로 남았다. 해질녘 실루엣이 좋다.","p":"무료 개방. 그늘이 없다.","w":"사계절"},{"n":"합천 황매산","s":"경남","g":"합천군","o":2,"t":["산","들판","철쭉","억새·갈대","별·은하수","트레킹","당일치기","사진","노을"],"d":"정상부가 나무 없는 초원이라 시야가 트인다. 봄엔 철쭉, 가을엔 억새가 능선을 덮는다.","p":"오토캠핑장까지 차로 올라 20분만 걸으면 능선이다.","w":"5월 초, 10월"},{"n":"거창 우두산 Y자 출렁다리","s":"경남","g":"거창군","o":3,"t":["출렁다리","산","절벽·기암","트레킹","사진","당일치기","많이 걷기","단풍"],"d":"세 방향으로 갈라지는 보기 드문 형태의 산악 현수교. 다리 아래로 계곡이 깊다.","p":"주차장에서 다리까지 오르막 30분. 고소공포가 있으면 부담될 수 있다.","w":"4~6월, 10월"},{"n":"거창 감악산 아스타국화","s":"경남","g":"거창군","o":4,"t":["산","들판","봄꽃","노을","드라이브","사진","반나절","사람 적은","별·은하수"],"d":"해발 950m 능선이 보랏빛 국화로 덮인다. 풍력발전기와 하늘정원이 함께 있다.","p":"9~10월이 개화기. 정상 부근까지 차로 오를 수 있다.","w":"9~10월"},{"n":"함양 상림숲","s":"경남","g":"함양군","o":3,"t":["숲","강","단풍","연꽃","무료","완만한 길","부모님과","혼자","반나절","조용한"],"d":"신라 때 최치원이 홍수를 막으려 조성한 인공림. 천 년 넘게 자란 활엽수가 1.6km 이어진다.","p":"옆 연밭은 7~8월. 평지라 누구나 걷는다.","w":"7~8월, 11월"},{"n":"산청 남사예담촌","s":"경남","g":"산청군","o":4,"t":["고택·옛마을","돌담","산골마을","조용한","사람 적은","무료","반나절","사진","부모님과"],"d":"흙돌담 3.2km가 마을을 감고 돈다. 두 그루가 서로 엇갈려 자란 회화나무가 상징이다.","p":"한옥 숙박이 가능한 집이 몇 곳 있다.","w":"사계절"},{"n":"산청 대원사계곡길","s":"경남","g":"산청군","o":4,"t":["계곡","숲","산","완만한 길","더울 때","사람 적은","혼자","당일치기","트레킹","조용한"],"d":"지리산 동쪽 물길을 따라 3.5km 데크가 거의 평지로 이어진다. 물이 유난히 맑고 차다.","p":"유평마을 방향으로 걸으면 한산하다. 여름에도 서늘하다.","w":"6~9월"},{"n":"남해 다랭이마을","s":"경남","g":"남해군","o":2,"t":["다랑논","바다","산골마을","절벽·기암","사진","당일치기","많이 걷기","드라이브","봄꽃"],"d":"비탈에 100층이 넘는 계단식 논이 바다까지 내려간다. 경사가 급해 소가 못 올라갔다는 이야기가 있다.","p":"마을 안 계단이 가파르다. 유채는 4월, 벼는 6~9월이 푸르다.","w":"4~5월, 9월"},{"n":"남해 앵강만 바래길","s":"경남","g":"남해군","o":5,"t":["바다","둘레길","어촌","다랑논","사람 적은","혼자","많이 걷기","조용한","트레킹","노을"],"d":"해안 마을과 언덕을 잇는 길. 예전 아낙들이 해산물을 채취하러 다니던 길에서 이름을 따왔다.","p":"코스가 여럿이다. 표지 리본을 잘 따라갈 것.","w":"3~6월, 9~11월"},{"n":"통영 연화도","s":"경남","g":"통영시","o":4,"t":["섬","바다","절벽·기암","사찰","배편 필요","트레킹","당일치기","사진","많이 걷기"],"d":"섬 능선을 따라 걷다 보면 용머리 바위가 바다로 뻗어나간 모습이 나온다. 보덕암이 절벽에 붙어 있다.","p":"통영 여객선터미널에서 배. 옆 우도와 다리로 이어진다.","w":"4~10월"},{"n":"거제 여차몽돌해변","s":"경남","g":"거제시","o":4,"t":["바다","드라이브","노을","사람 적은","조용한","혼자","반나절","사진","비포장"],"d":"파도가 몽돌을 굴리는 소리가 끊이지 않는다. 오는 길 여차~홍포 비포장 해안도로 전망이 더 유명하다.","p":"비포장 구간이 있다. 차 바닥이 낮으면 천천히.","w":"5~10월"},{"n":"거제 지심도","s":"경남","g":"거제시","o":4,"t":["섬","동백","숲","배편 필요","사람 적은","조용한","당일치기","둘이서","사진"],"d":"섬 전체가 동백숲이라 한겨울에도 어둡고 붉다. 일제강점기 포진지와 탄약고가 숲 안에 남아 있다.","p":"장승포에서 배 15분. 2~3월 동백이 절정.","w":"12~3월"},{"n":"고성 상족암 공룡발자국","s":"경남","g":"고성군","o":3,"t":["공룡·화석","바다","절벽·기암","동굴","지질공원","아이와","무료","당일치기","물때 확인","사진"],"d":"백악기 공룡 발자국 수천 개가 해안 바위에 그대로 남았다. 파도가 깎은 해식동굴이 바로 옆이다.","p":"물이 빠져야 발자국 구간에 들어간다. 바위가 미끄럽다.","w":"사계절"},{"n":"밀양 얼음골","s":"경남","g":"밀양시","o":3,"t":["계곡","산","절벽·기암","케이블카·모노레일","더울 때","당일치기","아이와","트레킹","사진"],"d":"한여름에 바위 틈에서 얼음이 얼고 겨울엔 계곡이 녹는다. 천연기념물로 지정된 기이한 지형이다.","p":"결빙 시기는 6~8월. 케이블카로 천황산까지 오를 수 있다.","w":"7~8월"},{"n":"창녕 우포늪","s":"경남","g":"창녕군","o":3,"t":["습지","호수","억새·갈대","자전거","사진","혼자","당일치기","조용한","완만한 길","일출"],"d":"1억 4천만 년 된 국내 최대 자연 내륙습지. 새벽 물안개와 따오기로 알려져 있다.","p":"둘레 8.4km. 자전거 대여가 편하다. 해뜨기 직전이 가장 좋다.","w":"10~12월 새벽"},{"n":"의령 한우산 철쭉","s":"경남","g":"의령군","o":5,"t":["산","철쭉","드라이브","사람 적은","조용한","반나절","사진","별·은하수"],"d":"능선 도로변이 철쭉으로 덮이는데 찾는 사람이 거의 없다. 밤에는 별 보기 좋은 자리가 된다.","p":"5월 초가 절정. 정상 근처까지 도로가 나 있다.","w":"5월 초"},{"n":"하동 십리벚꽃길","s":"경남","g":"하동군","o":2,"t":["벚꽃","강","드라이브","둘이서","사진","당일치기","완만한 길","봄꽃"],"d":"쌍계사로 오르는 4km 길에 오래된 벚나무가 터널을 이룬다. 옆으로 섬진강이 따라온다.","p":"4월 초 주말은 극심한 정체. 평일 이른 아침을 권한다.","w":"4월 초"},{"n":"김해 봉하마을","s":"경남","g":"김해시","o":3,"t":["산골마을","들판","박물관","무료","주차 쉬움","부모님과","반나절","조용한","완만한 길"],"d":"노무현 전 대통령의 생가와 묘역, 사저가 마을 안에 있다. 뒤편 봉화산 둘레길이 짧게 이어진다.","p":"무료 개방. 사저 관람은 시간과 인원 제한이 있다.","w":"사계절"},{"n":"이기대 해안산책로","s":"부산","g":"남구","o":2,"t":["바다","절벽·기암","둘레길","야경","트레킹","많이 걷기","대중교통","당일치기","사진"],"d":"해안 바위 위를 따라 걷다 보면 광안대교와 해운대 스카이라인이 계속 따라온다. 밤에는 야경이 정면에 깔린다.","p":"오륙도에서 시작하면 오르내림이 적다. 구간마다 계단이 많다.","w":"사계절"},{"n":"다대포 몰운대","s":"부산","g":"사하구","o":3,"t":["바다","숲","노을","절벽·기암","무료","대중교통","반나절","사진","완만한 길","조용한"],"d":"낙동강과 바다가 만나는 끝자락 솔숲 언덕. 해변의 일몰이 부산에서 가장 이르고 넓다.","p":"다대포해수욕장에서 걸어 15분. 지하철로 닿는다.","w":"사계절"},{"n":"아미동 비석문화마을","s":"부산","g":"서구","o":4,"t":["근대건축","벽화마을","쓸쓸한","사진","혼자","대중교통","반나절","조용한","야경"],"d":"일제강점기 공동묘지 위에 피란민이 집을 지었다. 계단과 담장에 비석이 그대로 박혀 있다.","p":"주민 생활공간이다. 사진 촬영에 각별히 주의할 것.","w":"사계절"},{"n":"영도 흰여울문화마을","s":"부산","g":"영도구","o":2,"t":["바다","벽화마을","절벽·기암","사진","둘이서","대중교통","반나절","노을"],"d":"절벽 위 좁은 길에 흰 집들이 붙어 있고 아래로 물양장이 내려다보인다. 골목 계단이 바다로 곧장 떨어진다.","p":"길이 매우 좁고 주민이 산다. 조용히 걸을 것.","w":"사계절"},{"n":"기장 죽성리 해안","s":"부산","g":"기장군","o":4,"t":["바다","어촌","드라이브","사진","조용한","혼자","반나절","사람 적은","노을"],"d":"방파제 끝에 성당 모양 세트가 서 있고 옆으로 오래된 해송과 어촌이 이어진다. 관광지 티가 덜하다.","p":"주차 공간이 좁다. 해동용궁사와 묶어 반나절.","w":"사계절"},{"n":"가덕도 연대봉","s":"부산","g":"강서구","o":5,"t":["산","바다","등산","일출","사람 적은","혼자","당일치기","트레킹","사진"],"d":"정상에 서면 거가대교와 남해 섬들이 한 번에 보인다. 부산에서 이만한 전망에 이렇게 사람이 없는 곳은 드물다.","p":"대항마을에서 오르면 1시간. 겨울 일출 명소다.","w":"11~2월"},{"n":"삼락생태공원","s":"부산","g":"사상구","o":4,"t":["강","습지","억새·갈대","자전거","무료","대중교통","조용한","반나절","반려견","완만한 길"],"d":"낙동강 둔치에 조성된 넓은 습지. 갈대밭과 연밭 사이로 자전거길이 길게 이어진다.","p":"면적이 넓어 자전거가 편하다. 가을 갈대가 좋다.","w":"9~11월"},{"n":"금정산성 4망루","s":"부산","g":"금정구","o":4,"t":["성곽·산성","산","등산","트레킹","많이 걷기","혼자","당일치기","야경","사진"],"d":"국내에서 가장 긴 산성 성벽을 따라 걷는다. 능선에서 부산 시내와 낙동강이 양쪽으로 보인다.","p":"범어사에서 북문으로 오르는 코스가 무난하다. 물을 넉넉히.","w":"4~6월, 10~11월"},{"n":"대왕암공원","s":"울산","g":"동구","o":2,"t":["바다","절벽·기암","숲","일출","출렁다리","완만한 길","부모님과","반나절","사진","등대"],"d":"붉은 바위 무리가 바다로 뻗고 그 위로 출렁다리가 걸렸다. 입구부터 이어지는 해송길이 1km가 넘는다.","p":"주차 후 도보 15분. 일출 명소라 새벽에도 사람이 있다.","w":"사계절"},{"n":"신불산 간월재 억새","s":"울산","g":"울주군","o":2,"t":["산","들판","억새·갈대","트레킹","많이 걷기","당일치기","사진","노을","별·은하수"],"d":"영남알프스 능선 안부가 통째로 억새밭이다. 사방이 트여 있어 해질녘 빛이 억새를 통과한다.","p":"간월재까지 임도로 2시간. 정상까지 욕심내지 않아도 충분하다.","w":"9월 말~10월"},{"n":"태화강 국가정원 십리대숲","s":"울산","g":"중구","o":2,"t":["강","숲","무료","대중교통","완만한 길","부모님과","아이와","반나절","더울 때","밤"],"d":"강변을 따라 대나무숲이 4km 이어진다. 한여름에도 숲 안 온도가 눈에 띄게 낮다.","p":"야간 은하수길 조명이 켜진다. 자전거 대여 가능.","w":"6~9월"},{"n":"반구대 암각화","s":"울산","g":"울주군","o":4,"t":["선사유적","강","절벽·기암","무료","조용한","사람 적은","혼자","반나절","완만한 길","사진"],"d":"7천 년 전 사람들이 고래 잡는 장면을 바위에 새겼다. 물이 차면 그림이 잠겨 보이지 않는다.","p":"수위에 따라 관측 여부가 갈린다. 망원경이 있으면 좋다. 주차장에서 1km 숲길.","w":"갈수기(가을·겨울)"},{"n":"강동 주상절리","s":"울산","g":"북구","o":5,"t":["바다","절벽·기암","지질공원","무료","사람 적은","조용한","혼자","반나절","드라이브","사진"],"d":"바닷가 바위가 부챗살처럼 누워 있다. 안내판 하나뿐이라 지나치기 쉽다.","p":"정자해변 드라이브 중 잠깐 들르기 좋다. 파도 높은 날은 접근 금지.","w":"사계절"},{"n":"외고산 옹기마을","s":"울산","g":"울주군","o":5,"t":["산골마을","박물관","무료","사람 적은","아이와","반나절","조용한","비 오는 날"],"d":"옹기 장인들이 모여 사는 국내 최대 옹기 마을. 가마와 작업장을 직접 볼 수 있다.","p":"체험은 사전 문의. 평일엔 거의 비어 있다.","w":"사계절"},{"n":"장생포 고래문화마을","s":"울산","g":"남구","o":3,"t":["박물관","바다","어촌","아이와","주차 쉬움","반나절","비 오는 날","부모님과"],"d":"포경이 금지되기 전 고래잡이 기지였던 마을을 재현해 놓았다. 고래생태체험관과 이어진다.","p":"아이와 반나절 코스. 실내 시설이 많아 날씨를 덜 탄다.","w":"사계절"},{"n":"수월봉 지질트레일","s":"제주","g":"제주시","o":3,"t":["바다","절벽·기암","지질공원","노을","완만한 길","무료","혼자","반나절","사진","드라이브"],"d":"화산재가 층층이 쌓인 단면이 해안 절벽에 그대로 드러나 있다. 지질학 교과서에 실리는 지형이다.","p":"차귀도가 정면에 보인다. 바람이 매우 강하다.","w":"사계절"},{"n":"아부오름","s":"제주","g":"제주시","o":4,"t":["산","들판","숲","완만한 길","무료","사람 적은","조용한","혼자","반나절","노을"],"d":"10분이면 오르는데 정상에 거대한 원형 분화구가 파여 있다. 굼부리 안에 삼나무가 둥글게 심겼다.","p":"오르는 길이 짧아 부담이 없다. 방목 중인 소를 피할 것.","w":"사계절"},{"n":"하도리 철새도래지","s":"제주","g":"제주시","o":5,"t":["습지","바다","어촌","사람 적은","조용한","혼자","무료","반나절","사진","추울 때"],"d":"바다와 이어진 얕은 못에 겨울 철새가 모인다. 옆으로 조선시대 방어시설인 별방진 성벽이 남았다.","p":"겨울이 본편. 새를 놀래지 않게 거리를 둘 것.","w":"11~2월"},{"n":"가파도","s":"제주","g":"서귀포시","o":3,"t":["섬","바다","들판","청보리","배편 필요","완만한 길","당일치기","사진","자전거"],"d":"섬에서 가장 높은 곳이 20m라 어디서나 수평선이 보인다. 봄엔 섬 전체가 청보리로 덮인다.","p":"모슬포에서 배 15분. 청보리철은 승선권 경쟁이 치열하다.","w":"4~5월"},{"n":"곶자왈도립공원","s":"제주","g":"서귀포시","o":4,"t":["숲","동굴","완만한 길","더울 때","비 오는 날","조용한","사람 적은","혼자","반나절","트레킹"],"d":"용암 바위 위에 뿌리내린 원시림. 한여름에도 숲 안쪽은 서늘하고 습하다.","p":"코스가 여럿이고 길이 헷갈린다. 지도를 받아 갈 것.","w":"6~9월"},{"n":"신흥리 동백마을","s":"제주","g":"서귀포시","o":5,"t":["동백","산골마을","숲","조용한","사람 적은","혼자","무료","반나절","사진","추울 때"],"d":"300년 넘은 동백나무가 마을 안쪽에 자생한다. 유명 동백 정원들과 달리 입장료도 줄도 없다.","p":"주민 생활권이다. 꽃이 떨어지는 1~2월이 절정.","w":"12~2월"},{"n":"송악산 둘레길","s":"제주","g":"서귀포시","o":2,"t":["바다","산","절벽·기암","지질공원","완만한 길","무료","사진","반나절","노을"],"d":"이중 분화구를 끼고 해안을 도는 길. 절벽 아래에 일제가 판 진지동굴이 줄지어 뚫려 있다.","p":"일부 구간은 훼손 복구로 통제 중이다. 현장 안내를 따를 것.","w":"사계절"},{"n":"사려니숲길","s":"제주","g":"제주시","o":2,"t":["숲","완만한 길","무료","조용한","혼자","반나절","비 오는 날","더울 때","반려견"],"d":"삼나무와 졸참나무가 섞인 숲길이 10km 이어진다. 흙길이라 발이 편하다.","p":"입구가 여러 곳이다. 비 온 다음 날 공기가 가장 좋다.","w":"5~10월"},{"n":"용눈이오름","s":"제주","g":"제주시","o":3,"t":["산","들판","노을","완만한 길","무료","사진","혼자","반나절","별·은하수"],"d":"능선이 여러 겹으로 부드럽게 겹친다. 오름 중에서도 곡선이 가장 아름답다는 평을 받는다.","p":"훼손으로 개방이 중단됐던 곳이라 방문 전 개방 여부를 확인할 것.","w":"사계절"},{"n":"비자림","s":"제주","g":"제주시","o":2,"t":["숲","완만한 길","부모님과","아이와","비 오는 날","반나절","조용한","더울 때"],"d":"500~800년 된 비자나무 2,800여 그루가 한곳에 모여 있다. 붉은 송이석을 깐 길이 평지로 이어진다.","p":"휠체어 통행이 가능한 구간이 있다. 여름에도 서늘하다.","w":"사계절"},{"n":"녹산로 유채꽃길","s":"제주","g":"서귀포시","o":3,"t":["들판","봄꽃","벚꽃","드라이브","사진","둘이서","반나절","완만한 길"],"d":"10km 도로 양옆으로 유채와 벚꽃이 동시에 핀다. 노란색과 분홍색이 겹치는 시기가 딱 일주일이다.","p":"4월 초. 갓길 주차가 위험하니 지정 주차장을 쓸 것.","w":"4월 초"},{"n":"이승악 오름 숲길","s":"제주","g":"서귀포시","o":5,"t":["숲","산","완만한 길","사람 적은","조용한","혼자","무료","반나절","트레킹","비 오는 날"],"d":"관광객이 거의 없는 한라산 남쪽 숲길. 숯가마 터와 일제 주둔지 흔적이 숲 안에 남아 있다.","p":"주차장이 작다. 안개가 자주 낀다.","w":"4~11월"},{"n":"정선 아리랑시장","s":"강원","g":"정선군","o":3,"t":["전통시장","기차여행","산골마을","부모님과","아이와","대중교통","반나절","비 오는 날","식당 가까움"],"d":"2·7일에 서는 오일장. 곤드레밥과 메밀전병 같은 산간 음식이 시장 안에서 그대로 나온다.","p":"장날이 아니면 절반은 닫혀 있다. 정선아리랑열차와 시간을 맞추면 좋다.","w":"장날(2·7일)"},{"n":"서울 통인시장","s":"서울","g":"종로구","o":2,"t":["전통시장","근대건축","대중교통","혼자","아이와","반나절","비 오는 날","식당 가까움"],"d":"엽전을 사서 반찬을 골라 담는 도시락 방식으로 알려진 골목 시장. 경복궁 서촌 한옥길과 바로 이어진다.","p":"도시락 카페는 점심시간에 줄이 길다. 월요일 휴무 점포가 많다.","w":"사계절"},{"n":"절두산 순교성지","s":"서울","g":"마포구","o":4,"t":["천주교성지","강","근대건축","박물관","조용한","사람 적은","혼자","무료","반나절","노을"],"d":"한강이 내려다보이는 절벽에서 수많은 천주교인이 처형됐다. 신자가 아니어도 강변 언덕이 조용해 오래 머물게 된다.","p":"당산철교 아래 강변길과 이어진다. 무료 개방.","w":"사계절"},{"n":"아산 공세리성당","s":"충남","g":"아산시","o":3,"t":["천주교성지","근대건축","숲","단풍","무료","주차 쉬움","사진","조용한","반나절"],"d":"조선시대 세곡 창고 터에 세운 벽돌 성당. 300년 넘은 팽나무와 느티나무가 마당을 덮는다.","p":"미사 시간에는 성당 내부 출입을 삼갈 것. 가을이 가장 좋다.","w":"10~11월"},{"n":"완주 삼례문화예술촌","s":"전북","g":"완주군","o":4,"t":["산업유산","근대건축","미술관","책방·도서관","폐교","비 오는 날","사진","혼자","반나절","사람 적은"],"d":"일제강점기 양곡 창고 여섯 동을 전시장과 책방으로 바꿨다. 나무 서까래와 콘크리트 바닥을 그대로 두었다.","p":"바로 옆 삼례역과 묶어 기차여행으로 다녀올 수 있다.","w":"사계절"},{"n":"영월 젊은달와이파크","s":"강원","g":"영월군","o":3,"t":["미술관","산업유산","양조장","사진","둘이서","비 오는 날","반나절","주차 쉬움"],"d":"문 닫은 술 박물관 부지를 붉은 대나무 구조물로 뒤덮은 복합 미술관. 건물보다 야외 설치물이 주인공이다.","p":"동선이 야외 위주다. 비 오는 날은 우산 필수.","w":"사계절"},{"n":"포천 광릉숲 국립수목원","s":"경기","g":"포천시","o":3,"t":["수목원","숲","완만한 길","예약 필요","부모님과","아이와","반나절","조용한","단풍"],"d":"조선 왕릉의 부속림으로 550년간 벌채가 금지됐던 숲. 원시림에 가까운 활엽수림이 그대로 남았다.","p":"사전 예약제이며 일일 인원이 제한된다. 일요일 휴원.","w":"5~6월, 10~11월"},{"n":"완도수목원","s":"전남","g":"완도군","o":5,"t":["수목원","숲","산","동백","사람 적은","조용한","혼자","무료","반나절","트레킹"],"d":"국내 유일 난대림 수목원. 붉가시나무와 동백이 우거져 겨울에도 숲이 푸르다.","p":"면적이 넓고 사람이 거의 없다. 차로 들어가 구간별로 걷는 게 편하다.","w":"12~3월"},{"n":"거제 저구 수국길","s":"경남","g":"거제시","o":4,"t":["수국","바다","드라이브","사진","둘이서","반나절","사람 적은","어촌"],"d":"항구로 내려가는 언덕길 양옆이 수국으로 덮인다. 바다와 꽃이 한 화면에 들어온다.","p":"6월 중순~7월 초. 축제 기간 외에는 한산하다.","w":"6~7월"},{"n":"천안 독립기념관","s":"충남","g":"천안시","o":2,"t":["독립운동","박물관","들판","무료","주차 쉬움","아이와","부모님과","당일치기","단풍","완만한 길"],"d":"겨레의집 아래 서면 건물 규모에 먼저 압도된다. 전시관 일곱 곳을 다 보려면 반나절로는 모자란다.","p":"입장 무료, 주차 유료. 가을 단풍나무길이 좋다.","w":"10~11월"},{"n":"안동 임청각","s":"경북","g":"안동시","o":4,"t":["고택·옛마을","독립운동","강","조용한","사람 적은","혼자","반나절","사진","부모님과"],"d":"독립운동가 아홉 명을 배출한 99칸 종택. 일제가 집 앞으로 철길을 내 반이 잘려나갔다가 최근 복원됐다.","p":"철로가 걷힌 뒤 마당이 넓어졌다. 관람객이 적어 조용하다.","w":"사계절"},{"n":"해남 우항리 공룡화석지","s":"전남","g":"해남군","o":5,"t":["공룡·화석","바다","박물관","지질공원","아이와","주차 쉬움","반나절","사람 적은","비 오는 날"],"d":"공룡·익룡·새 발자국이 한자리에서 나온 드문 화석지. 발자국 위에 보호각을 씌워 전천후로 관람한다.","p":"실내 전시관이라 날씨를 타지 않는다. 방문객이 매우 적다.","w":"사계절"},{"n":"진주 익룡발자국 전시관","s":"경남","g":"진주시","o":5,"t":["공룡·화석","박물관","아이와","주차 쉬움","비 오는 날","반나절","사람 적은","무료"],"d":"세계에서 가장 작은 익룡 발자국이 나온 자리를 그대로 덮어 전시관을 세웠다. 바닥 전체가 화석면이다.","p":"규모는 작지만 발자국 밀도가 압도적이다. 관람 30분.","w":"사계절"},{"n":"고령 지산동 고분군","s":"경북","g":"고령군","o":5,"t":["고분·왕릉","들판","박물관","노을","사람 적은","조용한","혼자","반나절","완만한 길","사진"],"d":"대가야 왕릉 700여 기가 능선을 따라 봉긋하게 늘어선다. 능선길을 걸으면 고분 사이를 지나게 된다.","p":"해질녘 실루엣이 좋다. 그늘이 없으니 모자를.","w":"4~6월, 9~11월"},{"n":"서산 해미읍성","s":"충남","g":"서산시","o":3,"t":["성곽·산성","천주교성지","들판","무료","주차 쉬움","아이와","부모님과","반나절","완만한 길","야경"],"d":"성벽과 성문, 동헌이 온전히 남은 평지 읍성. 천주교 박해의 현장이기도 해 회화나무가 상징처럼 서 있다.","p":"야간 조명이 켜진다. 성벽 위를 한 바퀴 걸을 수 있다.","w":"사계절"},{"n":"고창읍성","s":"전북","g":"고창군","o":4,"t":["성곽·산성","숲","들판","무료","완만한 길","부모님과","반나절","조용한","단풍","사람 적은"],"d":"여자들이 머리에 돌을 이고 성을 밟으면 무병장수한다는 답성놀이가 전해진다. 성벽 위 1.7km를 한 바퀴 돈다.","p":"맨발로 걷는 사람이 많다. 고인돌 유적과 묶기 좋다.","w":"사계절"},{"n":"울진 덕구온천 원탕길","s":"경북","g":"울진군","o":4,"t":["온천","계곡","숲","트레킹","완만한 길","사람 적은","혼자","반나절","단풍","추울 때"],"d":"국내 몇 안 되는 자연 용출 온천. 원탕까지 4km 계곡길에 다리 열두 개가 놓여 있고 끝에 족욕탕이 있다.","p":"왕복 2시간. 수건을 챙기면 원탕 족욕을 할 수 있다.","w":"10~3월"},{"n":"고성 아야진해변","s":"강원","g":"고성군","o":4,"t":["바다","해수욕","어촌","조용한","사람 적은","둘이서","반나절","일출","사진","드라이브"],"d":"항구와 붙어 있는 작은 백사장. 바위와 모래가 번갈아 나와 속초·양양보다 훨씬 조용하다.","p":"주차 공간이 적다. 해변 바로 뒤 마을이 낮고 조용하다.","w":"6~9월"},{"n":"태안 파도리 해옥해변","s":"충남","g":"태안군","o":5,"t":["바다","해수욕","갯벌","사람 적은","조용한","혼자","반나절","물때 확인","사진"],"d":"파도에 깎인 유리 조각이 몽돌처럼 둥글어져 해변에 쌓인다. 물이 빠지면 조수웅덩이가 여럿 생긴다.","p":"해옥은 가져가지 말 것. 물때에 따라 해변 폭이 크게 변한다.","w":"5~9월"},{"n":"무안 회산백련지","s":"전남","g":"무안군","o":4,"t":["연꽃","호수","습지","완만한 길","주차 쉬움","부모님과","반나절","사람 적은","사진"],"d":"동양 최대 규모 백련 자생지. 10만 평 수면이 흰 연꽃으로 덮이고 물 위로 나무다리가 지난다.","p":"7월 말~8월 중순이 절정. 아침에 꽃이 열린다.","w":"7~8월"},{"n":"시흥 관곡지","s":"경기","g":"시흥시","o":4,"t":["연꽃","습지","무료","주차 쉬움","혼자","반나절","사진","조용한","사람 적은","대중교통"],"d":"조선 전기에 중국에서 들여온 연을 처음 심은 못. 지금은 주변 논이 통째로 연꽃 테마파크가 됐다.","p":"7~8월 아침이 좋다. 그 외 계절엔 볼 것이 거의 없다.","w":"7~8월"},{"n":"원주 뮤지엄산","s":"강원","g":"원주시","o":2,"t":["미술관","산","숲","사진","둘이서","예약 필요","당일치기","조용한","비 오는 날"],"d":"산 능선에 물과 돌, 빛으로만 구성한 건물을 앉혔다. 전시보다 건물과 주변 풍경을 보러 가는 곳에 가깝다.","p":"입장료가 높은 편이고 관람 동선이 길다. 편한 신발 권장.","w":"사계절"},{"n":"파주출판도시 지혜의숲","s":"경기","g":"파주시","o":3,"t":["책방·도서관","근대건축","무료","주차 쉬움","혼자","비 오는 날","반나절","조용한","아이와"],"d":"출판사들이 기증한 책이 천장까지 닿는 서가에 꽂혀 있다. 열람은 자유롭고 입장료가 없다.","p":"주변 출판사 건물들 자체가 건축 답사 대상이다.","w":"사계절"},{"n":"한밭수목원과 시립미술관","s":"대전","g":"서구","o":3,"t":["수목원","미술관","숲","무료","대중교통","완만한 길","아이와","부모님과","반나절","비 오는 날"],"d":"도심 한복판 대형 수목원에 미술관과 과학관이 붙어 있다. 동원과 서원 사이를 걸어서 오간다.","p":"수목원 무료. 비 오는 날은 열대식물원과 미술관으로 대체.","w":"사계절"},{"n":"광주 양동시장","s":"광주","g":"서구","o":3,"t":["전통시장","근대건축","대중교통","아이와","부모님과","반나절","비 오는 날","식당 가까움"],"d":"호남 최대 재래시장. 홍어와 육전, 닭전 골목이 구역별로 나뉘어 있다.","p":"지하철역과 바로 연결된다. 오전에 가야 물건이 많다.","w":"사계절"},{"n":"대구 마비정 벽화마을","s":"대구","g":"달성군","o":4,"t":["벽화마을","산골마을","숲","조용한","사람 적은","아이와","반나절","사진","완만한 길"],"d":"농촌 풍경을 그린 벽화가 좁은 골목을 따라 이어진다. 마을 뒤 대나무길과 옛 우물이 남아 있다.","p":"주민이 거주한다. 주차장이 작아 주말엔 대기가 생긴다.","w":"사계절"},{"n":"부산 초량 이바구길","s":"부산","g":"동구","o":3,"t":["근대건축","벽화마을","야경","많이 걷기","대중교통","혼자","반나절","사진","쓸쓸한"],"d":"168계단을 중심으로 피란 시절 산복도로 동네가 이어진다. 계단 옆에 모노레일이 놓여 있다.","p":"경사가 매우 급하다. 모노레일은 운행 시간이 정해져 있다.","w":"사계절"},{"n":"울산 주전몽돌해변","s":"울산","g":"동구","o":4,"t":["바다","해수욕","노을","일출","조용한","사람 적은","드라이브","반나절","사진"],"d":"검은 몽돌이 1.5km 이어지고 파도가 칠 때마다 돌 구르는 소리가 난다. 모래가 없어 물이 맑다.","p":"돌이 미끄럽다. 아쿠아슈즈가 있으면 편하다.","w":"6~9월"},{"n":"청주 상당산성","s":"충북","g":"청주시","o":3,"t":["성곽·산성","산","숲","둘레길","무료","주차 쉬움","혼자","반나절","야경","완만한 길"],"d":"4.2km 성벽을 한 바퀴 도는 데 두 시간이면 충분하다. 성 안쪽이 분지라 마을과 논이 그대로 있다.","p":"남문 앞 주차장이 넓다. 해질녘 성벽 위 산책이 좋다.","w":"4~11월"}];
+
+const GROUPS = [
+ {k:'region', t:'어느 지역', kind:'region'},
+ {k:'month',  t:'언제 갈까', kind:'month'},
+ {k:'land',   t:'어떤 땅과 물', kind:'tag', tags:["바다","섬","갯벌","계곡","폭포","호수","강","산","숲","습지","동굴","절벽·기암","들판","모래사구","다랑논","온천"]},
+ {k:'scene',  t:'무엇이 피고 지나', kind:'tag', tags:["일출","노을","야경","별·은하수","운해","설경","단풍","벚꽃","봄꽃","철쭉","동백","수국","연꽃","억새·갈대","청보리","메밀·구절초"]},
+ {k:'trace',  t:'남아 있는 자취', kind:'tag', tags:["폐역·폐선","폐교","근대건축","산업유산","성곽·산성","선사유적","고분·왕릉","고택·옛마을","돌담","사찰","천주교성지","독립운동","공룡·화석","지질공원","등대","염전","양조장","벽화마을","산골마을","어촌"]},
+ {k:'doing',  t:'거기서 하는 일', kind:'tag', tags:["트레킹","등산","둘레길","많이 걷기","완만한 길","자전거","기차여행","케이블카·모노레일","출렁다리","드라이브","해수욕","수목원","미술관","박물관","책방·도서관","전통시장"]},
+ {k:'mood',   t:'누구와, 어떤 기분', kind:'tag', tags:["혼자","둘이서","아이와","부모님과","반려견","사람 적은","조용한","쓸쓸한","사진","밤","비 오는 날","더울 때","추울 때"]},
+ {k:'cond',   t:'일정과 조건', kind:'tag', tags:["반나절","당일치기","1박 이상","무료","주차 쉬움","대중교통","배편 필요","예약 필요","물때 확인","비포장","식당 가까움"]},
+ {k:'obs',    t:'얼마나 안 알려진 곳', kind:'obs'},
+ {k:'strict', t:'조합 방식', kind:'strict'}
+];
+const REGIONS = [
+ ['수도권',['서울','인천','경기']],
+ ['강원',['강원']],
+ ['충청',['충북','충남','대전','세종']],
+ ['전라',['전북','전남','광주']],
+ ['경상',['경북','대구','경남','부산','울산']],
+ ['제주',['제주']]
+];
+const OBS_LABEL = {1:'다 아는 곳',2:'알려진 곳',3:'보통',4:'한산한 곳',5:'거의 아무도'};
+
+/* ── 시기 문자열 → 월 배열 ── */
+function parseMonths(w){
+  if(!w) return [];
+  if(/사계절|장날/.test(w)) return [1,2,3,4,5,6,7,8,9,10,11,12];
+  const out=new Set();
+  if(/봄/.test(w)) [3,4,5].forEach(m=>out.add(m));
+  if(/여름/.test(w)) [6,7,8].forEach(m=>out.add(m));
+  if(/가을/.test(w)) [9,10,11].forEach(m=>out.add(m));
+  if(/겨울/.test(w)) [12,1,2].forEach(m=>out.add(m));
+  const re=/(\d{1,2})\s*(?:월)?\s*~\s*(\d{1,2})\s*월|(\d{1,2})\s*월/g;
+  let m;
+  while((m=re.exec(w))!==null){
+    if(m[1]&&m[2]){
+      let a=+m[1],b=+m[2],i=a,guard=0;
+      while(guard++<13){ out.add(i); if(i===b) break; i=i===12?1:i+1; }
+    } else if(m[3]) out.add(+m[3]);
+  }
+  return [...out];
+}
+DATA.forEach((d,i)=>{ d.id=i; d.mo=parseMonths(d.w); d.ts=new Set(d.t); });
+const TOTAL=DATA.length;
+
+/* ── 상태 ── */
+const S={tags:new Set(),months:new Set(),sidos:new Set(),obs:new Set(),strict:'normal',sort:'match',limit:24,q:'',seed:1};
+const SAVED=loadSaved(), PICKS=loadPicks();
+
+function loadSaved(){ try{return new Set(JSON.parse(localStorage.getItem('ov.saved')||'[]'))}catch(e){return new Set()} }
+function loadPicks(){ try{return JSON.parse(localStorage.getItem('ov.picks')||'[]')}catch(e){return []} }
+function persist(){ try{
+  localStorage.setItem('ov.saved',JSON.stringify([...SAVED]));
+  localStorage.setItem('ov.picks',JSON.stringify(PICKS));
+}catch(e){} }
+
+/* ── 필터 ── */
+function hash(s){ let h=0; for(let i=0;i<s.length;i++) h=(h*31+s.charCodeAt(i))|0; return Math.abs(h); }
+function passBase(d,skip){
+  if(skip!=='sido' && S.sidos.size && !S.sidos.has(d.s)) return false;
+  if(skip!=='month' && S.months.size && !d.mo.some(m=>S.months.has(m))) return false;
+  if(skip!=='obs' && S.obs.size && !S.obs.has(d.o)) return false;
+  return true;
+}
+function tagScore(d,skipTag){
+  const sel=[...S.tags].filter(t=>t!==skipTag);
+  if(!sel.length) return {ok:true,hit:0,tot:0,pct:100};
+  const hit=sel.filter(t=>d.ts.has(t)).length;
+  let ok;
+  if(S.strict==='all') ok = hit===sel.length;
+  else if(S.strict==='loose') ok = hit>0;
+  else {
+    ok = GROUPS.filter(g=>g.kind==='tag').every(g=>{
+      const gs=g.tags.filter(t=>sel.includes(t));
+      return !gs.length || gs.some(t=>d.ts.has(t));
+    });
+  }
+  return {ok,hit,tot:sel.length,pct:Math.round(hit/sel.length*100)};
+}
+function results(){
+  const out=[];
+  const q=S.q.trim().toLowerCase();
+  for(const d of DATA){
+    if(!passBase(d)) continue;
+    if(q && !(d.n+' '+d.s+' '+d.g+' '+d.d+' '+d.t.join(' ')).toLowerCase().includes(q)) continue;
+    const sc=tagScore(d);
+    if(!sc.ok) continue;
+    out.push({d,...sc});
+  }
+  const coll=(a,b)=>a.d.s.localeCompare(b.d.s,'ko')||a.d.g.localeCompare(b.d.g,'ko');
+  const S_=S.sort;
+  if(S_==='match') out.sort((a,b)=>b.pct-a.pct||b.d.o-a.d.o||coll(a,b));
+  else if(S_==='obs') out.sort((a,b)=>b.d.o-a.d.o||b.pct-a.pct||coll(a,b));
+  else if(S_==='obsLow') out.sort((a,b)=>a.d.o-b.d.o||b.pct-a.pct||coll(a,b));
+  else if(S_==='region') out.sort(coll);
+  else out.sort((a,b)=>hash(a.d.n+S.seed)-hash(b.d.n+S.seed));
+  return out;
+}
+function countTag(tag){
+  let n=0;
+  for(const d of DATA){ if(!passBase(d)) continue; if(!d.ts.has(tag)) continue;
+    const sc=tagScore(d,tag); if(sc.ok) n++; }
+  return n;
+}
+function countSido(s){
+  let n=0;
+  for(const d of DATA){ if(d.s!==s) continue; if(!passBase(d,'sido')) continue; if(tagScore(d).ok) n++; }
+  return n;
+}
+function countMonth(m){
+  let n=0;
+  for(const d of DATA){ if(!d.mo.includes(m)) continue; if(!passBase(d,'month')) continue; if(tagScore(d).ok) n++; }
+  return n;
+}
+function countObs(o){
+  let n=0;
+  for(const d of DATA){ if(d.o!==o) continue; if(!passBase(d,'obs')) continue; if(tagScore(d).ok) n++; }
+  return n;
+}
+
+/* ── 지형별 아이콘 & 색 ── */
+const PAL=[["바다","#1E88E5","i-wave"],["섬","#0E7C9B","i-island"],["갯벌","#4E7C86","i-wave"],
+ ["호수","#2C8FB8","i-drop"],["강","#2C8FB8","i-wave"],["계곡","#12907F","i-drop"],["폭포","#12907F","i-drop"],
+ ["온천","#B4693C","i-drop"],["동굴","#5B5560","i-cave"],["숲","#2E8B57","i-tree"],["수목원","#2E8B57","i-tree"],
+ ["산","#4A8A4A","i-mtn"],["절벽·기암","#7A6F63","i-mtn"],["들판","#8A8B3F","i-mtn"],["다랑논","#8A8B3F","i-mtn"],
+ ["습지","#5E8E6E","i-wave"],["모래사구","#B08B55","i-mtn"],
+ ["성곽·산성","#8A6A4A","i-house"],["고택·옛마을","#8A6A4A","i-house"],["돌담","#8A6A4A","i-house"],
+ ["사찰","#A05F2C","i-house"],["천주교성지","#7A5F84","i-house"],["고분·왕릉","#8A7250","i-mtn"],
+ ["선사유적","#8A7250","i-mtn"],["공룡·화석","#6F7D3C","i-mtn"],["지질공원","#7A6F63","i-mtn"],
+ ["근대건축","#6D6A78","i-frame"],["산업유산","#6D6A78","i-frame"],["폐역·폐선","#5F6B7A","i-train"],
+ ["폐교","#6D6A78","i-frame"],["미술관","#7B5BD6","i-frame"],["박물관","#7B5BD6","i-frame"],
+ ["책방·도서관","#5B6BD6","i-frame"],["전통시장","#C2683C","i-house"],["염전","#8A7FA0","i-wave"],
+ ["양조장","#A0752C","i-house"],["벽화마을","#C05A6B","i-house"],["어촌","#3F7E93","i-island"],
+ ["등대","#3F7E93","i-island"],["산골마을","#6E8656","i-house"],["독립운동","#8A5A4A","i-flag"]];
+function paint(d){ for(const [t,c,i] of PAL) if(d.ts.has(t)) return {c,i}; return {c:"#5B6B7C",i:"i-flag"}; }
+function hero(d,h){
+  const {c,i}=paint(d);
+  return {style:`background:linear-gradient(135deg,${c},${shade(c,-32)})`,icon:i};
+}
+function shade(hex,amt){
+  const n=parseInt(hex.slice(1),16);
+  const r=Math.max(0,Math.min(255,(n>>16)+amt)),g=Math.max(0,Math.min(255,(n>>8&255)+amt)),b=Math.max(0,Math.min(255,(n&255)+amt));
+  return '#'+((1<<24)+(r<<16)+(g<<8)+b).toString(16).slice(1);
+}
+function obsDots(o){
+  let s='';
+  for(let i=1;i<=5;i++) s+=`<span class="d${i<=o?' f':''}"></span>`;
+  return `<span class="obs" title="숨은지수 ${o}: ${OBS_LABEL[o]}">${s}</span>`;
+}
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+/* ── 콘솔: 한 번만 짓고 이후엔 제자리에서 갱신 ── */
+const NARROW = window.matchMedia('(max-width:900px)').matches;
+const DEFAULT_OPEN = NARROW ? ['region'] : ['region','month','land','obs'];
+
+function buildGroups(){
+  document.getElementById('groups').innerHTML = GROUPS.map(g=>{
+    const open = DEFAULT_OPEN.includes(g.k) ? ' open' : '';
+    let body='';
+    if(g.kind==='tag'){
+      body = g.tags.map(t=>`<button class="chip" data-tag="${esc(t)}">${esc(t)}<i></i></button>`).join('');
+    } else if(g.kind==='region'){
+      body = REGIONS.map(([lab,ss])=>
+        `<div style="width:100%;margin-top:6px"><div class="note" style="margin:0 0 5px">${lab}</div>
+         <div style="display:flex;flex-wrap:wrap;gap:6px">`+
+        ss.map(x=>`<button class="chip" data-sido="${x}">${x}<i></i></button>`).join('')+
+        `</div></div>`).join('');
+    } else if(g.kind==='month'){
+      body = `<div class="mon">`+Array.from({length:12},(_,i)=>
+        `<button class="chip" data-month="${i+1}">${i+1}월<i></i></button>`).join('')+
+        `</div><p class="note">그 시기에 볼거리가 있는 곳만 남습니다. 꽃·억새·철새처럼 기간이 짧은 곳은 이 조건으로 걸러집니다.</p>`;
+    } else if(g.kind==='obs'){
+      body = `<div class="obs-row">`+[1,2,3,4,5].map(o=>
+        `<button data-obs="${o}">${o}<br><span style="font-size:10px">${OBS_LABEL[o]}</span><br><span style="font-size:10px;opacity:.6" data-obsn="${o}"></span></button>`).join('')+
+        `</div><p class="note">붐빔 정도에 대한 추정치입니다. 4~5는 주말에도 사람이 드물지만, 그만큼 식당·화장실·대중교통이 없을 수 있습니다.</p>`;
+    } else if(g.kind==='strict'){
+      body = `<div class="seg">`+[['all','모두 만족'],['normal','분야별 하나씩'],['loose','느슨하게']]
+        .map(([v,l])=>`<button data-strict="${v}">${l}</button>`).join('')+
+        `</div><p class="note"><b>모두 만족</b>은 고른 조건을 전부 가진 곳만, <b>분야별 하나씩</b>은 각 분야에서 최소 하나씩 맞는 곳을, <b>느슨하게</b>는 하나라도 맞으면 일치율 순으로 보여줍니다.</p>`;
+    }
+    return `<details class="grp" data-k="${g.k}"${open}>
+      <summary class="grp-t"><span class="dot"></span>${g.t}
+        <span class="n" data-gn="${g.k}"></span><span class="car">▾</span></summary>
+      <div class="grp-b">${body}</div></details>`;
+  }).join('');
+}
+
+function refreshConsole(){
+  document.querySelectorAll('[data-tag]').forEach(b=>{
+    const t=b.dataset.tag, on=S.tags.has(t), n=countTag(t);
+    b.classList.toggle('on',on); b.classList.toggle('zero',!on&&!n);
+    b.disabled = !on && !n; b.querySelector('i').textContent = n;
+  });
+  document.querySelectorAll('[data-sido]').forEach(b=>{
+    const v=b.dataset.sido, on=S.sidos.has(v), n=countSido(v);
+    b.classList.toggle('on',on); b.classList.toggle('zero',!on&&!n);
+    b.disabled = !on && !n; b.querySelector('i').textContent = n;
+  });
+  document.querySelectorAll('[data-month]').forEach(b=>{
+    const v=+b.dataset.month, on=S.months.has(v), n=countMonth(v);
+    b.classList.toggle('on',on); b.classList.toggle('zero',!on&&!n);
+    b.disabled = !on && !n; b.querySelector('i').textContent = n;
+  });
+  document.querySelectorAll('[data-obs]').forEach(b=>{
+    const v=+b.dataset.obs; b.classList.toggle('on',S.obs.has(v));
+  });
+  document.querySelectorAll('[data-obsn]').forEach(e=>{ e.textContent=countObs(+e.dataset.obsn); });
+  document.querySelectorAll('[data-strict]').forEach(b=>b.classList.toggle('on',S.strict===b.dataset.strict));
+  GROUPS.forEach(g=>{
+    const el=document.querySelector(`[data-gn="${g.k}"]`); if(!el) return;
+    let n='', act=false;
+    if(g.kind==='tag'){ const c=g.tags.filter(t=>S.tags.has(t)).length; if(c){n=c+'개';act=true} }
+    else if(g.kind==='region'&&S.sidos.size){n=S.sidos.size+'개';act=true}
+    else if(g.kind==='month'&&S.months.size){n=S.months.size+'개';act=true}
+    else if(g.kind==='obs'&&S.obs.size){n=S.obs.size+'단계';act=true}
+    else if(g.kind==='strict'){n={all:'모두 만족',normal:'분야별',loose:'느슨하게'}[S.strict]}
+    el.textContent=n; el.classList.toggle('act',act);
+  });
+  document.getElementById('pickedN').textContent =
+    (S.tags.size+S.sidos.size+S.months.size+S.obs.size)+'개 선택';
+}
+
+/* ── 문장 ── */
+function sentence(){
+  const p=[];
+  if(S.sidos.size) p.push(`<em>${[...S.sidos].join('·')}</em><span class="sl">에서</span>`);
+  if(S.months.size) p.push(`<em>${[...S.months].sort((a,b)=>a-b).join('·')}월</em><span class="sl">에</span>`);
+  if(S.obs.size){
+    const mx=Math.max(...S.obs);
+    p.push(`<em>${mx>=4?'사람 드문 곳':OBS_LABEL[mx]}</em><span class="sl">으로</span>`);
+  }
+  if(S.tags.size){
+    const t=[...S.tags];
+    const show=t.slice(0,4).join('<span class="sl">, </span>');
+    p.push(`<em>${show}</em>${t.length>4?`<span class="sl"> 외 ${t.length-4}가지</span>`:''}`);
+  }
+  const n=results().length;
+  if(!p.length) return `<span class="sl">조건을 고르면</span> 전국 ${TOTAL}곳<span class="sl">에서 골라냅니다.</span>`;
+  return p.join(' ')+`<span class="sl">. 모두 </span><span class="num">${n}곳</span><span class="sl">.</span>`;
+}
+
+/* ── 결과 ── */
+function render(){
+  refreshConsole();
+  document.getElementById('sentence').innerHTML=sentence();
+  const r=results();
+  document.getElementById('rTitle').textContent=`고른 조건에 맞는 ${r.length}곳`;
+  const at=document.getElementById('activeTags');
+  const chips=[...[...S.sidos].map(v=>['sido',v,v]),
+               ...[...S.months].sort((a,b)=>a-b).map(v=>['month',v,v+'월']),
+               ...[...S.obs].sort().map(v=>['obs',v,'숨은지수 '+v]),
+               ...[...S.tags].map(v=>['tag',v,v])];
+  at.innerHTML = chips.length
+    ? chips.map(([k,v,l])=>`<span class="at"><b>${esc(l)}</b><button data-rm="${k}" data-v="${esc(v)}" aria-label="${esc(l)} 빼기">×</button></span>`).join('')
+      +`<button class="at clearall" id="clearAll">전부 지우기</button>`
+    : '';
+
+  const list=document.getElementById('list');
+  if(!r.length){
+    list.innerHTML=`<div class="empty"><h3>조건이 서로 부딪힙니다</h3>
+      <p>고른 조건을 전부 만족하는 곳이 없습니다. 조합 방식을 느슨하게 바꾸거나 조건 하나를 빼보세요.</p>
+      <button class="btn pri" style="max-width:220px;margin:0 auto" id="goLoose">느슨하게 다시 찾기</button></div>`;
+    document.getElementById('moreBtn').hidden=true;
+    document.getElementById('goLoose').onclick=()=>{S.strict='loose';render()};
+    return;
+  }
+  const shown=r.slice(0,S.limit);
+  list.innerHTML=shown.map(({d,hit,tot,pct})=>{
+    const sel=[...S.tags];
+    const tags=d.t.slice().sort((x,y)=>(sel.includes(y)?1:0)-(sel.includes(x)?1:0)).slice(0,5);
+    const H=hero(d);
+    return `<button class="card" data-id="${d.id}">
+      <span class="ch" style="${H.style}">
+        <span class="rg">${esc(d.s)} ${esc(d.g)}</span>
+        ${tot?`<span class="mt">일치 ${pct}%</span>`:''}
+        <svg class="ic big"><use href="#${H.icon}"/></svg>
+      </span>
+      <span class="cb">
+        <h3>${esc(d.n)}</h3>
+        <span class="ds">${esc(d.d)}</span>
+        <span class="mr">${obsDots(d.o)}<span>${esc(d.w)}</span>${SAVED.has(d.n)?'<span>· 보관함</span>':''}</span>
+        <span class="mtags">${tags.map(t=>`<span class="mtag${sel.includes(t)?' hit':''}">${esc(t)}</span>`).join('')}</span>
+      </span></button>`;
+  }).join('');
+  const mb=document.getElementById('moreBtn');
+  mb.hidden = r.length<=S.limit;
+  mb.textContent = `남은 ${r.length-S.limit}곳 더 보기`;
+  document.getElementById('savedN').textContent=SAVED.size;
+  document.getElementById('savedN2').textContent=SAVED.size;
+}
+
+/* ── 상세 ── */
+function openDetail(id){
+  const d=DATA.find(x=>x.id===id); if(!d) return;
+  const sel=[...S.tags];
+  const q=encodeURIComponent(d.n);
+  const H=hero(d);
+  const stay=d.ts.has('1박 이상')||d.ts.has('당일치기');
+  const ads=[ d.ts.has('배편 필요')||d.ts.has('드라이브')||d.ts.has('비포장')?AFF.CAR:AFF.STAY,
+              d.ts.has('산골마을')||d.ts.has('계곡')||d.ts.has('숲')?AFF.GLAM:AFF.ACT,
+              d.ts.has('기차여행')||d.ts.has('폐역·폐선')?AFF.KTX:AFF.TOUR, AFF.CPN ];
+  document.getElementById('sheet').innerHTML=`
+    <div class="sh-hero" style="${H.style}">
+      <svg class="ic big"><use href="#${H.icon}"/></svg>
+      <button class="x" id="shX" aria-label="닫기">×</button>
+    </div>
+    <div class="sh-body">
+      <h2>${esc(d.n)}</h2>
+      <p class="sh-loc">${esc(d.s)} ${esc(d.g)} ${obsDots(d.o)} 숨은지수 ${d.o} · ${OBS_LABEL[d.o]}</p>
+      <p>${esc(d.d)}</p>
+      <div class="box"><h4>가기 전에</h4><p>${esc(d.p)}</p></div>
+      <div class="facts">
+        <div class="fact"><span>가장 좋은 때</span><b>${esc(d.w)}</b></div>
+        <div class="fact"><span>해당 월</span><b>${d.mo.length===12?'연중':d.mo.slice().sort((x,y)=>x-y).join('·')+'월'}</b></div>
       </div>
+      <div class="sh-tags">${d.t.map(t=>`<button data-addtag="${esc(t)}">${sel.includes(t)?'✓ ':'+ '}${esc(t)}</button>`).join('')}</div>
+      <p class="note">태그를 누르면 조건에 더해져 비슷한 곳을 이어서 찾습니다.</p>
+      <h4 style="font-size:13px;margin:20px 0 0;color:var(--gray)">이 여행지와 함께 준비하기</h4>
+      <div class="ad-row">${ads.map(x=>`<a class="ad-btn" href="${x.u}" target="_blank" rel="noopener sponsored">
+        <span class="ib" style="background:${x.c}"><svg class="ic"><use href="#${x.i}"/></svg></span>${x.t}</a>`).join('')}</div>
+      <p class="note">제휴 링크입니다. 추가 부담 금액은 없습니다.</p>
     </div>
-  </header>
+    <div class="sh-foot">
+      <button class="btn" id="shSave">${SAVED.has(d.n)?'보관 해제':'보관함에 담기'}</button>
+      <a class="btn pri" href="https://map.naver.com/p/search/${q}" target="_blank" rel="noopener">지도에서 보기</a>
+    </div>`;
+  const dlg=document.getElementById('dlg'); dlg.showModal();
+  document.getElementById('shX').onclick=()=>dlg.close();
+  document.getElementById('shSave').onclick=()=>{
+    SAVED.has(d.n)?SAVED.delete(d.n):SAVED.add(d.n); persist();
+    toast(SAVED.has(d.n)?'저장했습니다':'저장을 해제했습니다'); openDetail(id); render();
+  };
+  document.getElementById('sheet').querySelectorAll('[data-addtag]').forEach(b=>{
+    b.onclick=()=>{const t=b.dataset.addtag; S.tags.has(t)?S.tags.delete(t):S.tags.add(t); S.limit=24; render(); openDetail(id);};
+  });
+}
 
-  <section class="google-hero-section">
-    <div class="google-hero-container">
-      <div class="hero-brand-symbol"><i class="fa-solid fa-paper-plane"></i></div>
-      <h1 class="google-hero-heading">어디로 떠나고 싶으신가요?</h1>
-      <p class="google-hero-desc">150가지 세부 취향을 조합하여 전국 맞춤 여행지를 직접 고르세요</p>
-
-      <form class="google-search-box" id="heroSearchForm">
-        <i class="fa-solid fa-magnifying-glass search-leading-icon"></i>
-        <input type="text" id="heroSearchInput" placeholder="지역명, 계곡, 공룡발자국, 생가, 데이트 검색..." autocomplete="off">
-        <button type="submit" class="search-submit-btn"><i class="fa-solid fa-arrow-right"></i></button>
-      </form>
-
-      <div class="google-hero-actions">
-        <a href="search.html" class="hero-action-btn primary-action"><i class="fa-solid fa-sliders"></i> 150+ 세부 픽 조건 선택하기</a>
-        <a href="random.html" class="hero-action-btn secondary-action"><i class="fa-solid fa-dice"></i> 운명의 랜덤 픽</a>
-      </div>
-
-      <div class="quick-tag-chips">
-        <span class="tag-chip-label">추천 픽:</span>
-        <a href="search.html?tag=공룡발자국/화석지" class="quick-chip"><i class="fa-solid fa-bone"></i> 공룡발자국</a>
-        <a href="search.html?tag=위인생가/유적지" class="quick-chip"><i class="fa-solid fa-landmark"></i> 위인생가</a>
-        <a href="search.html?tag=시원한계곡" class="quick-chip"><i class="fa-solid fa-water"></i> 청정계곡</a>
-        <a href="search.html?tag=반려견동반가능" class="quick-chip"><i class="fa-solid fa-paw"></i> 반려견동반</a>
-      </div>
+/* ── 저장·픽 패널 ── */
+function renderSaved(show){
+  const p=document.getElementById('savedPanel');
+  if(!show){p.hidden=true;p.innerHTML='';return}
+  p.hidden=false;
+  const savedList=[...SAVED].map(n=>DATA.find(d=>d.n===n)).filter(Boolean);
+  p.innerHTML=`
+  <div class="panel">
+    <h2>나만의 여행 픽</h2>
+    <p class="sub">지금 고른 조건을 이름 붙여 저장해두면 언제든 그대로 불러옵니다.</p>
+    <div style="display:flex;gap:8px">
+      <input class="inp" id="pickName" placeholder="예: 비 오는 날 혼자 가는 남쪽" maxlength="40">
+      <button class="btn pri" style="flex:0 0 auto;padding:11px 18px" id="pickSave">조건 저장</button>
     </div>
-  </section>
+    ${PICKS.length?PICKS.map((pk,i)=>`
+      <div class="pickrow"><div><div class="nm">${esc(pk.name)}</div>
+        <div class="tg">${esc(pk.summary)}</div></div><div class="sp"></div>
+        <button class="mini" data-load="${i}">불러오기</button>
+        <button class="mini" data-del="${i}">삭제</button></div>`).join('')
+      :`<p class="note" style="margin-top:14px">저장한 조합이 아직 없습니다. 조건을 고른 뒤 이름을 붙여 저장해보세요.</p>`}
+  </div>
+  <div class="panel">
+    <h2>저장한 여행지 ${savedList.length}곳</h2>
+    <p class="sub">상세 화면에서 저장한 곳들입니다.</p>
+    ${savedList.length?savedList.map(d=>`
+      <div class="pickrow"><div><div class="nm">${esc(d.n)}</div>
+        <div class="tg">${esc(d.s)} ${esc(d.g)} · ${esc(d.w)}</div></div><div class="sp"></div>
+        <button class="mini" data-open="${d.id}">열기</button>
+        <button class="mini" data-unsave="${esc(d.n)}">해제</button></div>`).join('')
+      :`<p class="note" style="margin-top:14px">아직 저장한 곳이 없습니다.</p>`}
+  </div>`;
+  p.querySelector('#pickSave').onclick=()=>{
+    const nm=p.querySelector('#pickName').value.trim();
+    if(!S.tags.size&&!S.sidos.size&&!S.months.size&&!S.obs.size) return toast('먼저 조건을 골라주세요');
+    PICKS.unshift({name:nm||('픽 '+(PICKS.length+1)),summary:summaryText(),state:{
+      tags:[...S.tags],months:[...S.months],sidos:[...S.sidos],obs:[...S.obs],strict:S.strict}});
+    persist(); renderSaved(true); toast('조합을 저장했습니다');
+  };
+  p.querySelectorAll('[data-load]').forEach(b=>b.onclick=()=>{
+    const st=PICKS[+b.dataset.load].state;
+    S.tags=new Set(st.tags);S.months=new Set(st.months);S.sidos=new Set(st.sidos);
+    S.obs=new Set(st.obs);S.strict=st.strict||'normal';S.limit=24;
+    render();window.scrollTo({top:0,behavior:'smooth'});toast('조합을 불러왔습니다');
+  });
+  p.querySelectorAll('[data-del]').forEach(b=>b.onclick=()=>{PICKS.splice(+b.dataset.del,1);persist();renderSaved(true)});
+  p.querySelectorAll('[data-open]').forEach(b=>b.onclick=()=>openDetail(+b.dataset.open));
+  p.querySelectorAll('[data-unsave]').forEach(b=>b.onclick=()=>{SAVED.delete(b.dataset.unsave);persist();renderSaved(true);render()});
+}
+function summaryText(){
+  const a=[];
+  if(S.sidos.size)a.push([...S.sidos].join('·'));
+  if(S.months.size)a.push([...S.months].sort((x,y)=>x-y).join('·')+'월');
+  if(S.obs.size)a.push('숨은지수 '+[...S.obs].sort().join('·'));
+  if(S.tags.size)a.push([...S.tags].join(', '));
+  return a.join(' / ')||'조건 없음';
+}
+function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');
+  clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),1900)}
 
-  <main class="container">
-    <div class="category-icons-grid">
-      <a href="search.html" class="category-icon-item">
-        <div class="category-icon-circle" style="background: #e0f2fe; color: #0284c7;"><i class="fa-solid fa-sliders"></i></div>
-        <span>세부 픽</span>
-      </a>
-      <a href="search.html?cat=edu" class="category-icon-item">
-        <div class="category-icon-circle" style="background: #ecfdf5; color: #059669;"><i class="fa-solid fa-graduation-cap"></i></div>
-        <span>학습·역사</span>
-      </a>
-      <a href="community.html" class="category-icon-item">
-        <div class="category-icon-circle" style="background: #fef3c7; color: #d97706;"><i class="fa-solid fa-users"></i></div>
-        <span>여행자 픽</span>
-      </a>
-      <a href="random.html" class="category-icon-item">
-        <div class="category-icon-circle" style="background: #f3e8ff; color: #9333ea;"><i class="fa-solid fa-dice"></i></div>
-        <span>랜덤 픽</span>
-      </a>
-      <a href="search.html?tag=기념일/로맨틱" class="category-icon-item">
-        <div class="category-icon-circle" style="background: #fee2e2; color: #dc2626;"><i class="fa-solid fa-gift"></i></div>
-        <span>기념일</span>
-      </a>
-      <a href="search.html?tag=반려견동반가능" class="category-icon-item">
-        <div class="category-icon-circle" style="background: #fef9c3; color: #ca8a04;"><i class="fa-solid fa-paw"></i></div>
-        <span>반려동물</span>
-      </a>
-    </div>
+/* ── 이벤트 ── */
+document.getElementById('groups').addEventListener('click',e=>{
+  const b=e.target.closest('button'); if(!b) return;
+  if(b.dataset.tag!==undefined){ const t=b.dataset.tag; S.tags.has(t)?S.tags.delete(t):S.tags.add(t); }
+  else if(b.dataset.sido){ const v=b.dataset.sido; S.sidos.has(v)?S.sidos.delete(v):S.sidos.add(v); }
+  else if(b.dataset.month){ const v=+b.dataset.month; S.months.has(v)?S.months.delete(v):S.months.add(v); }
+  else if(b.dataset.obs){ const v=+b.dataset.obs; S.obs.has(v)?S.obs.delete(v):S.obs.add(v); }
+  else if(b.dataset.strict){ S.strict=b.dataset.strict; }
+  else return;
+  S.limit=24; render();
+});
+document.getElementById('activeTags').addEventListener('click',e=>{
+  const b=e.target.closest('button'); if(!b) return;
+  if(b.id==='clearAll'){S.tags.clear();S.months.clear();S.sidos.clear();S.obs.clear();}
+  else{const k=b.dataset.rm,v=b.dataset.v;
+    if(k==='tag')S.tags.delete(v); if(k==='sido')S.sidos.delete(v);
+    if(k==='month')S.months.delete(+v); if(k==='obs')S.obs.delete(+v);}
+  S.limit=24;render();
+});
+document.getElementById('list').addEventListener('click',e=>{
+  const c=e.target.closest('.card'); if(c) openDetail(+c.dataset.id);
+});
+document.getElementById('moreBtn').onclick=()=>{S.limit+=24;render()};
+document.getElementById('sortSel').onchange=e=>{S.sort=e.target.value;S.seed=Date.now()%9973;S.limit=24;render()};
+let qT; document.getElementById('qBox').addEventListener('input',e=>{
+  clearTimeout(qT); qT=setTimeout(()=>{S.q=e.target.value;S.limit=24;render()},180);
+});
+function toResults(){ if(NARROW) document.getElementById('rTitle').scrollIntoView({behavior:'smooth',block:'start'}); }
+document.getElementById('dlg').addEventListener('click',e=>{if(e.target.id==='dlg')e.target.close()});
 
-    <section class="affiliate-smart-banner">
-      <div class="aff-banner-content">
-        <div class="aff-tag"><i class="fa-solid fa-tag"></i> optvoyage 특가 혜택</div>
-        <h3 class="aff-title">선택한 여행지 주변 최저가 숙소 예약</h3>
-        <p class="aff-desc">전국 호텔·펜션부터 액티비티 할인권까지 실시간 확인</p>
-      </div>
-      <div class="aff-banner-actions">
-        <a href="https://3ha.in/r/725499" target="_blank" class="aff-btn aff-btn-primary"><i class="fa-solid fa-bed"></i> 숙소 실시간 최저가</a>
-        <a href="https://3ha.in/r/725525" target="_blank" class="aff-btn aff-btn-secondary"><i class="fa-solid fa-ticket"></i> 액티비티 할인</a>
-      </div>
-    </section>
+document.getElementById('actHidden').onclick=()=>{
+  S.obs=new Set([4,5]);S.sort='obs';S.limit=24;
+  document.getElementById('sortSel').value='obs';render();toResults();
+  document.getElementById('actHidden').classList.add('on');
+  toast('숨은지수 4~5만 남겼습니다');
+};
+document.getElementById('actMonth').onclick=()=>{
+  const m=new Date().getMonth()+1;S.months=new Set([m]);S.limit=24;render();toResults();
+  toast(m+'월에 볼거리가 있는 곳만 남겼습니다');
+};
+document.getElementById('actDice').onclick=()=>{
+  const r=results(); if(!r.length) return toast('조건에 맞는 곳이 없습니다');
+  const pool=r.filter(x=>x.d.o>=4);
+  const pick=(pool.length?pool:r)[Math.floor(Math.random()*(pool.length||r.length))];
+  openDetail(pick.d.id);
+};
+let savedOpen=false;
+function toggleSaved(){savedOpen=!savedOpen;renderSaved(savedOpen);
+  document.getElementById('actSaved').classList.toggle('on',savedOpen);
+  if(savedOpen)window.scrollTo({top:document.querySelector('.wrap').offsetTop-70,behavior:'smooth'})}
+document.getElementById('actSaved').onclick=toggleSaved;
+function flipTheme(){
+  const cur=document.documentElement.getAttribute('data-theme');
+  const dark=window.matchMedia('(prefers-color-scheme:dark)').matches;
+  const next=cur? (cur==='dark'?'light':'dark') : (dark?'light':'dark');
+  document.documentElement.setAttribute('data-theme',next);
+  try{localStorage.setItem('ov.theme',next)}catch(e){}
+}
+try{const th=localStorage.getItem('ov.theme'); if(th)document.documentElement.setAttribute('data-theme',th);}catch(e){}
 
-    <div class="section-header" style="margin-top: 36px;">
-      <h2 class="section-title"><i class="fa-solid fa-landmark-flag" style="color: #059669;"></i> 배움이 있는 학습 탐방 픽</h2>
-      <a href="search.html?cat=edu" class="section-link">전체보기 &gt;</a>
-    </div>
-    <div class="cards-grid" id="eduPicksGrid"></div>
+document.getElementById('totalN').textContent=TOTAL;
 
-    <div class="section-header" style="margin-top: 36px;">
-      <h2 class="section-title"><i class="fa-solid fa-fire" style="color: #ef4444;"></i> 실시간 추천 맞춤 여행지</h2>
-      <a href="search.html" class="section-link">전체보기 &gt;</a>
-    </div>
-    <div class="cards-grid" id="popularGrid"></div>
-  </main>
+document.getElementById('dealGrid').innerHTML=Object.values(AFF).map(x=>
+  `<a class="deal" href="${x.u}" target="_blank" rel="noopener sponsored">
+     <span class="ib" style="background:${x.c}"><svg class="ic"><use href="#${x.i}"/></svg></span>
+     <span><span class="tt">${x.t}</span><br><span class="st">${x.s}</span></span></a>`).join('');
 
-  <nav class="bottom-nav">
-    <a href="index.html" class="bottom-nav-item active"><i class="fa-solid fa-house"></i><span>홈</span></a>
-    <a href="search.html" class="bottom-nav-item"><i class="fa-solid fa-sliders"></i><span>세부 픽</span></a>
-    <a href="community.html" class="bottom-nav-item"><i class="fa-solid fa-users"></i><span>여행자 픽</span></a>
-    <a href="random.html" class="bottom-nav-item"><i class="fa-solid fa-dice"></i><span>랜덤 픽</span></a>
-    <a href="search.html?view=bookmarks" class="bottom-nav-item"><i class="fa-solid fa-heart"></i><span>보관함</span></a>
-  </nav>
+const drop=document.getElementById('dropMenu');
+document.getElementById('btnMenu').onclick=e=>{e.stopPropagation();drop.classList.toggle('open')};
+document.addEventListener('click',e=>{if(!drop.contains(e.target))drop.classList.remove('open')});
+const closeMenu=()=>drop.classList.remove('open');
+const toConsole=()=>{document.getElementById('console').scrollIntoView({behavior:'smooth',block:'start'})};
+document.getElementById('btnFilter').onclick=toConsole;
+document.getElementById('mFilter').onclick=()=>{closeMenu();toConsole()};
+document.getElementById('mHidden').onclick=()=>{closeMenu();document.getElementById('actHidden').click()};
+document.getElementById('mMonth').onclick=()=>{closeMenu();document.getElementById('actMonth').click()};
+document.getElementById('mDice').onclick=()=>{closeMenu();document.getElementById('actDice').click()};
+document.getElementById('mSaved').onclick=()=>{closeMenu();toggleSaved()};
+const toDeals=()=>document.getElementById('deals').scrollIntoView({behavior:'smooth',block:'start'});
+document.getElementById('btnDeals').onclick=toDeals;
+document.getElementById('mDeals').onclick=()=>{closeMenu();toDeals()};
+document.getElementById('mTheme').onclick=()=>{closeMenu();flipTheme()};
 
-  <script type="module" src="js/main.js"></script>
+buildGroups();
+render();
+
+</script>
 </body>
 </html>
