@@ -7,7 +7,7 @@ const state = {
   selectedTags: new Set(),
   keyword: '',
   activeCategoryKey: Object.keys(CATEGORIES)[0],
-  viewMode: 'all', // 'all', 'bookmarks', 'editor'
+  viewMode: 'all',
 };
 
 const elements = {
@@ -30,6 +30,9 @@ function parseParams() {
   if (params.get('q')) {
     state.keyword = params.get('q');
     elements.keywordInput.value = state.keyword;
+  }
+  if (params.get('cat') && CATEGORIES[params.get('cat')]) {
+    state.activeCategoryKey = params.get('cat');
   }
   if (params.get('tag')) {
     state.selectedTags.add(params.get('tag'));
@@ -56,7 +59,7 @@ function renderCategoryTabs() {
 
 function renderCurrentCategoryTags() {
   const cat = CATEGORIES[state.activeCategoryKey];
-  elements.currentCatTitle.innerHTML = `<i class="fa-solid ${cat.icon}"></i> <strong>${cat.title}</strong> 세부 옵션 (${cat.tags.length}개):`;
+  elements.currentCatTitle.innerHTML = `<i class="fa-solid ${cat.icon}"></i> <strong>${cat.title}</strong> (${cat.tags.length}개):`;
   elements.currentCatTags.innerHTML = '';
 
   cat.tags.forEach(tag => {
@@ -119,8 +122,7 @@ function filterAndRender() {
 }
 
 function updateFilterSummary() {
-  const count = state.selectedTags.size;
-  if (count === 0 && !state.keyword) {
+  if (state.selectedTags.size === 0 && !state.keyword) {
     elements.activeFilterSummary.style.display = 'none';
     return;
   }
@@ -160,7 +162,7 @@ function renderGrid(items) {
       <div style="grid-column: 1 / -1; text-align: center; padding: 60px 20px; background: #fff; border-radius: var(--radius-lg); border: 1px solid #e2e8f0;">
         <i class="fa-solid fa-filter-circle-xmark" style="font-size: 40px; color: var(--text-light); margin-bottom: 12px;"></i>
         <h3 style="font-size: 18px; margin-bottom: 6px;">일치하는 여행지가 없습니다</h3>
-        <p style="font-size: 14px; color: var(--text-muted);">선택하신 세부 옵션을 변경하거나 검색어를 비워보세요.</p>
+        <p style="font-size: 14px; color: var(--text-muted);">조건을 조금 줄이거나 다른 카테고리를 선택해보세요.</p>
       </div>
     `;
     return;
@@ -171,10 +173,11 @@ function renderGrid(items) {
     card.className = 'dest-card';
     const bookmarked = isBookmarked(item.id);
     const priceText = item.stayInfo ? item.stayInfo.priceRange : '입장료 무료';
+    const isEdu = item.eduInfo && item.eduInfo.isEdu;
 
     card.innerHTML = `
       <div class="card-thumb-wrap">
-        <img class="card-thumb" src="${item.image}" alt="${item.title}" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=800&q=80'">
+        <img class="card-thumb" src="${item.image}" alt="${item.title}" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80'">
         <span class="card-badge">${item.region.split(' ')[0]}</span>
         <button class="card-bookmark-btn ${bookmarked ? 'active' : ''}" data-id="${item.id}">
           <i class="${bookmarked ? 'fa-solid' : 'fa-regular'} fa-heart"></i>
@@ -185,7 +188,7 @@ function renderGrid(items) {
         <h3 class="card-title">${item.title}</h3>
         <p class="card-desc">${item.desc}</p>
         <div class="card-tags">
-          ${item.petInfo && item.petInfo.allowed ? '<span class="card-tag-pill pet"><i class="fa-solid fa-paw"></i> 펫동반</span>' : ''}
+          ${isEdu ? `<span class="card-tag-pill edu-pill"><i class="fa-solid fa-graduation-cap"></i> ${item.eduInfo.badge}</span>` : ''}
           ${item.matchRate ? `<span class="card-tag-pill" style="background:#dcfce7; color:#15803d; font-weight:800;">${item.matchRate}% 일치</span>` : ''}
           ${item.tags.slice(0, 2).map(t => `<span class="card-tag-pill">#${t}</span>`).join('')}
         </div>
