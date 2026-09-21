@@ -3,13 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>여행자 추천 픽 & 나만의 픽 만들기 - optvoyage</title>
+  <title>여행자 픽 & 나만의 픽 만들기 - optvoyage</title>
   <link rel="stylesheet" href="css/style.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" referrerpolicy="no-referrer" />
 </head>
 <body>
 
-  <!-- Header -->
   <header class="site-header">
     <div class="header-left">
       <button class="back-btn" id="backBtn" aria-label="뒤로가기"><i class="fa-solid fa-arrow-left"></i></button>
@@ -21,10 +20,11 @@
       </a>
     </div>
     <div class="header-right">
-      <a href="https://buymeacoffee.com/djawjdaks8g" target="_blank" rel="noopener noreferrer" class="coffee-sponsor-btn">
+      <a href="https://buymeacoffee.com/djawjdaks8g" target="_blank" rel="noopener noreferrer" class="coffee-sponsor-btn" title="후원하기">
         <i class="fa-solid fa-mug-hot"></i>
       </a>
-      <button class="header-icon-btn" id="menuBtn" aria-label="메뉴"><i class="fa-solid fa-ellipsis-vertical"></i></button>
+      <button class="header-icon-btn" id="menuBtn" aria-label="메뉴"><i class="fa-solid fa-bars"></i></button>
+      
       <div class="chrome-dropdown" id="dropdownMenu">
         <div class="dropdown-header">optvoyage 메뉴</div>
         <a href="index.html" class="dropdown-item"><i class="fa-solid fa-house"></i> <span>홈으로 이동</span></a>
@@ -35,32 +35,35 @@
         <a href="https://buymeacoffee.com/djawjdaks8g" target="_blank" class="dropdown-item highlight-item">
           <i class="fa-solid fa-mug-saucer" style="color: #f59e0b;"></i> <span>개발자 커피 후원</span>
         </a>
-        <a href="support.html" class="dropdown-item"><i class="fa-solid fa-circle-info"></i> <span>고객지원</span></a>
+        <a href="mailto:offthemain@proton.me" class="dropdown-item">
+          <i class="fa-solid fa-envelope"></i> <span>제휴/문의</span>
+        </a>
         <a href="privacy.html" class="dropdown-item"><i class="fa-solid fa-shield-halved"></i> <span>프라이버시</span></a>
+        <a href="terms.html" class="dropdown-item"><i class="fa-solid fa-file-contract"></i> <span>이용약관</span></a>
       </div>
     </div>
   </header>
 
   <main class="container" style="padding-top: 20px;">
 
-    <!-- 나만의 픽 만들기 카드 -->
+    <!-- 나만의 픽 빌더 -->
     <div class="create-pick-card">
       <div class="create-pick-header">
         <i class="fa-solid fa-wand-magic-sparkles" style="color: var(--primary-600); font-size: 22px;"></i>
         <div>
           <h2 class="create-pick-title">나만의 맞춤 픽 만들기 & 공유</h2>
-          <p class="create-pick-sub">선호하는 태그를 조합해 나만의 여행 코스를 만들고 링크를 공유해보세요!</p>
+          <p class="create-pick-sub">원하는 태그를 조합해 나만의 여행 코스를 만들고 링크를 공유해보세요!</p>
         </div>
       </div>
 
       <div class="form-group">
         <label>픽 제목</label>
-        <input type="text" id="myPickTitle" placeholder="예: 🦕 공룡발자국 & 역사탐방 픽 / 💖 로맨틱 기념일 코스">
+        <input type="text" id="myPickTitle" placeholder="예: 🦕 아이와 함께하는 공룡발자국 & 역사탐방 픽 / 💖 로맨틱 기념일 코스">
       </div>
 
       <div class="form-group">
         <label>픽 소개 한 줄</label>
-        <input type="text" id="myPickDesc" placeholder="예: 아이와 함께 떠나는 알찬 1박2일 지질·역사 탐방 코스">
+        <input type="text" id="myPickDesc" placeholder="예: 시원한 계곡과 유적지를 함께 둘러보는 알짜배기 1박2일 코스">
       </div>
 
       <div class="form-group">
@@ -69,23 +72,23 @@
       </div>
 
       <button id="createAndShareBtn" class="btn-large-action" style="width: 100%;">
-        <i class="fa-solid fa-share-nodes"></i> 나만의 픽 저장 및 친구 공유 링크 복사
+        <i class="fa-solid fa-share-nodes"></i> 나만의 픽 저장 및 친구에게 공유하기
       </button>
     </div>
 
-    <!-- 바이미어커피 후원 배너 -->
+    <!-- 커피 후원 배너 -->
     <div class="coffee-supporter-banner">
       <div class="coffee-icon"><i class="fa-solid fa-mug-hot"></i></div>
       <div class="coffee-content">
-        <h4>optvoyage 무료 서비스를 응원해주세요!</h4>
-        <p>회원가입 없는 0원 무료 사이트 유지를 위해 개발자에게 따뜻한 커피 한 잔을 선물해주세요 ☕</p>
+        <h4>optvoyage의 0원 무료 운영을 응원해주세요!</h4>
+        <p>회원가입 없는 무료 서비스 유지를 위해 개발자에게 따뜻한 커피 한 잔을 선물해주세요 ☕</p>
       </div>
       <a href="https://buymeacoffee.com/djawjdaks8g" target="_blank" rel="noopener noreferrer" class="coffee-donate-action">
         커피 후원하기
       </a>
     </div>
 
-    <!-- 여행자 추천 픽 컬렉션 -->
+    <!-- 인기 픽 컬렉션 -->
     <div class="section-header" style="margin-top: 32px;">
       <h2 class="section-title">
         <i class="fa-solid fa-users" style="color: #d97706;"></i>
