@@ -5,39 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>운명의 랜덤 픽 - optvoyage</title>
   <link rel="stylesheet" href="css/style.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
-  <style>
-    .dice-wrapper {
-      width: 90px;
-      height: 90px;
-      margin: 24px auto;
-      background: linear-gradient(135deg, #0284c7, #38bdf8);
-      border-radius: 24px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 44px;
-      color: #fff;
-      box-shadow: 0 10px 25px rgba(2, 132, 199, 0.35);
-      cursor: pointer;
-      transition: transform 0.2s;
-    }
-    .dice-wrapper:hover {
-      transform: scale(1.05);
-    }
-    .dice-wrapper.rolling {
-      animation: spinDice 0.6s infinite linear;
-    }
-    @keyframes spinDice {
-      0% { transform: rotate(0deg) scale(1.1); }
-      50% { transform: rotate(180deg) scale(0.9); }
-      100% { transform: rotate(360deg) scale(1.1); }
-    }
-  </style>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" referrerpolicy="no-referrer" />
 </head>
 <body>
 
-  <!-- Header -->
   <header class="site-header">
     <div class="header-left">
       <button class="back-btn" id="backBtn" aria-label="뒤로가기"><i class="fa-solid fa-arrow-left"></i></button>
@@ -49,10 +20,11 @@
       </a>
     </div>
     <div class="header-right">
-      <a href="https://buymeacoffee.com/djawjdaks8g" target="_blank" class="coffee-sponsor-btn">
+      <a href="https://buymeacoffee.com/djawjdaks8g" target="_blank" rel="noopener noreferrer" class="coffee-sponsor-btn" title="후원하기">
         <i class="fa-solid fa-mug-hot"></i>
       </a>
-      <button class="header-icon-btn" id="menuBtn" aria-label="메뉴"><i class="fa-solid fa-ellipsis-vertical"></i></button>
+      <button class="header-icon-btn" id="menuBtn" aria-label="메뉴"><i class="fa-solid fa-bars"></i></button>
+      
       <div class="chrome-dropdown" id="dropdownMenu">
         <div class="dropdown-header">optvoyage 메뉴</div>
         <a href="index.html" class="dropdown-item"><i class="fa-solid fa-house"></i> <span>홈으로 이동</span></a>
@@ -60,23 +32,29 @@
         <a href="community.html" class="dropdown-item"><i class="fa-solid fa-users"></i> <span>여행자 추천 픽</span></a>
         <a href="search.html?view=bookmarks" class="dropdown-item"><i class="fa-solid fa-heart"></i> <span>보관함</span></a>
         <div class="dropdown-divider"></div>
-        <a href="support.html" class="dropdown-item"><i class="fa-solid fa-circle-info"></i> <span>고객지원</span></a>
+        <a href="https://buymeacoffee.com/djawjdaks8g" target="_blank" class="dropdown-item highlight-item">
+          <i class="fa-solid fa-mug-saucer" style="color: #f59e0b;"></i> <span>개발자 커피 후원</span>
+        </a>
+        <a href="mailto:offthemain@proton.me" class="dropdown-item">
+          <i class="fa-solid fa-envelope"></i> <span>문의</span>
+        </a>
         <a href="privacy.html" class="dropdown-item"><i class="fa-solid fa-shield-halved"></i> <span>프라이버시</span></a>
+        <a href="terms.html" class="dropdown-item"><i class="fa-solid fa-file-contract"></i> <span>이용약관</span></a>
       </div>
     </div>
   </header>
 
-  <main class="container" style="max-width: 600px; text-align: center; padding-top: 30px;">
+  <main class="container" style="max-width: 600px; text-align: center; padding-top: 36px;">
     
-    <div style="background: #ffffff; border-radius: var(--radius-xl); border: 1px solid #e2e8f0; padding: 32px 20px; box-shadow: var(--shadow-sm);">
-      <div style="font-size: 13px; font-weight: 700; color: var(--primary-600); margin-bottom: 8px;">
-        <i class="fa-solid fa-sparkles"></i> 어디 갈지 결정하기 어려울 때!
+    <div class="random-box-card">
+      <div style="font-size: 13px; font-weight: 700; color: #9333ea; margin-bottom: 8px;">
+        <i class="fa-solid fa-sparkles"></i> 어디 갈지 결정하기 힘들 때!
       </div>
-      <h2 style="font-size: 22px; font-weight: 800; color: var(--text-main); margin-bottom: 8px;">
+      <h2 style="font-size: 24px; font-weight: 800; color: var(--text-main); margin-bottom: 8px;">
         주사위를 굴려 운명의 여행지를 뽑아보세요
       </h2>
-      <p style="font-size: 13.5px; color: var(--text-muted); margin-bottom: 20px;">
-        전국 17개 시도의 역사 학습지, 힐링 명소 중 당신의 운명 여행지를 골라드립니다.
+      <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 24px;">
+        optvoyage가 전국의 숨은 명소, 학습 탐방지, 감성 여행지를 무작위로 추천해 드립니다.
       </p>
 
       <div class="dice-wrapper" id="diceBtn">
@@ -88,27 +66,26 @@
       </div>
 
       <!-- 결과 카드 -->
-      <div id="randomResultCard" style="display: none; text-align: left; background: var(--primary-50); border: 1px solid var(--primary-200); border-radius: var(--radius-lg); overflow: hidden; margin-bottom: 20px;">
-        <img id="resultImg" src="" alt="결과 사진" style="width: 100%; height: 210px; object-fit: cover;">
-        <div style="padding: 18px;">
-          <div style="font-size: 12px; font-weight: 700; color: var(--primary-600); margin-bottom: 4px;" id="resultRegion">지역</div>
-          <h3 style="font-size: 18px; font-weight: 800; color: var(--text-main); margin-bottom: 6px;" id="resultTitle">여행지명</h3>
-          <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 16px; line-height: 1.5;" id="resultDesc">설명</p>
+      <div id="randomResultCard" class="random-result-card" style="display: none;">
+        <img id="resultImg" src="" alt="결과 사진" class="random-result-img">
+        <div style="padding: 16px;">
+          <div class="card-loc" id="resultRegion">지역</div>
+          <h3 style="font-size: 19px; font-weight: 800; color: var(--text-main); margin-bottom: 6px;" id="resultTitle">여행지명</h3>
+          <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 14px; line-height: 1.5;" id="resultDesc">설명</p>
           
-          <div style="display: flex; gap: 8px; flex-direction: column;">
-            <a href="#" id="resultDetailLink" class="btn-large-action" style="text-align: center; text-decoration: none;">
-              <i class="fa-solid fa-circle-info"></i> 이 여행지 상세 정보 보기
+          <div style="display: flex; gap: 8px;">
+            <a href="#" id="resultDetailLink" class="btn-large-action" style="flex: 1; text-decoration: none;">
+              자세히 보기 &rarr;
             </a>
-            <!-- 어필리에이트 숙소 링크 -->
-            <a href="https://3ha.in/r/725499" target="_blank" rel="noopener noreferrer" class="btn-large-affiliate" style="text-align: center; text-decoration: none;">
-              <i class="fa-solid fa-bed"></i> 이 주변 최저가 숙소 예약
+            <a href="https://3ha.in/r/725499" target="_blank" rel="noopener noreferrer" class="btn-large-affiliate" style="flex: 1; text-decoration: none;">
+              <i class="fa-solid fa-bed"></i> 숙소 보기
             </a>
           </div>
         </div>
       </div>
 
-      <button id="rerollBtn" class="btn-large-action" style="width: 100%; background: linear-gradient(135deg, var(--primary-600), var(--primary-700));">
-        <i class="fa-solid fa-shuffle"></i> 다시 굴리기
+      <button id="rerollBtn" class="btn-large-action" style="width: 100%; background: linear-gradient(135deg, #9333ea, #6366f1);">
+        <i class="fa-solid fa-shuffle"></i> 다시 주사위 굴리기
       </button>
     </div>
 
